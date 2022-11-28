@@ -1,23 +1,28 @@
 {% load django_bootstrap5 %}
 {% load static %}
-
+<style>
+  .navback {
+    background-color: #544B44;
+    color: #C17F34;
+}
+</style>
 <!-- Navbar 1 -->
-<nav class="navbar-stretch navbar-expand-lg p-0 bg-white sticky-top">
+<nav class="navbar-stretch navbar-expand-lg p-0 sticky-top navback">
   <div class="d-flex flex-column px-5 py-2">
     <ul class="navbar-nav me-0 mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
       <!-- 로고 -->
       <div>
-        <a class="navbar-brand" href="{% url 'main' %}">
+        <a class="navbar-brand" href="#">
           <img src="{% static 'images/namung_logo_horizon.png' %}" alt="Logo" style="width: 11rem; height: 4rem;">
         </a>
       </div>
       <!-- 검색창 -->
       <div style="width: 30rem;">
         <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 d-flex" style="position:sticky; top:70px; right:25px;" action="{% url 'search:searchResult' %}" method="get">
-            <input class="form-control bg-light" type="search" placeholder="지역, 음식 또는 식당" aria-label="Search" name="q">
+          <form class="form-inline my-2 my-lg-0 d-flex" style="position:sticky; top:70px; right:25px;" action="#" method="get">
+            <input class="form-control bg-light" type="search" placeholder="검색어를 입력하세요" aria-label="Search" name="q">
             <button class="btn btn-search rounded-pill px-3 ms-2" type="submit">
-              <i class="bi bi-search"></i>
+              <i class="bi bi-search">🔍</i>
             </button>
           </form>
           <!-- 서치바 -->
@@ -27,48 +32,22 @@
       <div class="d-flex">
         {% if request.user.is_authenticated %}
           <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'accounts:mypage' %}">{{ request.user }}</a>
+            {% comment %} <a class="nav-link" href="{% url 'accounts:mypage' %}">{{ request.user }}</a> {% endcomment %} MY PAGE
           </li>
           <li class="nav-item nav1-text">
-            <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+            {% comment %} <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a> {% endcomment %} LOGOUT
           </li>
         {% else %}
           <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+            {% comment %} <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a> {% endcomment %} LOGIN
           </li>
           <li class="nav-item nav1-text">
-            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+            {% comment %} <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a> {% endcomment %} SIGNUP
           </li>
         {% endif %}
       </div>
     </ul>
   </div>
-
-  <!-- Navbar 2 -->
-  <!-- 아래로 스크롤 => 사라짐 / 위로 스크롤 => 나타남 -->
-  <ul class="lower-navbar navbar-nav text-white d-flex justify-content-between align-items-center px-5 py-1">
-    <div class="d-flex">
-      <!--
-      <li class="nav-item mx-5">
-        <a class="nav-link nav2-text" aria-current="page" href="{% url 'accounts:index' %}">All</a>
-      </li> 
-    -->
-      <li class="nav-item mx-5">
-        <a class="nav-link nav2-text" aria-current="page" href="{% url 'articles:index' %}">All</a>
-      </li>
-      <li class="nav-item me-5">
-        <a class="nav-link nav2-text" aria-current="page" href="{% url 'accounts:followings' %}">Following</a>
-      </li>
-      <li class="nav-item me-5">
-        <a class="nav-link nav2-text" aria-current="page" href="{% url 'articles:saved' %}">Saved</a>
-      </li>
-    </div>
-    <div>
-      <a class="nav-link nav2-text mx-5" aria-current="page" href="{% url 'articles:create' %}">후기쓰기</a>
-    </div>
-  </ul>
-</div>
-</div>
 </nav>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
