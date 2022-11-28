@@ -10,6 +10,7 @@ from django.db import models
 #     membercnt = models.IntegerField()
 
 
+# max_length 수정함
 class Park(models.Model):
     manageNo = models.CharField(max_length=200)
     parkName = models.CharField(max_length=300)
