@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserChangeForm, ProfileForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, DogForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.views.decorators.http import require_http_methods
 from django.contrib import messages
@@ -19,7 +19,9 @@ def index(request):
 
 def signup(request):
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
+        form = CustomUserCreationForm(
+            request.POST, request.FILES, instance=request.user
+        )
         if form.is_valid():
             form.save()
             return redirect("accounts:index")
@@ -27,6 +29,18 @@ def signup(request):
         form = CustomUserCreationForm()
     context = {"form": form}
     return render(request, "accounts/signup.html", context)
+
+
+def dogsignup(request):
+    if request.method == "POST":
+        forms = DogForm(request.POST, request.FILES)
+        if forms.is_valid():
+            forms.save()
+            return redirect("accounts:index")
+    else:
+        forms = DogForm()
+    context = {"forms": forms}
+    return render(request, "accounts/dogsignup.html", context)
 
 
 def login(request):
