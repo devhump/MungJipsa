@@ -36,7 +36,9 @@ INSTALLED_APPS = [
     "info",
     "schedules",
     "reviews",
+
     "imagekit",
+
     "django_bootstrap5",
     "django.contrib.admin",
     "django.contrib.auth",
