@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load  static  %}
+
+{% block content %}
+
+<div class=" d-flex m-4 py-4 px-2 ">
+
+
+  {% comment %} 리뷰 글 반복 {% endcomment %}
+  <div>
+    <ul class="list-group list-group-flush">
+      {% for review in posts %}
+      <li class="list-group-item">
+        {% comment %} 제목 {% endcomment %}
+        <div>{{ review.title }}</div>
+
+        {% comment %} 글 작성일 {% endcomment %}
+        <p>{{ review.created_at }}</p>
+
+        {% comment %} 사진  {% endcomment %}
+        {% if review.image %}
+          <img src="{{ review.image.url }}" class="card-img-top" alt="..." style='height:278.4px; object-fit: cover;'>
+        {% endif %}
+
+
+        {% comment %} 내용 {% endcomment %}
+        <p>{{ review.content }}</p>
+        <form action="{% url 'reviews:comment_create' review.pk %}" method="POST">
+          {% csrf_token %}
+          {% bootstrap_form comment_form layout='inline'%}
+          <input type="submit" value="작성" class="btn btn-primary">
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+{% comment %} 페이지네이션 {% endcomment %}
+<ul class="pagination">
+  {% comment %} 이전 페이지 {% endcomment %}
+  {% if posts.has_previous %}
+  <li class="page-item">
+    <a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  {% endif %}
+  {% comment %} 페이지리스트 {% endcomment %}
+  {% for page_number in posts.paginator.page_range %}
+  {% if page_number >= posts.number|add:-5 and page_number <= posts.number|add:5 %} {% if page_number == posts.number %}
+    <li class="page-item active" aria-current="page">
+    <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+    </li>
+    {% else %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+    </li>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% comment %} 다음 페이지 {% endcomment %}
+    {% if posts.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+</ul>
+{% endblock content %}
