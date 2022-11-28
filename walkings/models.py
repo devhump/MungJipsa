@@ -10,11 +10,12 @@ from django.db import models
 #     membercnt = models.IntegerField()
 
 
+# max_length 수정함
 class Park(models.Model):
-    manageNo = models.CharField(max_length=20)
-    parkName = models.CharField(max_length=30)
-    parkType = models.CharField(max_length=20)
-    address = models.CharField(max_length=50)
-    latitude = models.CharField(max_length=20)
-    longitude = models.CharField(max_length=20)
-    size = models.CharField(max_length=20)
+    manageNo = models.CharField(max_length=200)
+    parkName = models.CharField(max_length=300)
+    parkType = models.CharField(max_length=200)
+    address = models.CharField(max_length=500)
+    latitude = models.CharField(max_length=200)
+    longitude = models.CharField(max_length=200)
+    size = models.CharField(max_length=200)
