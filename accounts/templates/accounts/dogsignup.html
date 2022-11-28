@@ -11,15 +11,4 @@
     {% csrf_token %} {% bootstrap_form forms %} {% bootstrap_button button_type="submit" button_class="btn-primary" content="강아지 등록" %}
   </form>
 </div>
-
-<div class="">
-  <form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="imgfile">이미지</label>
-      <input type="file" class="form-control" name="imgfile" id="imgfile">
-  </div>
-  </form>
-
-</div>
 {% endblock content %}
