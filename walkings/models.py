@@ -1,13 +1,13 @@
 from django.db import models
 
 # Create your models here.
-# class Dogroup(models.Model):
-#     # dog = models.ForeignKey
-#     # user = models.ForeignKey
-#     # park = models.ForeignKey
-#     datatime = models.DateTimeField()
-#     title = models.CharField(max_length=20)
-#     membercnt = models.IntegerField()
+class Dogroup(models.Model):
+    dog = models.ForeignKey
+    user = models.ForeignKey
+    park = models.ForeignKey
+    datatime = models.DateTimeField()
+    title = models.CharField(max_length=20)
+    membercnt = models.IntegerField(default=5)
 
 
 # max_length 수정함
@@ -19,3 +19,7 @@ class Park(models.Model):
     latitude = models.CharField(max_length=200)
     longitude = models.CharField(max_length=200)
     size = models.CharField(max_length=200)
+
+
+class Mylotations(models.Model):
+    location = models.CharField(max_length=50)
