@@ -1,18 +1,22 @@
 {% extends 'base.html' %} 
 {% load django_bootstrap5 %} 
 {% block content %}
-
+{% load static %}
 
 <div class="row text-center mt-5">
 
   <!-- 회원인 경우 -->
+
   {% if user.is_authenticated %}
   <div>
 
     <a class="" href="{%  url 'accounts:logout' %}"
-      >로그아웃</a
-    >
-  </div>
+      >로그아웃</a>
+  <!-- 회원인 경우에만 강아지 등록 할 수 있게-->
+  <a class="btn btn-primary " href="{% url 'accounts:dogsignup' %}">강아지 등록</a>
+</div>
+
+
   <!-- 회원이 아닌 경우 -->
   {% else %}
   <div>

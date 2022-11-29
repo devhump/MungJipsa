@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from imagekit.models import ProcessedImageField
 from imagekit.processors import Thumbnail
 from django.conf import settings
+from django import forms
 
 # Create your models here.
 
@@ -37,3 +38,32 @@ class Profile(models.Model):
         format="JPEG",
         options={"quality": 50},
     )
+
+
+DOGTYPE_CHOICES = (
+    ("소형", "소형"),
+    ("중형", "중형"),
+    ("대형", "대형"),
+)
+
+GENDER_CHOICES = (
+    ("수컷", "수컷"),
+    ("암컷", "암컷"),
+)
+
+
+class Dog(models.Model):
+    name = models.CharField(max_length=255)
+    dogphoto = ProcessedImageField(
+        blank=True,
+        processors=[Thumbnail(200, 300)],
+        format="JPEG",
+        options={"quality": 50},
+    )
+    gender = models.CharField(max_length=255, choices=GENDER_CHOICES)
+    neutered = models.BooleanField(default=False)
+    age = models.PositiveIntegerField(default=0)
+
+    # 체크박스로 변경 고민중
+    personality = models.CharField(max_length=255)
+    dogtype = models.CharField(max_length=255, choices=DOGTYPE_CHOICES)

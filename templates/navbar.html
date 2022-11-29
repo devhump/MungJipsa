@@ -39,12 +39,21 @@
           </li>
         {% else %}
           <li class="nav-item me-4 nav1-text">
-            {% comment %} <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a> {% endcomment %} LOGIN
+            <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
           </li>
           <li class="nav-item nav1-text">
-            {% comment %} <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a> {% endcomment %} SIGNUP
+            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
           </li>
         {% endif %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'reviews:index' %}">멍스타그램</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'schedules:index' %}">일정관리</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'walkings:index' %}">산책나가기</a>
+          </li>
       </div>
     </ul>
   </div>
