@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block content %}
+
+<p>dogroup/create</p>
+
+  <form action="">
+    {% csrf_token %}
+    {% bootstrap_form dogroup_form %}
+  </form>
+
+{% endblock content %}
