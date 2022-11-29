@@ -23,6 +23,7 @@ upkind = "&upkind=" + "417000"
 cpage = "&pageNo=" + "1"
 # 페이지당 목록 수
 rows = "&numOfRows=" + "10"
+_type = "&_type=" + "json"
 
 
 #################################################
@@ -37,20 +38,16 @@ def get_list():
         + upkind
         + cpage
         + rows
+        + _type
     )
 
     print(URL)
 
-    response = requests.get(URL)
+    response = requests.get(URL, verify=False)
     # print(URL)
     # print(response.status_code)
 
-    soup = BeautifulSoup(response.text, "xml")  # xml 문서라서
-    items = soup.find_all("desertionNo")
-
-    print(items)
-
-    return items
+    print(response.json())
 
 
 get_list()
