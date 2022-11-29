@@ -29,6 +29,7 @@ def create(request):
             review = review_form.save(commit=False)
             review.user = request.user 
             review.save()
+           
             return redirect('reviews:index')
     else:
         review_form = ReviewForm()
@@ -36,6 +37,8 @@ def create(request):
         'review_form' : review_form,
     }
     return render(request,'reviews/form.html', context)
+
+
 
 
 # 리뷰 삭제
