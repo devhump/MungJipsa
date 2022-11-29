@@ -2,6 +2,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
+import json
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "namung.settings")
@@ -46,8 +47,8 @@ def get_list():
     response = requests.get(URL, verify=False)
     # print(URL)
     # print(response.status_code)
-
-    print(response.json())
+    jsonresponse = json.loads(response.json())
+    print(jsonresponse)
 
 
 get_list()
