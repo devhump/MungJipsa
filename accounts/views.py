@@ -1,13 +1,16 @@
-from django.shortcuts import render, redirect
-from .forms import CustomUserCreationForm, CustomUserChangeForm, DogForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import CustomUserCreationForm, CustomUserChangeForm, DogForm, ProfileForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
-from django.views.decorators.http import require_http_methods
 from django.contrib import messages
+from django.http import JsonResponse
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
-
+from django.views.decorators.http import (
+    require_http_methods,
+    require_POST,
+)
 
 def index(request):
     users = get_user_model().objects.all()
@@ -64,20 +67,19 @@ def logout(request):
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
 def update(request):
     if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "프로필 정보가 성공적으로 변경되었습니다.")
-            return redirect("accounts:profile", request.user.username)
+        forms = CustomUserChangeForm(request.POST, instance=request.user)
+        if forms.is_valid():
+            forms.save()
+            return redirect("accounts:profile", request.user.pk)
     else:
-        form = CustomUserChangeForm(instance=request.user)
+        forms = CustomUserChangeForm(instance=request.user)
     context = {
-        "form": form,
+        "forms": forms,
     }
     return render(request, "accounts/update.html", context)
+
 
 
 @login_required
@@ -102,33 +104,63 @@ def delete(request):
     request.user.delete()
     auth_logout(request)
     messages.success(request, "탈퇴 완료")
-    return redirect("index")
-
+    return redirect("accounts:index")
 
 @login_required
-def profile(request):
-    user_ = request.user
-    profile_ = user_.profile_set.all()[0]
-    print(profile_)
+@require_http_methods(["GET", "POST"])
+def profile(request,pk):
+    user = get_user_model().objects.get(pk=pk)
     context = {
-        "profile": profile_,
-        "reviews": request.user.review_set.all(),
+        'user': user
     }
-    return render(request, "accounts/profile.html", context)
+    return render(request, 'accounts/profile.html', context)
+@login_required
+def update(request):
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    context = {
+        "form": form,
+    }
+    return render(request, "accounts/update.html", context)
 
+@login_required
+@require_http_methods(["GET", "POST"])
+def profile_update(request):
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("accounts:profile", request.user.username)
+    else:
+        form = CustomUserChangeForm(instance=request.user)
+    context = {
+        "form": form,
+    }
+    return render(request, "accounts/profile_update.html", context)
 
-# @login_required
-# def profile_update(request):
-#     user_ = get_user_model().objects.get(pk=request.user.pk)
-#     current_user = user_.profile_set.all()[0]
-#     if request.method == "POST":
-#         form = ProfileForm(request.POST, request.FILES, instance=current_user)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("accounts:profile")
-#     else:
-#         form = ProfileForm(instance=current_user)
-#     context = {
-#         "profile_form": form,
-#     }
-#     return render(request, "accounts/profile_update.html", context)
+@require_POST
+def follow(request, username):
+    if not request.user.is_authenticated:
+        messages.warning(request, "로그인이 필요합니다.")
+        return redirect("accounts:login")
+
+    user = get_object_or_404(get_user_model(), username=username)
+    if user != request.user:
+        if user.followers.filter(username=request.user.username).exists():
+            user.followers.remove(request.user)
+            is_followed = False
+        else:
+            user.followers.add(request.user)
+            is_followed = True
+        context = {
+            "is_followed": is_followed,
+            "followersCount": user.followers.all().count(),
+            "followingsCount": user.followings.all().count(),
+        }
+        return JsonResponse(context)
+    return redirect("accounts:profile", user.username)
