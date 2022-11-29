@@ -1,114 +1,73 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
-
 .calendar {
-    width: 600px;
-    margin: 50px;
+    width: 98%;
+    margin: auto;
+    font-size: 13px;
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.calendar tr,
+.calendar td {
+    border: 1px solid black;
 }
 
-.year-month {
-    font-size: 35px;
-}
-
-.nav {
-    display: flex;
-    border: 1px solid #333333;
-    border-radius: 5px;
-}
-
-.nav-btn {
-    width: 28px;
-    height: 30px;
-    border: none;
-    font-size: 16px;
-    line-height: 34px;
-    background-color: transparent;
-    cursor: pointer;
-}
-
-.go-today {
-    width: 75px;
-    border-left: 1px solid #333333;
-    border-right: 1px solid #333333;
-}
-
-.days {
-    display: flex;
-    margin: 25px 0 10px;
-}
-
-.day {
-    width: calc(100% / 7);
+.calendar th {
+    padding: 10px;
     text-align: center;
+    font-size: 18px;
 }
 
-.dates {
-    display: flex;
-    flex-flow: row wrap;
-    height: 500px;
-    border-top: 1px solid #333333;
-    border-right: 1px solid #333333;
+.calendar td {
+    width: 200px;
+    height: 150px;
+    padding: 20px 0px 0px 5px;
+}
+
+.month {
+    font-size: 25px;
 }
 
 .date {
-    width: calc(100% / 7);
-    padding: 15px;
-    text-align: right;
-    border-bottom: 1px solid #333333;
-    border-left: 1px solid #333333;
+    font-size: 16px;
 }
 
-.day:nth-child(7n + 1),
-.date:nth-child(7n + 1) {
-    color: #D13E3E;
+ul {
+    height: 100%;
+    padding: 0px 5px 0px 20px;
 }
 
-.day:nth-child(7n),
-.date:nth-child(7n) {
-    color: #396EE2;
+a {
+    color: #17a2b8;
 }
 
-.other {
-    opacity: 0.3;
+.left {
+    float: left;
 }
 
-.today {
-    position: relative;
-    color: #FFFFFF;
+.right {
+    float: right;
 }
 
-.today::before {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -1;
-    width: 30px;
-    height: 30px;
-    display: block;
-    background-color: #FF0000;
-    border-radius: 50%;
-    content: '';
+.btn {
+    outline: none;
+    color: black;
+    background-color: transparent;
+    box-shadow: 0 0 0 0;
 }
 
-.selected {
-    background-color: black;
-    color: #FFFFFF !important;
+.clearfix {
+    margin: 15px;
+}
+
+.form {
+    margin: auto;
+}
+
+.form input,
+.form select,
+.form textarea {
+    border-radius: 5px;
+    border: 1px solid #17a2b8;
+    outline: none;
+    background: none;
+    padding: 5px;
+    width: 100%;
 }

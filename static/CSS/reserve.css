@@ -1,0 +1,312 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'GmarketSansMedium';
+    box-sizing: border-box;
+}
+
+body,
+table,
+tbody,
+td,
+th,
+tr,
+p {
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    text-align: center;
+}
+
+body,
+tbody {
+    cursor: default;
+}
+
+.calender {
+    overflow: hidden;
+    /* overflow-x: scroll; */
+    width: 100vw;
+    margin-top: 50px;
+    transition: all .3s;
+}
+
+.year {
+    transition: all .3s;
+}
+
+.calender>table:first-child {
+    width: 100%;
+    position: relative;
+    right: 400%;
+}
+
+.calender>table>tbody {
+    white-space: nowrap;
+}
+
+.calender>table>tbody>tr:first-child {
+    display: block;
+}
+
+.calender>table>tbody>tr {
+    display: inline-block;
+}
+
+/* YEAR TITLE*/
+.calender>table>tbody>tr:first-child>th {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: default;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+/* MONTH TITLE */
+.calender>table>tbody>tr>td table tbody tr:first-child>th {
+    font-size: 30px;
+    font-weight: bold;
+    padding-bottom: 30px;
+    cursor: default;
+}
+
+/* MONTH */
+.calender>table>tbody>tr>td {
+    cursor: default;
+    padding: 20px 0px;
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100vw;
+}
+
+.calender>table>tbody>tr>td>table {
+    /* padding: 20px; */
+    margin: auto;
+    width: 90vw;
+    height: 50vh;
+}
+
+/* MONTH WEEK TITLE */
+.calender>table>tbody>tr>td table tbody tr:nth-child(2)>th {
+    clear: both;
+    font-weight: bold;
+    padding: 5px 10px;
+    background-color: rgb(218, 218, 218, 30%);
+    border: 1px solid rgb(218, 218, 218, 80%);
+    width: 200px;
+}
+
+/* MONTH WEEK TITLE Saturday, Sunday */
+.calender>table>tbody>tr>td table tbody tr:nth-child(2)>th:nth-child(6N) {
+    color: rgb(68, 124, 209);
+}
+
+.calender>table>tbody>tr>td table tbody tr:nth-child(2)>th:last-child {
+    color: rgb(209, 68, 68);
+}
+
+/* MONTH DAY */
+.calender>table>tbody>tr>td table tbody tr>td {
+    padding: 10px 0px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(218, 218, 218, 80%);
+    transition: all .3s;
+    line-height: 66px;
+    cursor: pointer;
+}
+
+/* MONTH DAY Saturday, Sunday */
+.calender>table>tbody>tr>td table tbody tr>td:nth-child(6N) {
+    color: rgb(68, 124, 209);
+    font-weight: bold;
+}
+
+.calender>table>tbody>tr>td table tbody tr>td:last-child {
+    color: rgb(209, 68, 68);
+    font-weight: bold;
+}
+
+.calender>table>tbody>tr>td table tbody tr>td:hover {
+    background-color: rgb(109, 109, 109) !important;
+    color: #fff;
+}
+
+.selected {
+    background-color: rgb(59, 59, 59) !important;
+    color: #fff !important;
+}
+
+
+.btn-wrapper {
+    position: fixed;
+    display: inline-flex;
+    justify-content: space-between;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.btn {
+    cursor: pointer;
+    width: 100px;
+    height: 50px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 1px 9px rgba(172, 172, 172, 0.493);
+    line-height: 50px;
+    border: 1px solid rgb(97, 97, 97);
+}
+
+.btn.prev {
+    border-radius: 0px 40px 40px 0px;
+}
+
+.btn.next {
+    border-radius: 40px 0px 0px 40px;
+}
+
+/* INFO BAR */
+.infoBar {
+    width: 100vw;
+    height: 250px;
+    font-size: 0;
+}
+
+/* info-bar LEFT */
+.infoBar-left {
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+    height: 250px;
+    font-size: 0px;
+}
+
+.infoBar-left_date {
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+    height: 250px;
+    font-size: 20px;
+}
+
+.infoBar-left_remain {
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+    height: 250px;
+    font-size: 20px;
+}
+
+.infoBar-left>div {
+    border: 1px solid #fff;
+}
+
+.date-box {
+    position: relative;
+    top: 100px;
+    margin: auto;
+    width: 50%;
+    line-height: 50px;
+    border-radius: 20px;
+    color: #000;
+    background-color: #fff;
+    box-shadow: 1px 1px 9px rgba(172, 172, 172, 0.493);
+    border: 1px solid rgb(97, 97, 97);
+}
+
+.remain-box {
+    position: relative;
+    top: 75px;
+    margin: auto;
+    width: 50%;
+    line-height: 50px;
+    border-radius: 20px;
+    color: #000;
+    background-color: #fff;
+    box-shadow: 1px 1px 9px rgba(172, 172, 172, 0.493);
+    border: 1px solid rgb(97, 97, 97);
+}
+
+.remain-box>p:last-child {
+    color: rgb(209, 68, 68);
+    font-weight: bold;
+}
+
+
+/* info-bar RIGHT */
+.infoBar-right {
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+    height: 250px;
+    color: #000;
+    font-size: 0px;
+}
+
+.sendBtn-purchase {
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+    height: 250px;
+    font-size: 20px;
+}
+
+.sendBtn-cancel {
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+    height: 250px;
+    font-size: 20px;
+}
+
+.purchase-box {
+    cursor: pointer;
+    position: relative;
+    top: 100px;
+    margin: auto;
+    width: 50%;
+    line-height: 50px;
+    border-radius: 20px;
+    color: #000;
+    background-color: #fff;
+    box-shadow: 1px 1px 9px rgba(172, 172, 172, 0.493);
+    border: 1px solid rgb(97, 97, 97);
+
+}
+
+.cancel-box {
+    cursor: pointer;
+    position: relative;
+    top: 100px;
+    margin: auto;
+    width: 50%;
+    line-height: 50px;
+    border-radius: 20px;
+    color: #000;
+    background-color: #fff;
+    box-shadow: 1px 1px 9px rgba(172, 172, 172, 0.493);
+    border: 1px solid rgb(97, 97, 97);
+}
+
+.clckBox {
+    transition: all .3s;
+}
+
+.clckBox:hover {
+    color: #fff;
+    background-color: rgb(97, 97, 97) !important;
+}
+
+.sendBtn {
+    cursor: pointer;
+    width: 20%;
+    height: 50px;
+    /* margin: auto; */
+    background-color: blueviolet;
+}
