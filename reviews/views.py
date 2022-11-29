@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from reviews.forms import ReviewForm, CommentForm
-from .models import Review, Comment
+from .models import Review, Comment, Tag
 # 멍스타그렘
 def index(request):
     reviews = Review.objects.all()
@@ -29,6 +29,7 @@ def create(request):
             review = review_form.save(commit=False)
             review.user = request.user 
             review.save()
+           
             return redirect('reviews:index')
     else:
         review_form = ReviewForm()
@@ -36,6 +37,8 @@ def create(request):
         'review_form' : review_form,
     }
     return render(request,'reviews/form.html', context)
+
+
 
 
 # 리뷰 삭제
