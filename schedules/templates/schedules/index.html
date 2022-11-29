@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/calendar2.css' %}">
+{% endblock css %}
+{% block content %}
+<div class="calendar">
+    <div class="header">
+        <div class="year-month"></div>
+        <span class="nav">
+            <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+            <button class="nav-btn go-today" onclick="goToday()">Today</button>
+            <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+        </span>
+    </div>
+    <div class="main">
+        <div class="days">
+            <div class="day">일</div>
+            <div class="day">월</div>
+            <div class="day">화</div>
+            <div class="day">수</div>
+            <div class="day">목</div>
+            <div class="day">금</div>
+            <div class="day">토</div>
+        </div>
+        <div class="dates"></div>
+    </div>
+</div>
+<!-- 예약 창 -->
+<div class="resv-wrapper">
+    <div class="resv-bg">
+        <button class="resv-close">X</button>
+        <div class="resv_info">
+            <div class="resv_ym">
+                <span class="resv-year">2022</span>년
+                <span class="resv-month">12</span>월
+                <span class="resv-day">몇</span>일
+            </div>
+            <h3>
+                일정 목록
+            </h3>
+            <div class="resv-list">  
+                <p>여기는 <span>Time</span></p>
+                <p>일정표 <span>Time</span></p>
+                <p>목록순 <span>Time</span></p>
+                <p>최신순 <span>Time</span></p>
+                <p>중요도 <span>Time</span></p>
+                <p>등등순 <span>Time</span></p>
+            </div>
+        </div>
+        <div class="resv_set">
+            <input class="resv_set time" type="time" name="" id="">
+            <button class="resv_btn purchase">일정등록</button>
+            <button class="resv_btn cancel">등록취소</button>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script src={% static 'js/calendar.js' %}></script>
+<script src={% static 'js/calendar_date.js' %}></script>
+{% endblock script %}
