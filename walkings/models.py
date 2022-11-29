@@ -1,13 +1,6 @@
 from django.db import models
-
-# Create your models here.
-class Dogroup(models.Model):
-    dog = models.ForeignKey
-    user = models.ForeignKey
-    park = models.ForeignKey
-    datatime = models.DateTimeField()
-    title = models.CharField(max_length=20)
-    membercnt = models.IntegerField(default=5)
+from django.conf import settings
+from accounts.models import Dog
 
 
 # max_length 수정함
@@ -19,6 +12,16 @@ class Park(models.Model):
     latitude = models.CharField(max_length=200)
     longitude = models.CharField(max_length=200)
     size = models.CharField(max_length=200)
+
+
+# Create your models here.
+class Dogroup(models.Model):
+    dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    park = models.ForeignKey(Park, on_delete=models.CASCADE)
+    datatime = models.DateTimeField()
+    title = models.CharField(max_length=20)
+    membercnt = models.IntegerField(default=5)
 
 
 class Mylotations(models.Model):
