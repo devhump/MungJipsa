@@ -23,6 +23,5 @@ urlpatterns = [
     path('<int:pk>/comments/<int:comment_pk>/delete/', views.comment_delete, name ='comment_delete'),
 
     # 해시태그
-    path('hashtag/', views.hashtag, name="hashtag"),
-
+ 
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from reviews.forms import ReviewForm, CommentForm
-from .models import Review, Comment, Tag
+from .models import Review, Comment
 # 멍스타그렘
 def index(request):
     reviews = Review.objects.all()
