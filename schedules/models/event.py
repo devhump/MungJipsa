@@ -38,9 +38,9 @@ class Event(EventAbstract):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("calendarapp:event-detail", args=(self.id,))
+        return reverse("schedules:event-detail", args=(self.id,))
 
     @property
     def get_html_url(self):
-        url = reverse("calendarapp:event-detail", args=(self.id,))
+        url = reverse("schedules:event-detail", args=(self.id,))
         return f'<a href="{url}"> {self.title} </a>'

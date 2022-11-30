@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block css %}
-  <link href="{% static 'css/cal.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/cal.css' %}" rel="stylesheet"/>
 {% endblock css %}
-<a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
-{% include 'aside.html' %}
+<div class="app sidebar-mini">
+  {% include 'navbar_schedule.html' %}
+  {% include 'aside.html' %}
+</div>
+
 {% block content %}
-
-
 <main class="app-content">
   <div class="app-title">
   <div>
@@ -85,7 +86,7 @@
 {% endblock content %}
 
 {% block script %}
-  <script src="{% static 'calender/main.js' %}"></script>
+  <script type="text/javascript" src="{% static 'calender/main.js' %}"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
