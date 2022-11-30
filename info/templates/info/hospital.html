@@ -30,13 +30,20 @@
   </div>
   <div class="s21_page">
     {% if posts.has_other_pages %}
-    <ul style="display:flex;list-style:none;">
+    <ul>
       {% if posts.has_previous %}
-      <li style="margin:3px"><a href="?page={{posts.previous_page_number}}">&#10094; 이전</a></li>
+      <li><a href="?page={{posts.previous_page_number}}">&#10094; 이전</a></li>
       {% endif %}
-      {% for page in paginator.page_range %}
-      {% if page  %}{% endif %}
+      {% for page in custom_range %}
+      {% if page == posts.number %}
+      <li><a class="active" href="?page={{page}}">{{page}}</a></li>
+      {% else %}
+      <li><a href="?page={{page}}">{{page}}</a></li>
+      {% endif %}
       {% endfor %}
+      {% if posts.has_next %}
+      <li><a href="?page={{posts.next_page_number}}">&#10095; 다음</a></li>
+      {% endif %}
     </ul>
     {% endif %}
   </div>
