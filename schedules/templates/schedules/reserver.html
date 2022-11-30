@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<a class="loginTab" href=""></a>
+
+<div class="calender">
+    {{ YC|safe }}
+</div>
+
+<div class="btn-wrapper">
+    <div class="btn prev">PREV</div>
+    <div class="btn next">NEXT</div>
+</div>
+
+<div class="infoBar">
+    <div class="infoBar-left">
+        <div class="infoBar-left_date">
+            <div class="date-box">
+                <span class="infoMonth">0</span>
+                <span class="infoDay">0</span>
+            </div>
+        </div>
+        <div class="infoBar-left_remain">
+            <div class="remain-box">
+                <p>남은 자리</p>
+                <p class="remain-num">0</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="infoBar-right">
+        <div class="sendBtn-purchase">
+            <button class="clckBox purchase-box">
+                등록
+            </button>
+        </div>
+
+        <div class="sendBtn-cancel">
+            <button class="clckBox cancel-box">
+                등록 취소
+            </button>
+        </div>
+    </div>
+</div>
+
+<form id="dateSelForm" method="POST" action="">
+    <input id="monthForm" value="" type="hidden">
+    <input id="dayForm" value="" type="hidden">
+</form>
+
+<script src="{% static 'script.js' %}"></script>
+{% endblock content %}

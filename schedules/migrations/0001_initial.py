@@ -15,16 +15,36 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Schedule',
+            name='Event',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100)),
+                ('is_active', models.BooleanField(default=True)),
+                ('is_deleted', models.BooleanField(default=False)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('title', models.CharField(max_length=200, unique=True)),
                 ('description', models.TextField()),
                 ('start_time', models.DateTimeField()),
                 ('end_time', models.DateTimeField()),
-                ('schedule_type', models.CharField(choices=[('산책', '산책'), ('병원', '병원'), ('모임', '모임'), ('기타', '기타')], max_length=100, null=True)),
-                ('priority', models.CharField(choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')], max_length=100, null=True)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='events', to=settings.AUTH_USER_MODEL)),
             ],
+            options={
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='EventMember',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('is_active', models.BooleanField(default=True)),
+                ('is_deleted', models.BooleanField(default=False)),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='events', to='schedules.event')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_members', to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'unique_together': {('event', 'user')},
+            },
         ),
     ]

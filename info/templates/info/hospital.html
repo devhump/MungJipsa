@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/hospital.css' %}">
+{% endblock css %}
+{% block content %}
+<!--동물병원 리스트-->
+<div class="s21_album_list area">
+  <div class="s21_tour_sun">
+    <h3 class="span_h3">
+      <span class="span_h3_ttl2">동물병원</span>
+      <span class="span_h3_st">{{hospitals.count}}</span>
+      개가 안내되어 있습니다.
+    </h3>
+    <!--검색 필터링 버튼 들어갈 부분-->
+  </div>
+  <!--리스트 시작-->
+  <div class="s21_tour_list_box">
+    {% for hospital in posts %}
+    <div class="s21_hospital_conts pr">
+      <div class="s21_hospital_conts_tbox">
+        <h4>{{hospital.name}}</h4>
+        <p>{{hospital.phone}}</p>
+      </div>
+      <div class="s21_hospital_conts_tbox">
+        <h5>{{hospital.address}}</h5>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="s21_page">
+    {% if posts.has_other_pages %}
+    <ul>
+      {% if posts.has_previous %}
+      <li><a href="?page={{posts.previous_page_number}}">&#10094; 이전</a></li>
+      {% endif %}
+      {% for page in custom_range %}
+      {% if page == posts.number %}
+      <li><a class="active" href="?page={{page}}">{{page}}</a></li>
+      {% else %}
+      <li><a href="?page={{page}}">{{page}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if posts.has_next %}
+      <li><a href="?page={{posts.next_page_number}}">&#10095; 다음</a></li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}
