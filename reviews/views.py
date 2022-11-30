@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from reviews.forms import ReviewForm, CommentForm
 from .models import Review, Comment
@@ -22,6 +23,7 @@ def index(request):
 
 
 # 멍스타그렘 글 작성
+@login_required
 def create(request):
     if request.method == "POST":
         review_form = ReviewForm(request.POST, request.FILES)
@@ -29,7 +31,6 @@ def create(request):
             review = review_form.save(commit=False)
             review.user = request.user
             review.save()
-
             return redirect("reviews:index")
     else:
         review_form = ReviewForm()
