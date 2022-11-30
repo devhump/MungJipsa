@@ -1,0 +1,64 @@
+.tab-container {
+  width: 100%;
+}
+
+/* 개인정보 글자 부분 */
+.info-letter {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.5rem;
+}
+
+.info-upper {
+  align-items: center;
+  display: flex;
+}
+
+/* 메뉴 탭*/
+.personal-tabs {
+  align-items: center;
+  border-top: 0.1rem solid #E3B57E;
+  border-bottom: 0.1rem solid #E3B57E;
+  display: flex;
+  height: 3rem;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0.3rem 0;
+  width: 100%;
+}
+
+/* 메뉴 안에 내용이 없을 경우 */
+.no-contents {
+  color: #E3B57E;
+  text-align: center;
+  margin-top: 5rem;
+}
+
+
+.follow {
+  margin-right: 2.5rem;
+}
+
+.follow-button {
+  align-items: center;
+  background-color: #E3B57E;
+  border: none;
+  border-radius: 20rem;
+  color: #151414;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.9rem;
+  font-weight: 600;
+  height: 2.5rem;
+  justify-content: center;
+  margin-left: 1rem;
+  width: 8.5rem;
+}
+
+/* 프로필 메뉴 */
+.profilemenu {
+  display: flex!important;
+  justify-content: space-around;
+}
+
+

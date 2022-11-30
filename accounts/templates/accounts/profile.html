@@ -1,106 +1,111 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
- {% block css %}
-<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
-{% endblock css %} 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+{% endblock css %}
 {% block content %}
-
-<!-- 메뉴 -->
-<ul class="nav nav-tabs profilemenu">
-  <li class="nav-item">
-    <a class="nav-link active" data-toggle="tab" href="#abc">즐겨찾기</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#def">찜목록</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#ghi">작성글</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" data-toggle="tab" href="#jkl">댓글</a>
-  </li>
-</ul>
-
-<!-- 유저 프로필 -->
-<!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
-<div>
-{% if user.profile %}
-<img class = d-flex src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진" />
-{% else %}
-<img
-  src="https://dummyimage.com/50x50"
-  alt="기본 프로필 사진"
-/>
-
-{% endif %}
-<div>
-    <p>{{ user }}</p>
-
-    <!-- 로그인 유저만 팔로우 가능 -->
-{% if request.user.is_authenticated %}
-    <form action="{% url 'accounts:follow' user.username %}" method='POST'>
-      {% csrf_token %}
-      {% if request.user in user.followers.all %}
-      <input type="submit" value='팔로우 취소' class="follow-button">
-      {% else %}
-      <input type="submit" value='팔로우' class="follow-button">
-      {% endif %}
-
-    </form>
-{% endif %}
-      <p class="text-muted m-0">
-        <span class="mx-2" style="font-size: 16px;">팔로잉</span>
-        <span style="color: #E3B57E; font-weight:700;" id="followings-count">
-          {{ user.followings.all|length }}</span><span class="mx-1">명</span>
-
-        <span class="mx-2" style="font-size: 16px;">팔로워</span> <span
-          style="color: #E3B57E; font-weight:700;" id="followers-count">
-          {{ user.followers.all|length }}</span><span class="mx-1">명</span>
-      </p>
-    </div>
-    <div>
-
-
-
-
-{% block js %}
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script src="{% static 'accounts/js/profile.js' %}"></script>
-<script>
-  const form = document.querySelector("#follow-form");
-  const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    const username = event.target.dataset.userName;
-    axios({
-      method: "post",
-      url: `/accounts/follow/${username}/`,
-      headers: { "X-CSRFToken": csrftoken },
-    })
-      .then((response) => {
-        const isFollowed = response.data.is_followed;
-        const followBtn = document.querySelector(
-          "#follow-form > input[type=submit]"
-        );
-        if (isFollowed === true) {
-          followBtn.value = "팔로우 취소";
-        } else {
-          followBtn.value = "팔로우";
-        }
-        const followersCountTag = document.querySelector("#followers-count");
-        const followingsCountTag = document.querySelector("#followings-count");
-        const followersCount = response.data.followersCount;
-        const followingsCount = response.data.followingsCount;
-        followersCountTag.innerText = "팔로워 " + followersCount;
-        followingsCountTag.innerText = "팔로우 " + followingsCount;
-      })
-      .catch((error) => {
-        console.log("error : ", error.response);
-      });
-  });
-</script>
-{% endblock js %}
-{% endblock content %}
-
+    <!-- MY PAGE -->
+    <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
+        <div class="d-flex mt-3"> {% if user.profile %}
+            <img class="d-flex" src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
+        {% else %}
+            <img src="https://dummyimage.com/50x50" alt="기본 프로필 사진"/>
+            <p>{{ user }}</p>
+        </div>
+            <!-- 팔로우 -->
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex">
+                    {% csrf_token %}
+                    {% if request.user in user.followers.all %}
+                        <input type="submit" value='팔로우 취소' class="follow-button">
+                        {% else %}
+                            <input type="submit" value='팔로우' class="follow-button">
+                            {% endif %}
+                        {% endif %}
+                        <p class="text-muted m-0">
+                            <span class="mx-2" style="font-size: 16px;">팔로잉</span>
+                            <span style="color: #E3B57E; font-weight:700;" id="followings-count">
+                                {{ user.followings.all|length }}</span>
+                            <span class="mx-1">명</span>
+                            <span class="mx-2" style="font-size: 16px;">팔로워</span>
+                            <span style="color: #E3B57E; font-weight:700;" id="followers-count">
+                                {{ user.followers.all|length }}</span>
+                            <span class="mx-1">명</span>
+                        </p>
+                    </div>
+                    <div></form>
+            {% endif %}
+            <!-- 기타 버튼 -->
+            <div class="text-end mb-5">
+                <a class="btn btn-outline-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
+                <a class="btn btn-outline-primary" href="{% url 'accounts:index' %}">뒤로가기</a>
+                <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a>
+            </div>
+            <!--임시 메뉴 -->
+            <ul class="nav nav-tabs profilemenu">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#qwe">즐겨찾기</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#asd">MY 작성글</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#zxc">MY 댓글</a>
+                </li>
+            </ul>
+            <!-- 임시 메뉴 내용 -->
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="qwe">
+                    <p>즐겨찾기 x</p>
+                </div>
+                <div class="tab-pane fade" id="asd">
+                    <p>작성글 x</p>
+                </div>
+                <div class="tab-pane fade" id="zxc">
+                    <p>
+                        댓글x</p>
+                </div>
+            </div>
+        {% endblock content %}
+        <!--비동기-->
+        <!-- {% block js %}
+            <script src="http://code.jquery.com/jquery-latest.js"></script>
+            <script src="{% static 'accounts/js/profile.js' %}"></script>
+            <script>
+                const form = document.querySelector("#follow-form");
+                const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+                form.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const username = event
+                        .target
+                        .dataset
+                        .usermame;
+                    axios({
+                        method: "post",
+                        url: `/accounts/follow/${username}/`,
+                        headers: {
+                            "X-CSRFToken": csrftoken
+                        }
+                    }).then((response) => {
+                        const isFollowed = response.data.is_followed;
+                        const followBtn = document.querySelector("#follow-form > input[type=submit]");
+                        if (isFollowed === true) {
+                            followBtn.value = "팔로우 취소";
+                        } else {
+                            followBtn.value = "팔로우";
+                        }
+                        const followersCountTag = document.querySelector("#followers-count");
+                        const followingsCountTag = document.querySelector("#followings-count");
+                        const followersCount = response
+                            .data
+                            .followersCount
+                            followersCountTag
+                            .innerText = "팔로워 " + followersCount;
+                        followingsCountTag.innerText = "팔로우 " + followingsCount;
+                    }).catch((error) => {
+                        console.log("error : ", error.response);
+                    });
+                });
+            </script>
+        {% endblock js %} -->
