@@ -6,5 +6,5 @@ app_name = "walkings"
 urlpatterns = [
     path("", views.index, name="index"),
     path("test/", views.test, name="test"),
-    path("create/", views.create, name="create"),
+    path("create/<int:park_pk>", views.create, name="create"),
 ]

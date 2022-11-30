@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "info",
     "schedules",
     "reviews",
+    "django_shortcuts",
     "django_extensions",
     "imagekit",
     "django_bootstrap5",
@@ -62,9 +63,7 @@ ROOT_URLCONF = "namung.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-
         "DIRS": [BASE_DIR / "templates"],
-
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
