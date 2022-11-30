@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+<link rel="icon" href="https://templates.pingendo.com/assets/Pingendo_favicon.ico">
+
+
+{% endblock css %}
+
+<div>
+    <!-- 아이템 이름 -->
+    <div class='container'>
+        <h2 class='text-center mb-5'> {{ review.title }}</h2>
+        
+        <!-- 사용자 이름 프로필 구현  -->
+        <h4  class='mb-5'> {{ review.user.username }}</h4>
+     
+     
+       
+        <!-- 리뷰 이미지 있으면 -->
+
+        {% if review.image %}
+        <div style='text-align:center'>
+            <img src='{{ review.image.url }}' alt='{{ review.image }}' width="400" height="300"
+                style='border-radius:4px;'>
+        </div>
+
+      
+        
+        {% endif %}
+        <!-- 리뷰 내용 -->
+        <p id="review-content" class="me-3-5 mt-3 text-break" >{{ review.content }}</p>
+
+        {% if request.user == review.user %}
+        <div class=' mt-2 d-flex'>
+            {% comment %} 요청한 user가 리뷰를 작성한 user일 경우에 수정 및 삭제{% endcomment %}
+            <p>
+                <button type="button" class="btn btn-warning me-2">
+                    <a href="{% url 'reviews:update' review.pk %}" style='text-decoration:none; color:white'
+                        class='fw-bolder'>수정하기</a>
+                </button>
+            </p>
+            <p>
+            <form action="{% url 'reviews:delete' review.pk %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger fw-bolder" value="삭제하기">
+            </form>
+            </p>
+            
+        </div>
+        {% endif %}
+        <!-- 댓글 -->
+        <h4>댓글</h4>
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'reviews:comment_create' review.pk %}" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form comment_form layout='inline'%}
+            <input type="submit" value="작성" class="btn btn-primary">
+        </form>
+        {% endif %}
+        <!-- 댓글 순서대로 출력 -->
+        {% for comment in comments %}
+        <div class='py-3'>
+            <div id="review-content" class="me-3-5 mt-3 text-break align-items-center" >
+                {{ comment.user.username }} : {{ comment.content }}
+                <p id="review-content" class="d-flex justify-content-end" >{{ comment.created_at }}</p>
+            </div>
+
+            {% comment %} 댓글을 작성한 user가 리뷰를 쓴 유저인 경우 {% endcomment %}
+            {% if user.is_authenticated and comment.user == request.user %}
+            <form action="{% url 'reviews:comment_delete' review.pk comment.pk %}" method="POST" class="my-0">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-outline-danger mt-2" value="삭제">
+            </form>
+            {% endif %}
+            {% empty %}
+            <br>
+        </div>
+        {% endfor %}
+
+
+{% endblock content %}
