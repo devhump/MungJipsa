@@ -13,7 +13,7 @@
         <P>주최자 : {{ request.user.username }}</P>
         <P>멍멍이 이름 : 
           <span>
-          {% for dog in  user_dogs %}
+          {% for dog in user_dogs %}
             {{ dog.name }},
           {% endfor %}
           </span></P>
@@ -45,11 +45,17 @@
       <div class="card col-5 mx-2 mt-2" style="">
         <div class="card-body">
           <h5 class="card-title">제목: {{dogr.title}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">인원수: 0/{{dogr.membercnt}}</h6>
+          <h6 class="card-subtitle mb-2 text-muted">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
           <p class="card-text">{{dogr.user.username}}</p>
           <p class="card-text">{{dogr.dog.name}}</p>
-          <a href="#" class="btn btn-primary card-link">자세히보기</a>
-          <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+          {% if dogr.user != request.user %}
+            {% if request.user in dogr.join.all  %}
+              <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-danger card-link">취소하기</a>
+            {% else %}
+              <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+            {% endif %}
+          {% endif %}
+          <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>
         </div>
       </div>
     {% endfor %}

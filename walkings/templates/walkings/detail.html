@@ -6,9 +6,15 @@
     <p>공원이름: {{ dogroup.park.parkName }}</p>
     <p>공원주소: {{ dogroup.park.address }}</p>
     <p>공원주최자: {{ dogroup.user.username }}</p>
-    <img src="{{ dogroup.user.profile }}" alt="{{ dogroup.user.username }}의 사진" style="height: 5rem; width: 5rem;">
-    <img src="{{ dogroup.dog.dogphoto }}" alt="{{ dogroup.dog.name }}의 사진" style="height: 5rem; width: 5rem;">
-    <p>강아지: {{ dogroup.dog.name }} </p>
+
+    {% for joiner in dogroup.join.all %}
+    <img src="{{ joiner.profile.url }}" alt="{{ dogroup.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+    
+      {% for dog in joiner.dog_set.all %}
+        <img src="{{ dog.dogphoto.url }}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+      {% endfor %}
+
+    {% endfor %}
     <p id="park_lat">{{dogroup.park.latitude}}</p>
     <p id="park_lon"> {{dogroup.park.longitude}}</p>
 

@@ -3,7 +3,6 @@ from .models import Park, Dog, Dogroup, Mylotations
 from .forms import MylocationForm, DogroupForm
 import json
 from pprint import pprint
-import requests
 from django.http import JsonResponse
 
 
@@ -56,16 +55,15 @@ def create(request, park_pk):
     dog = Dog.objects.get(pk=1)
 
     if request.method == "POST":
-        print("실행1")
         dogroup_form = DogroupForm(request.POST)
         print(dogroup_form)
         if dogroup_form.is_valid():
-            print("실행2")
             dogroup = dogroup_form.save(commit=False)
             dogroup.user = user
             dogroup.dog = dog
             dogroup.park = park
             dogroup.save()
+            dogroup.join.add(request.user)
 
     # dogroup = Dogroup.objects.all()
 
@@ -100,3 +98,15 @@ def detail(request, dogroup_pk):
         "dogroup": dogroup,
     }
     return render(request, "walkings/detail.html", context)
+
+
+def join(request, dogroup_pk):
+
+    dogroup = Dogroup.objects.get(pk=dogroup_pk)
+
+    if dogroup.user != request.user:
+        if dogroup.join.filter(pk=request.user.pk).exists():
+            dogroup.join.remove(request.user)
+        else:
+            dogroup.join.add(request.user)
+    return redirect("walkings:test")
