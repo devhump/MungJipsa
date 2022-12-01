@@ -21,10 +21,18 @@ class User(AbstractUser):
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
     )
-
+    # like_users = models.ManyToManyField(
+    #     settings.AUTH_USER_MODEL, related_name="like_articles"
+    # )
+    # bookmark_users = models.ManyToManyField(
+    #     settings.AUTH_USER_MODEL, related_name="bookmark_articles"
+    # )
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
+
+
+
 
 
 class Profile(models.Model):

@@ -1,42 +1,66 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-{% load  static  %}
+{% load static %}
+
 
 {% block content %}
 
 <div class=" d-flex m-4 py-4 px-2 ">
-  <form method='search' action="{% url "revies:result" %}">
+
+  <form method='search' action=''>
     {% csrf_token %}
     <input type="" name="search_button" value="검색" style="background-color: rgb(242, 242, 242)">
-    </form>
-
+  </form>
+  <a href="{% url 'reviews:create' %}"><button type="button" class="btn btn-primary">글쓰기</button></a>
   {% comment %} 리뷰 글 반복 {% endcomment %}
   <div>
     <ul class="list-group list-group-flush">
-      {% for review in posts %}
+      {% for review in reviews %}
       <li class="list-group-item">
         {% comment %} 제목 {% endcomment %}
-        <div>{{ review.title }}</div>
+        <a href="{% url 'reviews:detail' review.pk %}" ><div>{{ review.title }}</div>
 
         {% comment %} 글 작성일 {% endcomment %}
         <p>{{ review.created_at }}</p>
 
-        {% comment %} 사진  {% endcomment %}
+        {% comment %} 사진 {% endcomment %}
         {% if review.image %}
-          <img src="{{ review.image.url }}" class="card-img-top" alt="..." style='height:278.4px; object-fit: cover;'>
+        {% for i in review.image.all %}
+            <img src="{{ i.image.url }}" /><br />
+
+            {% endfor %}
         {% endif %}
 
 
         {% comment %} 내용 {% endcomment %}
-        <p>{{ review.content }}</p>
-        <form action="{% url 'reviews:comment_create' review.pk %}" method="POST">
-          {% csrf_token %}
-          {% bootstrap_form comment_form layout='inline'%}
-          <input type="submit" value="작성" class="btn btn-primary">
-        </form>
+        <p>{{ review.content }}</p></a>
+
+        {% comment %} 댓글작성 {% endcomment %}
+        
+
+
+        <div style="display:flex;flex-direction: row;align-items: center; border-top: solid 1px gray ">
+          <input id="comment_{{ review.id }}" type="text" class="form-control"
+                 style="box-shadow: none; border: none; outline: none"
+                 placeholder="댓글 달기..">
+          <div review_id="{{ review.id }}" class="upload_reply"
+               style="width: 50px;color: cornflowerblue; font-weight: bold">
+               게시
+          </div>
+      </div>
       </li>
+      <li>
+       
+      <div id="reply_list_{{ review.id }}">
+          {% for reply in review.reply_list %}
+              <div style="margin: 0 20px;text-align: left;font-size: 14px">
+                  <b>{{ reply.username }}</b> {{ reply.comment_content }}</div>
+          {% endfor %}
+      </div>
       {% endfor %}
+      </li>
     </ul>
+
   </div>
 
 </div>
@@ -84,4 +108,50 @@
     </li>
     {% endif %}
 </ul>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+<script>
+
+  $(".upload_reply").click(function (event) {
+    let review_id = event.target.attributes.getNamedItem('review_id').value;
+    let comment_id = 'comment_' + review_id;
+      console.log(comment_id)
+    let comment_content = $('#'+ comment_id).val();
+    console.log(comment_content);
+    
+    if (comment_content.length <= 0) {
+      alert("댓글을 입력하세요");
+      return 0;
+    }
+    $.ajax({
+      url: "/reviews/comments/",
+      data: {
+        review_id: review_id,
+        comment_content: comment_content
+      },
+      method: "POST",
+      success: function (data) {
+          console.log("성공");
+          alert("댓글 성공");
+          $("#reply_list_" +review_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>")
+          {#location.replace('/');#}
+          
+
+      },
+      error: function (request, status, error) {
+          console.log("에러");
+      },
+      complete: function () {
+          console.log("완료");
+          $('#' + review_id).val('');
+      }
+    });
+
+ 
+
+  });
+</script>
+
+
+
 {% endblock content %}

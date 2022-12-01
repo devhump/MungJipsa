@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/hospital.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock css %}
+{% block content %}
+<!--동물병원 리스트-->
+<script>
+
+</script>
+<div class="s21_hospital_m_top pr">
+  <div class="h21_top_cbox pr area">
+    <h3 class=""><span>동물병원</span>안내</h3>
+    <p class="h21_h3_line_c"></p>
+    <p class="h21_h3_text_c">소중한 내반려견 건강을 위해 내 주변 동물병원을 안내해드립니다.</p>
+    <p class="h21_com_t_left pa slide-in-blurred-left"><img src="http://appdata.hungryapp.co.kr/images/hatdog/img/pc_img/hospital/hos_left4.png" alt="강아지"></p>
+    <p class="h21_com_t_right pa slide-in-blurred-right"><img src="http://appdata.hungryapp.co.kr/images/hatdog/img/pc_img/hospital/hos_right3.png" alt="청진기"></p>
+  </div>
+</div>
+<div class="hospital_search area">
+  <select name="areaSearch" form="searchfunc1" id="selectCate">
+    <option value="전국" {% if areaval == "" %}selected{% endif %}>전국</option>
+    <option value="경기" {% if areaval == "경기" %}selected{% endif %}>경기</option>
+    <option value="서울" {% if areaval == "서울" %}selected{% endif %}>서울</option>
+    <option value="인천" {% if areaval == "인천" %}selected{% endif %}>인천</option>
+    <option value="강원" {% if areaval == "강원" %}selected{% endif %}>강원</option>
+    <option value="충청남도" {% if areaval == "충청남도" %}selected{% endif %}>충남</option>
+    <option value="세종" {% if areaval == "세종" %}selected{% endif %}>세종</option>
+    <option value="대전" {% if areaval == "대전" %}selected{% endif %}>대전</option>
+    <option value="충청북도" {% if areaval == "충청북도" %}selected{% endif %}>충북</option>
+    <option value="경상북도" {% if areaval == "경상북도" %}selected{% endif %}>경북</option>
+    <option value="대구" {% if areaval == "대구" %}selected{% endif %}>대구</option>
+    <option value="전라북도" {% if areaval == "전라북도" %}selected{% endif %}>전북</option>
+    <option value="전라남도" {% if areaval == "전라남도" %}selected{% endif %}>전남</option>
+    <option value="광주광역시" {% if areaval == "광주광역시" %}selected{% endif %}>광주</option>
+    <option value="경상남도" {% if areaval == "경상남도" %}selected{% endif %}>경남</option>
+    <option value="부산" {% if areaval == "부산" %}selected{% endif %}>부산</option>
+    <option value="울산" {% if areaval == "울산" %}selected{% endif %}>울산</option>
+    <option value="제주" {% if areaval == "제주" %}selected{% endif %}>제주</option>
+  </select>
+  <form action="{% url 'info:hospital'%}" role='search' id='searchfunc1'>
+    <input type="text" id="search-type-01" name='search'>
+    <button type="submit"><i class="fas fa-search"></i></button>
+  </form>
+</div>
+<div class="s21_album_list area">
+  <div class="s21_tour_sun">
+    <h3 class="span_h3">
+      <span class="span_h3_ttl2">동물병원</span>
+      <span class="span_h3_st">{{hospitals.count}}</span>
+      개가 안내되어 있습니다.
+    </h3>
+    <!--검색 필터링 버튼 들어갈 부분-->
+  </div>
+  <!--리스트 시작-->
+  <div class="s21_tour_list_box">
+    {% for hospital in posts %}
+    <div class="s21_hospital_conts pr">
+      <div class="s21_hospital_conts_tbox">
+        <h4>{{hospital.name}}</h4>
+        <p>{{hospital.phone}}</p>
+      </div>
+      <div class="s21_hospital_conts_tbox">
+        <h5>{{hospital.address}}</h5>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="s21_page">
+    {% if posts.has_other_pages %}
+    <ul>
+      {% if posts.has_previous %}
+      <li><a href="?areaSearch={{areaval}}&search={{searchval}}&page={{posts.previous_page_number}}">&#10094; 이전</a></li>
+      {% endif %}
+      {% for page in custom_range %}
+      {% if page == posts.number %}
+      <li><a class="active" href="?areaSearch={{areaval}}&search={{searchval}}&page={{page}}">{{page}}</a></li>
+      {% else %}
+      <li><a href="?areaSearch={{areaval}}&search={{searchval}}&page={{page}}">{{page}}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if posts.has_next %}
+      <li><a href="?areaSearch={{areaval}}&search={{searchval}}&page={{posts.next_page_number}}">&#10095; 다음</a></li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock content %}
