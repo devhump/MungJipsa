@@ -1,3 +1,69 @@
+.s21_hospital_m_top {
+  width: 100%;
+  background: url('https://cdn.pixabay.com/photo/2017/03/14/16/39/banner-2143661_960_720.jpg') top center no-repeat;
+  min-height: 230px;
+  background-size: 100%;
+}
+.h21_top_cbox {
+  margin: 0px auto;
+}
+.h21_top_cbox h3 {
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 45px;
+  font-weight: 300;
+  padding: 50px 0 0 0px;
+  letter-spacing: -0.03em;
+}
+.h21_top_cbox h3 span {
+  color: #fff;
+  font-size: 45px;
+  font-weight: 600;
+}
+.h21_h3_line_c {
+  width: 30px;
+  height: 3px;
+  background: #fff;
+  text-align: center;
+  margin: 15px auto;
+}
+.h21_h3_text_c {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 200;
+  opacity: 0.7;
+  text-align: center;
+  line-height: 26px;
+  padding-left: 10px;
+}
+.h21_com_t_left {
+  top: 0;
+  left: 0;
+}
+.slide-in-blurred-left {
+  -webkit-animation: slide-in-blurred-left .6s cubic-bezier(.23,1.000,.32,1.000) both;
+  animation: slide-in-blurred-left .6s cubic-bezier(.23,1.000,.32,1.000) both;
+}
+.h21_com_t_right {
+  top: 0;
+  right: 0;
+}
+.slide-in-blurred-right {
+  -webkit-animation: slide-in-blurred-right .8s cubic-bezier(.93,1.000,.32,1.000) both;
+  animation: slide-in-blurred-right .8s cubic-bezier(.93,1.000,.32,1.000) both;
+}
+.pa {
+  position: absolute;
+}
+.area {
+  max-width: 1200px ! important;
+  min-width: 1260px ! important;
+  margin: 0px auto;
+}
+img {
+  border: 0;
+}
 .s21_album_list {
   width: 100%;
   margin: 20px auto 20px auto;
@@ -93,11 +159,14 @@
 .hospital_search{
   display: flex;
   align-items: center;
-  top: -40px;
+  position: relative;
+  margin: 10px 10px 0px 10px;
+  text-align: left;
+  top: -60px;
   width: 90%;
   margin: auto;
   margin-top: 20px;
-  background: #ddd;
+  background: #fff;
   border-radius: 40px;
   height: 70px;
 }
@@ -126,11 +195,11 @@
   width: 10%;
   margin-top: 0px;
   border-radius: 50px;
-  padding: 10px;
+  padding: 12px 20px;
   background: #fff;
   color: #e97723;
   font-size: 15px;
   margin-left: 15px;
   display: inline-block;
-  border: none !important; 
+  border: 1px solid #ddd;
 }
