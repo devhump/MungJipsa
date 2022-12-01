@@ -12,6 +12,7 @@ from django.views.decorators.http import (
     require_POST,
 )
 
+
 def index(request):
     users = get_user_model().objects.all()
     context = {
@@ -29,7 +30,7 @@ def signup(request):
         if form.is_valid():
             form.save()
             return redirect("accounts:index")
-        
+
     else:
         form = CustomUserCreationForm()
     context = {"form": form}
@@ -40,6 +41,8 @@ def dogsignup(request):
     if request.method == "POST":
         forms = DogForm(request.POST, request.FILES)
         if forms.is_valid():
+            forms = forms.save(commit=False)
+            forms.user = request.user
             forms.save()
             return redirect("accounts:index")
     else:
@@ -82,7 +85,6 @@ def update(request):
     return render(request, "accounts/update.html", context)
 
 
-
 @login_required
 @require_http_methods(["GET", "POST"])
 def password(request):
@@ -107,22 +109,21 @@ def delete(request):
     messages.success(request, "탈퇴 완료")
     return redirect("accounts:index")
 
+
 @login_required
 @require_http_methods(["GET", "POST"])
-def profile(request,username):
+def profile(request, username):
     user = get_user_model().objects.get(username=username)
-    context = {
-        'user': user
-    }
-    return render(request, 'accounts/profile.html', context)
+    context = {"user": user}
+    return render(request, "accounts/profile.html", context)
 
 
 @login_required
-def update(request,pk):
+def update(request, pk):
     user = get_object_or_404(get_user_model(), pk=pk)
     if user != request.user:
         return redirect("accounts:index")
-    if request.method == "POST" and user == request.user: 
+    if request.method == "POST" and user == request.user:
         form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()

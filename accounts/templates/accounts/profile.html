@@ -7,22 +7,45 @@
 {% block content %}
     <!-- MY PAGE -->
     <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
-        <div class="d-flex mt-3"> {% if user.profile %}
+        <div class="d-flex mt-3"> 
+            <div>
+            {% if user.profile %}
             <img class="d-flex" src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
-        {% else %}
+            {% else %}
             <img src="https://dummyimage.com/50x50" alt="기본 프로필 사진"/>
-            <p>{{ user }}</p>
+            {% endif %}
+            </div>
+            <p>{{ user.username }}</p>
         </div>
+        <div class="d-flex mt-3"> 
+            <div>
+            {% if user.dog_set.all %}
+                {% for dog in user.dog_set.all %}
+                
+                    {% if dog.dogphoto %}
+                    <img class="d-flex" src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진"/>
+                    {% else %}
+                    <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진"/>
+                    {% endif %}
+                    <p>{{ dog.name }}</p>
+                {% endfor %}
+            {% else %}
+                <p>등록된 강아지 정보가 없어요ㅠㅠ</p>
+            {% endif %}
+            </div>
+        </div>
+
             <!-- 팔로우 -->
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated and user != request.user %}
                 <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex">
                     {% csrf_token %}
-                    {% if request.user in user.followers.all %}
+                        {% if request.user in user.followers.all %}
                         <input type="submit" value='팔로우 취소' class="follow-button">
                         {% else %}
                             <input type="submit" value='팔로우' class="follow-button">
-                            {% endif %}
                         {% endif %}
+                    </form>
+                {% endif %}
                         <p class="text-muted m-0">
                             <span class="mx-2" style="font-size: 16px;">팔로잉</span>
                             <span style="color: #E3B57E; font-weight:700;" id="followings-count">
@@ -34,8 +57,8 @@
                             <span class="mx-1">명</span>
                         </p>
                     </div>
-                    <div></form>
-            {% endif %}
+                    
+            
             <!-- 기타 버튼 -->
             <div class="text-end mb-5">
                 <a class="btn btn-outline-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
