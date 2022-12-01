@@ -15,7 +15,7 @@
   {% comment %} 리뷰 글 반복 {% endcomment %}
   <div>
     <ul class="list-group list-group-flush">
-      {% for review in posts %}
+      {% for review in reviews %}
       <li class="list-group-item">
         {% comment %} 제목 {% endcomment %}
         <a href="{% url 'reviews:detail' review.pk %}" ><div>{{ review.title }}</div>
@@ -25,7 +25,10 @@
 
         {% comment %} 사진 {% endcomment %}
         {% if review.image %}
-        <img src="{{ review.image.url }}" class="card-img-top" alt="..." style='height:278.4px; object-fit: cover;'>
+        {% for i in review.image.all %}
+            <img src="{{ i.image.url }}" /><br />
+
+            {% endfor %}
         {% endif %}
 
 

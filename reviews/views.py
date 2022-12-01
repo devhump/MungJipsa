@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from django.core.paginator import Paginator
-from reviews.forms import ReviewForm, CommentForm
-from .models import Review, Comment
+from reviews.forms import ReviewForm, CommentForm, ImageForm
+from .models import Review, Comment, Images
 
 
 # 멍스타그렘
@@ -25,17 +26,38 @@ def index(request):
 # 멍스타그렘 글 작성
 @login_required
 def create(request):
+    ImageFormSet = modelformset_factory(Images, form=ImageForm, extra=4)
+
     if request.method == "POST":
-        review_form = ReviewForm(request.POST, request.FILES)
-        if review_form.is_valid():
+        review_form = ReviewForm(request.POST)
+        formset = ImageFormSet(
+            request.POST, request.FILES, queryset=Images.objects.none()
+        )
+        print("1")
+
+        if review_form.is_valid() and formset.is_valid():
             review = review_form.save(commit=False)
             review.user = request.user
             review.save()
+            print("2")
+            for form in formset.cleaned_data:
+
+                if form:
+                    # image file
+                    image = form["image"]
+                    print(form)
+                    print(form["image"])
+                    # post, image file save
+                    photo = Images(review=review, image=image)
+                    photo.save()
             return redirect("reviews:index")
     else:
         review_form = ReviewForm()
+        formset = ImageFormSet(queryset=Images.objects.none())
+
     context = {
         "review_form": review_form,
+        "formset": formset,
     }
     return render(request, "reviews/form.html", context)
 

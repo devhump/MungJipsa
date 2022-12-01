@@ -23,10 +23,11 @@
         <!-- 리뷰 이미지 있으면 -->
 
         {% if review.image %}
-        <div style='text-align:center'>
-            <img src='{{ review.image.url }}' alt='{{ review.image }}' width="400" height="300"
-                style='border-radius:4px;'>
-        </div>
+        {% for i in review.image.all %}
+            <img src="{{ i.image.url }}" /><br />
+
+            {% endfor %}
+        {% endif %}
 
       
         
