@@ -54,3 +54,55 @@ def hospital(request):
         }
 
     return render(request, "info/hospital.html", context)
+
+
+def deserted(request):
+    animals = Deserted.objects.all()
+    search = request.GET.get("search")
+    areaSearch = request.GET.get("areaSearch")
+    if not areaSearch:
+        areaSearch = "전국"
+    if areaSearch == "전국":
+        areaSearch = ""
+
+    if search:
+        animals = animals.filter(
+            Q(kindCd__icontains=search) | Q(careAddr__icontains=search)
+        )
+        animals = animals.filter(Q(careAddr__icontains=areaSearch))
+    else:
+        search = ""
+        animals = animals.filter(Q(careAddr__icontains=areaSearch))
+    paginator = Paginator(animals, 12)
+    page = request.GET.get("page")
+    posts = paginator.get_page(page)
+
+    context = {
+        "searchval": search,
+        "areaval": areaSearch,
+        "animals": animals,
+        "posts": posts,
+        "paginator": paginator,
+    }
+
+    if page:
+        leftIndex = int(page) - 3
+        if leftIndex < 1:
+            leftIndex = 1
+
+        rightIndex = int(page) + 3
+        if rightIndex > paginator.num_pages:
+            rightIndex = paginator.num_pages
+
+        custom_range = range(leftIndex, rightIndex + 1)
+
+        context = {
+            "searchval": search,
+            "areaval": areaSearch,
+            "animals": animals,
+            "posts": posts,
+            "paginator": paginator,
+            "custom_range": custom_range,
+        }
+
+    return render(request, "info/deserted_index.html", context)
