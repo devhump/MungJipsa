@@ -41,7 +41,7 @@ def next_month(d):
 class CalendarView(LoginRequiredMixin, generic.ListView):
     login_url = "accounts:login"
     model = Event
-    template_name = "calendar.html"
+    template_name = "schedules/calendar.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,13 +70,13 @@ def create_event(request):
             end_time=end_time,
         )
         return HttpResponseRedirect(reverse("schedules:calendar"))
-    return render(request, "event.html", {"form": form})
+    return render(request, "schedules/event.html", {"form": form})
 
 
 class EventEdit(generic.UpdateView):
     model = Event
     fields = ["title", "description", "start_time", "end_time"]
-    template_name = "event.html"
+    template_name = "schedules/event.html"
 
 
 @login_required(login_url="signup")
@@ -84,7 +84,7 @@ def event_details(request, event_id):
     event = Event.objects.get(id=event_id)
     eventmember = EventMember.objects.filter(event=event)
     context = {"event": event, "eventmember": eventmember}
-    return render(request, "event-details.html", context)
+    return render(request, "schedules/event-details.html", context)
 
 
 def add_eventmember(request, event_id):
@@ -101,12 +101,12 @@ def add_eventmember(request, event_id):
             else:
                 print("--------------User limit exceed!-----------------")
     context = {"form": forms}
-    return render(request, "add_member.html", context)
+    return render(request, "schedules/add_member.html", context)
 
 
 class EventMemberDeleteView(generic.DeleteView):
     model = EventMember
-    template_name = "event_delete.html"
+    template_name = "schedules/event_delete.html"
     success_url = reverse_lazy("schedules:calendar")
 
 

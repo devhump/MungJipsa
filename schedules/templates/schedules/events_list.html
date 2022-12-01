@@ -1,11 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Event List{% endblock title %}
-{% include 'aside.html' %}
+{% block css %}
+  <link href="{% static 'css/cal.css' %}" rel="stylesheet"/>
+{% endblock css %}
 
 {% block content %}
-<main class="app-content">
+<div class="app sidebar-mini">
+    <!-- sub navbar-->
+    <header class="" style="background-color: black;">
+      <!-- Sidebar toggle button-->
+      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
+      <div class="app-sidebar__user">
+        <!-- 프로필 이미지 -->
+        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
+        <span>
+            <p class="">유저 아이디</p>
+            <p class="">강아지 이름</p>
+            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
+            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
+            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>
+            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> All</a>
+        </span>
+      </div>
+    </header>
+  </div>
+<div class="app-content">
     <div class="app-title">
     <div>
         <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
@@ -16,7 +36,6 @@
         <li class="breadcrumb-item"><a href="#">Event List</a></li>
     </ul>
     </div>
-</main>
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
@@ -52,12 +71,12 @@
             </div>
         </div>
     </div>
-
+</div>
 </div>
 {% endblock content %}
 </main>
 {% block script %}
-    <script type="text/javascript" src="{% static 'js/jquery.dataTables.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
-    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+<script type="text/javascript" src="{% static 'js/plugins/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/plugins/dataTables.bootstrap.min.js' %}"></script>
+<script type="text/javascript">$('#sampleTable').DataTable();</script>
 {% endblock script %}

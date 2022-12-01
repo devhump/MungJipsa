@@ -3,6 +3,10 @@
 {% load static %}
 
 {% block css %}
+  <!-- 외부 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <!-- CSS -->
   <link href="{% static 'css/cal.css' %}" rel="stylesheet"/>
 {% endblock css %}
 
@@ -41,23 +45,8 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile row">
-            <div class="col-md-3">
-                <div id="external-events">
-                    <h4 class="mb-4">Running Events</h4>
-                    {% for event in events_month %}
-                      <div class="fc-event">
-                          <h3>{{ event.title }}</h3>
-                          <p>From: {{ event.start_time }}</p>
-                          <p>To: {{ event.end_time }}</p>
-                      </div>
-                    {% empty %}
-                      <p>No Running Events Found</p>
-                    {% endfor %}
-                </div>
-            </div>
             <div class="col-md-9">
-              <div id="calendar">{% include 'schedules/aside.html' %}</div>
-              {{ calendar }}
+              <div id="calendar"></div>
             </div>
 
           <!-- 이벤트 생성 모달 -->
@@ -98,6 +87,21 @@
                     </div>
                 </div>
             </div>
+            <!-- 진행중 이벤트 모음 -->
+            <div class="col-md-3">
+              <div id="external-events">
+                  <h4 class="mb-4">Running Events</h4>
+                  {% for event in events_month %}
+                    <div class="fc-event">
+                        <h3>{{ event.title }}</h3>
+                        <p>From: {{ event.start_time }}</p>
+                        <p>To: {{ event.end_time }}</p>
+                    </div>
+                  {% empty %}
+                    <p>No Running Events Found</p>
+                  {% endfor %}
+              </div>
+          </div>
         </div>
     </div>
 </div>
@@ -105,7 +109,16 @@
 {% endblock content %}
 
 {% block script %}
-  <script src="{% static '/js/calendarsMain.js' %}"></script>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- 달력 구현 스크립트 -->
+  <script src="{% static 'js/calendarsMain.js' %}"></script>
   <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
