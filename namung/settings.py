@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "info",
     "schedules",
     "reviews",
+    "django_shortcuts",
     "django_extensions",
     "imagekit",
     "django_bootstrap5",
