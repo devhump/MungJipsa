@@ -1,31 +1,52 @@
 {% extends 'base.html' %}
-
-{% include 'aside.html' %}
+{% load static %}
+{% block css %}
+  <link href="{% static 'css/cal.css' %}" rel="stylesheet"/>
+{% endblock css %}
 {% block content %}
+<div class="app sidebar-mini">
+    <!-- sub navbar-->
+    <header class="" style="background-color: black;">
+      <!-- Sidebar toggle button-->
+      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
+      <div class="app-sidebar__user">
+        <!-- 프로필 이미지 -->
+        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
+        <span>
+            <p class="">유저 아이디</p>
+            <p class="">강아지 이름</p>
+            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
+            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> 진행중인 일정</a>
+            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> 다가오는 일정</a>
+            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> 모든 일정</a>
+        </span>
+      </div>
+    </header>
+  </div>
     <div class="container">
         <div class="clearfix">
-            <a class="btn btn-primary left" href="{% url 'calendarapp:calendar' %}"> Calendar </a>
-            <a class="btn btn-info right mr-2" href="{% url 'calendarapp:event_edit' event.pk %}"> Edit Event </a>
+            <a class="btn btn-primary left" href="{% url 'schedules:calendar' %}"> Calendar </a>
+            <a class="btn btn-info right mr-2" href="{% url 'schedules:event_edit' event.pk %}"> Edit Event </a>
         </div>
 
         <div class="clearfix">
-            <h3>Event Name: {{ event.title }}</h3>
+            <h3>{{ event.title }}</h3>
             <p>From <span style="color: gray;">{{ event.start_time }}</span> To <span style="color: gray;">{{ event.end_time }}</span></p>
             <hr>
             <p>{{ event.description }}</p>
         </div>
         <hr>
         <div class="clearfix">
-            <h4 class="left" > Members of this Event</h4>
-            <a class="btn btn-success right" href="{% url 'calendarapp:add_eventmember' event.id %}"> Add Member </a>
+            <h4 class="left" > 일정을 함께할 동료 </h4>
+            <a class="btn btn-success right" href="{% url 'schedules:add_eventmember' event.id %}"> 같이할 친구 추가 </a>
         </div>
         <table class="table table-bordered">
             <thead>
                 <tr>
                   <th style="width: 10px">#</th>
-                  <th>Name</th>
-                  <th>Username</th>
-                  <th>Email</th>
+                  <th>이름</th>
+                  <th>강아지이름</th>
+                  <th>연락처</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -37,7 +58,7 @@
                     <td>{{ member.user.username }}</td>
                     <td>{{ member.user.email }}</td>
                     <td>
-                        <a class="btn btn-danger" href="{% url 'calendarapp:remove_event' member.id %}">Remove</a>
+                        <a class="btn btn-danger" href="{% url 'schedules:remove_event' member.id %}">Remove</a>
                     </td>
                 </tr>
                 {% endfor %}
