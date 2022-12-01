@@ -3,7 +3,6 @@ from .models import Park, Dog, Dogroup, Mylotations
 from .forms import MylocationForm, DogroupForm
 import json
 from pprint import pprint
-import requests
 from django.http import JsonResponse
 
 
