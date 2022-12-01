@@ -12,14 +12,9 @@
   text-align: center;
   color: #fff;
   font-size: 45px;
-  font-weight: 300;
+  font-weight: 400;
   padding: 50px 0 0 0px;
   letter-spacing: -0.03em;
-}
-.h21_top_cbox h3 span {
-  color: #fff;
-  font-size: 45px;
-  font-weight: 600;
 }
 .h21_h3_line_c {
   width: 30px;
@@ -112,6 +107,28 @@ img {
   padding: 1rem;
   border: 1px solid #ddd;
 }
+.s21_animal_conts {
+  float:left;
+  width: 20%;
+  min-height: 320px;
+  max-height: 320px;
+  margin: 20px 1.2%;
+  padding: 0%;
+  border-bottom: 1px solid #ddd;
+}
+.s21_animal_conts_tbox {
+  width: 100%;
+  margin: 0px 0 0 0;
+  display: inline-block;
+}
+.s21_hospital_conts_photo {
+  width: 100%;
+  float: left;
+  min-height: 150px;
+  background-size: 100% ! important;
+  margin-bottom: 15px;
+  border: 1px solid #e9e9e9;
+}
 .pr {
   position: relative;
 }
@@ -133,6 +150,7 @@ img {
   justify-content: center;
   margin-top: 40px;
   margin-left: 0%;
+  margin-bottom: 40px;
   border-top: 1px solid #ebebeb;
 }
 .s21_page ul{
