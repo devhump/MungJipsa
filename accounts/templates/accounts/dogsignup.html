@@ -7,7 +7,7 @@
 {% endblock css %}
 <div class="row mt-5">
   <h1 class="text-center">강아지 등록</h1>
-  <form action="{% url 'accounts:dogsignup' %}" method="POST" class="my-3">
+  <form action="{% url 'accounts:dogsignup' %}" method="POST" class="my-3" enctype="multipart/form-data">
     {% csrf_token %} {% bootstrap_form forms %} {% bootstrap_button button_type="submit" button_class="btn-primary" content="강아지 등록" %}
   </form>
 </div>

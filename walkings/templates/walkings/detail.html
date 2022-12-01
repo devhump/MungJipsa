@@ -6,6 +6,7 @@
     <p>공원이름: {{ dogroup.park.parkName }}</p>
     <p>공원주소: {{ dogroup.park.address }}</p>
     <p>공원주최자: {{ dogroup.user.username }}</p>
+    <img src="{{ dogroup.user.profile }}" alt="{{ dogroup.user.username }}의 사진" style="height: 5rem; width: 5rem;">
     <img src="{{ dogroup.dog.dogphoto }}" alt="{{ dogroup.dog.name }}의 사진" style="height: 5rem; width: 5rem;">
     <p>강아지: {{ dogroup.dog.name }} </p>
     <p id="park_lat">{{dogroup.park.latitude}}</p>

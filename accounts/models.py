@@ -32,9 +32,6 @@ class User(AbstractUser):
         return f"{self.last_name}{self.first_name}"
 
 
-
-
-
 class Profile(models.Model):
 
     user = models.ForeignKey(
@@ -68,6 +65,7 @@ class Dog(models.Model):
         processors=[Thumbnail(200, 300)],
         format="JPEG",
         options={"quality": 50},
+        upload_to="images/dogphoto/",
     )
     gender = models.CharField(max_length=255, choices=GENDER_CHOICES)
     neutered = models.BooleanField(default=False)
