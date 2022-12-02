@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAMUNG : 네이멍</title>
+    <link rel="icon" href="{% static '/images/namung_logo.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="{% static 'CSS/mainpage.css' %}" />
+</head>
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="wrap d-md-flex">
+                        <div class="text-wrap p-4 p-lg-5 d-flex img" style="background-image: url({% static 'images/main_background.gif' %});">
+                            <div class="text w-100">
+                                <h2 class="mb-4">네이멍에 오신것을 환영합니다!</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            </div>
+                        </div>
+                        <div class="login-wrap p-4 p-md-5">
+                            <div class="row justify-content-center py-md-5">
+                                <div class="col-lg-9">
+                                    <div class="w-100">
+                                        <p class="mt-4">계정이 있어요! <a href="{% url 'accounts:login' %}">LOG IN</a></p>
+                                    </div>
+                                    <div class="w-100">
+                                        <p class="mt-4">새로 오셨나봐요? <a href="{% url 'accounts:signup' %}">Sign Up</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="{% static 'js/plugins/pace.min.js'%}"></script>
+</body>
+</html>
