@@ -125,6 +125,7 @@ def comment_create(request, pk):
         comment.review = review
         comment.user = request.user
         comment.save()
+
     return redirect("reviews:index")
 
 
