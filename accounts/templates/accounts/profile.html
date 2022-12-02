@@ -61,9 +61,13 @@
             
             <!-- 기타 버튼 -->
             <div class="text-end mb-5">
-                <a class="btn btn-outline-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
-                <a class="btn btn-outline-primary" href="{% url 'accounts:index' %}">뒤로가기</a>
-                <a href="{% url 'accounts:delete' %}" class="btn btn-secondary">회원탈퇴</a>
+                <div class="text-end mb-5">
+                    <a class="btn btn-primary" href="{% url 'accounts:update' user.pk %}">회원 정보 수정</a>
+                    <a class="btn btn-primary" href="{% url 'accounts:dogupdate' %}">강아지 정보 수정</a>
+                    <a class="btn btn-primary" href="{% url 'accounts:dogsignup' %}">강아지 등록</a>
+                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
+                    <a class="btn btn-primary" href="{% url 'accounts:index' %}">뒤로가기</a>
+                    <a class="btn btn-secondary"href="{% url 'accounts:delete' %}" >회원탈퇴</a>
             </div>
             <!--임시 메뉴 -->
             <ul class="nav nav-tabs profilemenu">

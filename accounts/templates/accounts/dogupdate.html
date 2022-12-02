@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="">
+{% endblock css %}
+{% block content %}
+
+<div class="personal-info">
+{% if user.dog_set.all %}
+{% for dog in user.dog_set.all %}
+  {% if dog.dogphoto %}
+  {% comment %} <img src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진"> {% endcomment %}
+  {% else %}
+  <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진"/>
+  {% endif %}
+  <p>{{ request.dog.name }}</p>
+  {% endfor %}
+{% else %}
+<p>등록된 강아지 정보가 없어요ㅠㅠ</p>
+{% endif %}
+
+</div>
+<div class="update">
+  <form action="" method="POST" enctype="multipart/form-data" class="update-form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <a href="{% url 'accounts:dogdelete' %}" class="delete">강아지 등록 취소</a>
+    <div class="buttons">
+      <button type="submit" class="update-button">수정</button>
+      <button type="button" class="back-button"
+        onclick="location.href='{% url 'accounts:profile' user.username %}'">취소</button>
+  </form>
+</div>
+</div>
+{% endblock content %}

@@ -18,7 +18,7 @@ class Review(models.Model):
 
 
 class Comment(models.Model):
-    review = models.IntegerField(default=0)
+    review = models.ForeignKey(Review, default=None, on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="post"
     )

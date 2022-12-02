@@ -1,5 +1,8 @@
-{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} 
- {% block content %}
+{% extends 'base.html' %} 
+{% load django_bootstrap5 %}
+{% load static %} 
+{% block content %} 
+
 <div class="bg-effect">
   <form
     action="{% url 'accounts:login' %}"
@@ -7,8 +10,7 @@
     enctype="multipart/form-data"
     class="login-form"
   >
-    {% csrf_token %} 
-    {% bootstrap_form form %}
+    {% csrf_token %} {% bootstrap_form form %}
     <p class="go-signup">
       <a href="{% url 'accounts:signup' %}">회원이 아니신가요?</a>
     </p>
