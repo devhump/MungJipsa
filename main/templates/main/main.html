@@ -34,10 +34,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row justify-content-center py-md-5">
+                                <p class="mt-4 button">들어가기 <a href="{% url 'reviews:index'  %}">ENTER</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <a href="{% url 'info:deserted' %}">
+            <img src="{% static 'images/adopt.png' %}" alt="DogAdopt" class="mt-4" width="100%" height="auto"></a>
         </div>
     </section>
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
