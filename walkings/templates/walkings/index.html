@@ -80,6 +80,16 @@
     maximumAge: 0
   };
   
+  function clickListener(map, marker, infowindow) {
+    return function () {
+      infowindow.open(map, marker);
+    };
+  }
+
+  // 마커 이미지의 이미지 크기 입니다
+  var imageSrc = "/static/images/442dog_100700.png";
+  var imageSize = new kakao.maps.Size(24, 35);
+
   function success(pos) {
     const latitude = pos.coords.latitude
     const longitude = pos.coords.longitude
@@ -88,13 +98,74 @@
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
     center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
-    level: 5 // 지도의 확대 레벨
+    level: 6 // 지도의 확대 레벨
     };
 
     // 지도를 생성합니다    
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
+    // 지도를 현재 위치 중심으로 이동
+    var currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
+    map.panTo(currentPos);
+
+    // 내 위치 마커 생성
+    var marker = new kakao.maps.Marker({
+      position: currentPos,
+      image: new kakao.maps.MarkerImage("/static/images/5894087.png", new kakao.maps.Size(50, 50))
+    })
+
+    // 기존에 마커가 있다면 제거
+    marker.setMap(null)
+    marker.setMap(map)
+
     axios({ method: 'get', url: `/walkings/search/${latitude}/${longitude}` })
+      .then(response => {
+
+        var parksJson = response.data.parksJson
+        
+
+        for (var i = 0; i < parksJson.length; i++) {
+
+          // 마커 이미지를 생성합니다    
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        
+          // 마커를 생성합니다
+          var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: new kakao.maps.LatLng(parksJson[i].latitude, parksJson[i].longitude), // 마커를 표시할 위치
+            title: parksJson[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            image: markerImage, // 마커 이미지
+            clickable: true,
+          });
+        
+        
+          var iwContent = `
+          <div>${parksJson[i].parkName}<div>
+          <button onclick=pick_park(this) data-park-id=${parksJson[i].park_pk}>같이 산책하기</button>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        
+          var infowindow = new kakao.maps.InfoWindow({
+            content: iwContent,
+            removable: iwRemoveable
+          });
+        
+          // 마커에 클릭이벤트를 등록합니다
+          kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
+        
+          function pick_park(e) {
+            console.log("공원이름 바꾸기 실행")
+            const park_location = document.querySelector('#park_location')
+            park_location.innerText = '공원이름:' + event.target.dataset.parkId
+            park_location.setAttribute('park-id', `${event.target.dataset.parkId} `)
+            const walking_form = document.querySelector('#walking_form')
+            walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
+            const walk_form_btn = document.querySelector('#walk_form_btn')
+            walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
+          }
+        }
+      
+      })
+
   }
   
   function error(err) {
