@@ -48,7 +48,7 @@
 <div class="s21_album_list area">
   {% for animal in posts %}
   <div class="s21_animal_conts pr">
-    <p class="s21_hospital_conts_photo" style="background: url('{{animal.imageURL}}') center center no-repeat ;"></p>
+    <a class="s21_hospital_conts_photo" href="{% url 'info:deserted_detail' animal.pk %}" style="background: url('{{animal.imageURL}}') center center no-repeat ;"></a>
     <div class="s21_animal_conts_tbox">
       <h4>{{animal.kindCd}} ({{animal.sexCd}})</h4>
       <p>{{animal.colorCd}}</p>

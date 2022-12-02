@@ -106,3 +106,9 @@ def deserted(request):
         }
 
     return render(request, "info/deserted_index.html", context)
+
+
+def deserted_detail(request, pk):
+    animal = Deserted.objects.get(pk=pk)
+    context = {"animal": animal}
+    return render(request, "info/deserted_detail.html", context)

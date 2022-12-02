@@ -62,5 +62,5 @@
   position: relative;
 }
 .inside table td{
-  border
+  border: 1px solid #DDD;
 }

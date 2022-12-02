@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/deserted.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock css %}
+{% block content %}
+<div class="col-dz">
+  <!--타이틀-->
+  <div class="grid_ignore">
+    <div class="grid_ignore_wrap">
+      <div class="board_tit">
+        <a href="{% url 'info:deserted' %}" class="board">보호유기동물</a>
+      </div>
+      <div class="view_tit">
+        [{{animal.careNm}}] {{animal.kindCd}} 분양
+      </div>
+    </div>
+  </div>
+  <!--본문 내용-->
+  <div class="inside">
+    <div class="board_txt_area">
+      <p><iframe width="640" height="360" src="https://www.youtube.com/embed/lZMgQhxOQVI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+    </div>
+    <div style="margin-top: 16px;">
+      <p style="font-size:18pt;">보호동물정보</p>
+      <br>
+      <!--정보 테이블-->
+      <table style="width: 100%;">
+        <tbody>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">견종</td>
+            <td style="width: 31.7989%; text-align: center;">{{animal.kindCd}}</td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">생년</td>
+            <td style="width: 33.1143%; text-align: center;">{{animal.age}}</td>
+          </tr>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">털색</td>
+            <td style="width: 31.7989%; text-align: center;">{{animal.colorCd}}</td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">무게</td>
+            <td style="width: 33.1143%; text-align: center;">{{animal.weight}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
