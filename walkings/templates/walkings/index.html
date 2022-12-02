@@ -1,53 +1,180 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<div class="container mt-3">
+  <section class="map_form-area d-flex">
+    <div id="map" style="width:60%;height:350px;"></div>
+    <div class="form-area d-flex" style="width:40%;">
+      <div class="row">
+        <form id="location-form" action="">
+          <input id="address" type="text">
+          <input type="submit">
+        </form> 
+        <P>주최자 : {{ request.user.username }}</P>
+        <P>멍멍이 이름 : 
+          <span>
+          {% for dog in user_dogs %}
+            {{ dog.name }},
+          {% endfor %}
+          </span></P>
+        <form id="walking_form" class="" method="post" style="margin: 5rem; width:60%;" >
+          {% csrf_token %}
+          <div>
+            <p id="park_location"></p>
+            <label for="walk_title">모임명</label>
+            <input id="walk_title" type='text' name='title'>
+          </div>
+          <div>
+            <label for="walk_date">모임날짜</label>
+            <input id="walk_date" type='datetime-local' name="datetime" >
+          </div>
+          <div>
+            <label for="walk_cnt">인원수</label>
+            <input id="walk_cnt" type="number" name="membercnt" min="2" max="5">
+          </div>
+          <div>
+            <input id="walk_form_btn" type="submit" onclick="w_create(this)">
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
-<form action="">
-  {{ mylocation_form.as_p }}  
-</form>
-
-<div id="map">
+  <section class="dogroups-list-area row">
+    {% for dogr in dogroups %}
+      <div class="card col-5 mx-2 mt-2" style="">
+        <div class="card-body">
+          <h5 class="card-title">제목: {{dogr.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
+          <p class="card-text">{{dogr.user.username}}</p>
+          <p class="card-text">{{dogr.dog.name}}</p>
+          {% if request.user.is_authenticated %}
+            {% if dogr.user != request.user %}
+              {% if request.user in dogr.join.all  %}
+                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소하기</a>
+              {% else %}
+                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+              {% endif %}
+            {% else %}
+              <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-danger card-link">삭제하기</a>
+            {% endif %}
+          {% endif %}
+          <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>
+        </div>
+      </div>
+    {% endfor %}
+  </section>
 
 </div>
 
-{% endblock  %}
+{% endblock content %}
 
+{% block script %}
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5002adb5652b8017c76603959cbbf663&libraries=services"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+  
+  function clickListener(map, marker, infowindow) {
+    return function () {
+      infowindow.open(map, marker);
+    };
+  }
+
+  // 마커 이미지의 이미지 크기 입니다
+  var imageSrc = "/static/images/442dog_100700.png";
+  var imageSize = new kakao.maps.Size(24, 35);
+
+  function success(pos) {
+    const latitude = pos.coords.latitude
+    const longitude = pos.coords.longitude
+
+
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };  
+    center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
+    level: 6 // 지도의 확대 레벨
+    };
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
+    // 지도를 생성합니다    
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
+    // 지도를 현재 위치 중심으로 이동
+    var currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
+    map.panTo(currentPos);
 
-// 주소로 좌표를 검색합니다
-geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+    // 내 위치 마커 생성
+    var marker = new kakao.maps.Marker({
+      position: currentPos,
+      image: new kakao.maps.MarkerImage("/static/images/5894087.png", new kakao.maps.Size(50, 50))
+    })
 
-    // 정상적으로 검색이 완료됐으면 
-      if (status === kakao.maps.services.Status.OK) {
+    // 기존에 마커가 있다면 제거
+    marker.setMap(null)
+    marker.setMap(map)
 
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+    axios({ method: 'get', url: `/walkings/search/${latitude}/${longitude}` })
+      .then(response => {
 
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
-        });
+        var parksJson = response.data.parksJson
+        
 
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-        });
-        infowindow.open(map, marker);
+        for (var i = 0; i < parksJson.length; i++) {
 
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-    } 
-});    
+          // 마커 이미지를 생성합니다    
+          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+        
+          // 마커를 생성합니다
+          var marker = new kakao.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: new kakao.maps.LatLng(parksJson[i].latitude, parksJson[i].longitude), // 마커를 표시할 위치
+            title: parksJson[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            image: markerImage, // 마커 이미지
+            clickable: true,
+          });
+        
+        
+          var iwContent = `
+          <div>${parksJson[i].parkName}<div>
+          <button onclick=pick_park(this) data-park-id=${parksJson[i].park_pk}>같이 산책하기</button>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+        
+          var infowindow = new kakao.maps.InfoWindow({
+            content: iwContent,
+            removable: iwRemoveable
+          });
+        
+          // 마커에 클릭이벤트를 등록합니다
+          kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
+        
+          function pick_park(e) {
+            console.log("공원이름 바꾸기 실행")
+            const park_location = document.querySelector('#park_location')
+            park_location.innerText = '공원이름:' + event.target.dataset.parkId
+            park_location.setAttribute('park-id', `${event.target.dataset.parkId} `)
+            const walking_form = document.querySelector('#walking_form')
+            walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
+            const walk_form_btn = document.querySelector('#walk_form_btn')
+            walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
+          }
+        }
+      
+      })
+
+  }
+  
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+  
+  navigator.geolocation.getCurrentPosition(success, error, options);
+  
+
+
 </script>
+{% endblock script %}

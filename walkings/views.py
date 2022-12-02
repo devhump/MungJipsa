@@ -5,17 +5,49 @@ import json
 from pprint import pprint
 from django.http import JsonResponse
 from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
 
-    mylocation_form = MylocationForm()
+    dogroups = Dogroup.objects.all()
 
     context = {
-        "mylocation_form": mylocation_form,
+        "dogroups": dogroups,
     }
 
     return render(request, "walkings/index.html", context)
+
+
+def search(request, x, y):
+
+    latitude = float(x)
+    longitude = float(y)
+
+    # 위도는 0.01이, 경도는 0.015가  약 1km에 해당
+    # 반경 2km 이내 공원 검색
+    condition = Q(latitude__range=(latitude - 0.01, latitude + 0.01)) & Q(
+        longitude__range=(longitude - 0.015, longitude + 0.015)
+    )
+
+    parks = Park.objects.filter(condition)
+
+    parksJson = []
+    for park in parks:
+
+        temp = {
+            "parkName": park.parkName,
+            "latitude": park.latitude,
+            "longitude": park.longitude,
+            "park_pk": park.pk,
+        }
+
+        parksJson.append(temp)
+
+    data = {
+        "parksJson": parksJson,
+    }
+    return JsonResponse(data)
 
 
 def test(request):
@@ -49,14 +81,12 @@ def test(request):
 
 def create(request, park_pk):
 
-    print(request.POST)
     park = Park.objects.get(pk=park_pk)
     user = request.user
     dog = Dog.objects.get(pk=1)
 
     if request.method == "POST":
         dogroup_form = DogroupForm(request.POST)
-        print(dogroup_form)
         if dogroup_form.is_valid():
             dogroup = dogroup_form.save(commit=False)
             dogroup.user = user

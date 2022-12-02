@@ -10,4 +10,5 @@ urlpatterns = [
     path("detail/<int:dogroup_pk>", views.detail, name="detail"),
     path("join/<int:dogroup_pk>", views.join, name="join"),
     path("delete/<int:dogroup_pk>", views.delete, name="delete"),
+    path("search/<x>/<y>/", views.search, name="search"),
 ]
