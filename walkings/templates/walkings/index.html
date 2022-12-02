@@ -1,53 +1,109 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+<div class="container mt-3">
+  <section class="map_form-area d-flex">
+    <div id="map" style="width:60%;height:350px;"></div>
+    <div class="form-area d-flex" style="width:40%;">
+      <div class="row">
+        <form id="location-form" action="">
+          <input id="address" type="text">
+          <input type="submit">
+        </form> 
+        <P>주최자 : {{ request.user.username }}</P>
+        <P>멍멍이 이름 : 
+          <span>
+          {% for dog in user_dogs %}
+            {{ dog.name }},
+          {% endfor %}
+          </span></P>
+        <form id="walking_form" class="" method="post" style="margin: 5rem; width:60%;" >
+          {% csrf_token %}
+          <div>
+            <p id="park_location"></p>
+            <label for="walk_title">모임명</label>
+            <input id="walk_title" type='text' name='title'>
+          </div>
+          <div>
+            <label for="walk_date">모임날짜</label>
+            <input id="walk_date" type='datetime-local' name="datetime" >
+          </div>
+          <div>
+            <label for="walk_cnt">인원수</label>
+            <input id="walk_cnt" type="number" name="membercnt" min="2" max="5">
+          </div>
+          <div>
+            <input id="walk_form_btn" type="submit" onclick="w_create(this)">
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
 
-<form action="">
-  {{ mylocation_form.as_p }}  
-</form>
-
-<div id="map">
+  <section class="dogroups-list-area row">
+    {% for dogr in dogroups %}
+      <div class="card col-5 mx-2 mt-2" style="">
+        <div class="card-body">
+          <h5 class="card-title">제목: {{dogr.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
+          <p class="card-text">{{dogr.user.username}}</p>
+          <p class="card-text">{{dogr.dog.name}}</p>
+          {% if request.user.is_authenticated %}
+            {% if dogr.user != request.user %}
+              {% if request.user in dogr.join.all  %}
+                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소하기</a>
+              {% else %}
+                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+              {% endif %}
+            {% else %}
+              <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-danger card-link">삭제하기</a>
+            {% endif %}
+          {% endif %}
+          <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>
+        </div>
+      </div>
+    {% endfor %}
+  </section>
 
 </div>
 
-{% endblock  %}
+{% endblock content %}
 
+{% block script %}
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5002adb5652b8017c76603959cbbf663&libraries=services"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+  
+  function success(pos) {
+    const latitude = pos.coords.latitude
+    const longitude = pos.coords.longitude
+
+
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };  
+    center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
+    level: 5 // 지도의 확대 레벨
+    };
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
+    // 지도를 생성합니다    
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-// 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
+    axios({ method: 'get', url: `/walkings/search/${latitude}/${longitude}` })
+  }
+  
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+  
+  navigator.geolocation.getCurrentPosition(success, error, options);
+  
 
-// 주소로 좌표를 검색합니다
-geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
 
-    // 정상적으로 검색이 완료됐으면 
-      if (status === kakao.maps.services.Status.OK) {
-
-        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-        // 결과값으로 받은 위치를 마커로 표시합니다
-        var marker = new kakao.maps.Marker({
-            map: map,
-            position: coords
-        });
-
-        // 인포윈도우로 장소에 대한 설명을 표시합니다
-        var infowindow = new kakao.maps.InfoWindow({
-            content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-        });
-        infowindow.open(map, marker);
-
-        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setCenter(coords);
-    } 
-});    
 </script>
+{% endblock script %}

@@ -18,6 +18,13 @@ def index(request):
     return render(request, "walkings/index.html", context)
 
 
+def search(request, x, y):
+
+    parks = Park.objects.all()
+
+    return JsonResponse(context)
+
+
 def test(request):
 
     parks = Park.objects.filter(address__icontains="동작구")
@@ -49,14 +56,12 @@ def test(request):
 
 def create(request, park_pk):
 
-    print(request.POST)
     park = Park.objects.get(pk=park_pk)
     user = request.user
     dog = Dog.objects.get(pk=1)
 
     if request.method == "POST":
         dogroup_form = DogroupForm(request.POST)
-        print(dogroup_form)
         if dogroup_form.is_valid():
             dogroup = dogroup_form.save(commit=False)
             dogroup.user = user
