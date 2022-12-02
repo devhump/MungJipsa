@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CustomUserCreationForm, CustomUserChangeForm, DogForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, DogForm, DogChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
 from django.http import JsonResponse
+from .models import Dog
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,8 @@ from django.views.decorators.http import (
     require_http_methods,
     require_POST,
 )
+from django.http import JsonResponse
+import json
 
 
 def index(request):
@@ -128,7 +131,7 @@ def update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "프로필 정보가 성공적으로 변경되었습니다.")
-            return redirect("accounts:profile")
+            return redirect("accounts:index")
 
     else:
         form = CustomUserChangeForm(instance=request.user)
@@ -159,3 +162,54 @@ def follow(request, username):
         # }
         # return JsonResponse(context)
     return redirect("accounts:profile", user.username)
+
+
+def database_naver(request):
+    jsonObject = json.loads(request.body)
+    username = list(jsonObject.get("email").split("@"))[0] + "_naver"
+
+    users = get_user_model().objects.filter(username=username)
+    if users:
+        user = get_user_model().objects.get(username=username)
+        auth_login(request, user)
+
+    else:
+        user = get_user_model()()
+        user.username = list(jsonObject.get("email").split("@"))[0] + "_naver"
+
+        user.nickname = jsonObject.get("name")
+        user.email = jsonObject.get("email")
+        user.save()
+        user = get_user_model().objects.get(username=username)
+        auth_login(request, user)
+    return JsonResponse({"username": user.username, "email": user.email})
+
+
+def callback(request):
+    return render(request, "accounts/callback.html")
+
+
+@login_required
+def dogdelete(request):
+    request.user.dogdelete()
+    auth_logout(request)
+    messages.success(request, "등록 취소 완료")
+    return redirect("accounts:index")
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def dogupdate(request):
+    dog = Dog.objects.all
+    if request.method == "POST":
+        form = DogChangeForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("accounts:index")
+
+    else:
+        form = DogChangeForm(instance=request.user)
+    context = {
+        "form": form,
+    }
+    return render(request, "accounts/dogupdate.html", context)
