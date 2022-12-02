@@ -106,9 +106,19 @@ def add_eventmember(request, event_id):
 
 class EventMemberDeleteView(generic.DeleteView):
     model = EventMember
-    template_name = "schedules/event_delete.html"
+    template_name = "schedules/member_delete.html"
     success_url = reverse_lazy("schedules:calendar")
 
+class EventDeleteView(generic.DeleteView):
+    # event = Event.objects.get(pk=pk)
+    # if request.user == event.user:
+    #     event.delete()
+    #     return redirect("schedules:calendar")
+    # else:
+    #     return redirect("schedules:detail", event.pk)
+    model = Event
+    template_name = "schedules/event_delete.html"
+    success_url = reverse_lazy("schedules:all_events")
 
 class CalendarViewNew(LoginRequiredMixin, generic.View):
     login_url = "accounts:login"
