@@ -40,8 +40,45 @@
             <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">무게</td>
             <td style="width: 33.1143%; text-align: center;">{{animal.weight}}</td>
           </tr>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">성별</td>
+            <td style="width: 31.7989%; text-align: center;">
+              {% if animal.sexCd == "M" %}남아{% else %}여아{% endif %}
+            </td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">중성화유무</td>
+            <td style="width: 33.1143%; text-align: center;">
+              {% if animal.neuterYn == 'Y' %}완료{% elif animal.neuterYn == "N" %}미완료{% else %}미확인{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">보호시작일</td>
+            <td style="width: 31.7989%; text-align: center;">{{animal.noticeSdt}}</td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">보호종료일</td>
+            <td style="width: 33.1143%; text-align: center;">{{animal.noticeEdt}}</td>
+          </tr>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">보호상태</td>
+            <td style="width: 31.7989%; text-align: center;">{{animal.processState}}</td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">특이사항</td>
+            <td style="width: 33.1143%; text-align: center;">{{animal.specialMark}}</td>
+          </tr>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">발견위치</td>
+            <td style="width: 31.7989%; text-align: center;">{{animal.happenPlace}}</td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">특이사항</td>
+            <td style="width: 33.1143%; text-align: center;">{{animal.careTel}}</td>
+          </tr>
+          <tr>
+            <td style="width: 18.2668%; background-color: rgb(98, 99, 99); text-align: center;color:#fff; padding:5px">보호소</td>
+            <td style="width: 31.7989%; text-align: center;">{{animal.careNm}}</td>
+            <td style="width: 16.82%; background-color: rgb(98, 99, 99); text-align: center; color:#fff; padding:5px">상세주소</td>
+            <td style="width: 33.1143%; text-align: center;">{{animal.careAddr}}</td>
+          </tr>
         </tbody>
       </table>
+      <p><img style="width: 740px; margin-top:20px;" src="{{animal.imageURL}}" alt=""></p>
+      <p><iframe width="640" height="360" src="https://www.youtube.com/embed/Pxl_fL9X1Pw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></p>
+      <p><img style="width: 740px; margin-top:20px; margin-bottom:40px;" src="https://www.korea.kr/newsWeb/resources/attaches/2022.01/25/18e92a79425b1ae5e219b169d583cbc6.jpg" alt=""></p>
     </div>
   </div>
 </div>
