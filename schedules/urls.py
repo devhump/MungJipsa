@@ -15,8 +15,13 @@ urlpatterns = [
     ),
     path(
         "event/<int:pk>/remove",
+        views.EventDeleteView.as_view(),
+        name="remove_event"
+    ),
+    path(
+        "delete_event/<int:pk>/remove",
         views.EventMemberDeleteView.as_view(),
-        name="remove_event",
+        name="remove_member",
     ),
     path("all-event-list/", views.AllEventsListView.as_view(), name="all_events"),
     path(

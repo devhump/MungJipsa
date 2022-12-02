@@ -58,11 +58,12 @@
                     <td>{{ member.user.username }}</td>
                     <td>{{ member.user.email }}</td>
                     <td>
-                        <a class="btn btn-danger" href="{% url 'schedules:remove_event' member.id %}">Remove</a>
+                        <a class="btn btn-danger" href="{% url 'schedules:remove_member' member.id %}">동료제거</a>
                     </td>
                 </tr>
                 {% endfor %}
               </tbody>
         </table>
+        <a class="btn btn-danger" href="{% url 'schedules:remove_event' event.id %}">일정삭제</a>
     </div>
 {% endblock %}
