@@ -26,11 +26,11 @@
           </div>
           <div>
             <label for="walk_date">모임날짜</label>
-            <input id="walk_date" type='date' name="date" >
+            <input id="walk_date" type='datetime-local' name="datetime" >
           </div>
           <div>
             <label for="walk_cnt">인원수</label>
-            <input id="walk_cnt" type="range" name="membercnt" min="0" max="5">
+            <input id="walk_cnt" type="number" name="membercnt" min="2" max="5">
           </div>
           <div>
             <input id="walk_form_btn" type="submit" onclick="w_create(this)">
@@ -48,11 +48,15 @@
           <h6 class="card-subtitle mb-2 text-muted">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
           <p class="card-text">{{dogr.user.username}}</p>
           <p class="card-text">{{dogr.dog.name}}</p>
-          {% if dogr.user != request.user %}
-            {% if request.user in dogr.join.all  %}
-              <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-danger card-link">취소하기</a>
+          {% if request.uesr.is_authenticated %}
+            {% if dogr.user != request.user %}
+              {% if request.user in dogr.join.all  %}
+                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소하기</a>
+              {% else %}
+                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+              {% endif %}
             {% else %}
-              <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+              <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-danger card-link">삭제하기</a>
             {% endif %}
           {% endif %}
           <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>

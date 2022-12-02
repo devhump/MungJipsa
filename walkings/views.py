@@ -4,7 +4,7 @@ from .forms import MylocationForm, DogroupForm
 import json
 from pprint import pprint
 from django.http import JsonResponse
-
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -109,4 +109,16 @@ def join(request, dogroup_pk):
             dogroup.join.remove(request.user)
         else:
             dogroup.join.add(request.user)
+    return redirect("walkings:test")
+
+
+def delete(request, dogroup_pk):
+
+    dogroup = Dogroup.objects.get(pk=dogroup_pk)
+
+    if dogroup.user == request.user:
+        dogroup.delete()
+    else:
+        messages.warning(request, "본인이 개설한 모임만 삭제 할 수 있습니다.")
+
     return redirect("walkings:test")
