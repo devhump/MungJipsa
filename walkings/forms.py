@@ -12,7 +12,7 @@ class DogroupForm(forms.ModelForm):
     class Meta:
         model = Dogroup
         fields = [
-            "date",
+            "datetime",
             "title",
             "membercnt",
         ]

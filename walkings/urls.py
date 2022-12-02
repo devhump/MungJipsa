@@ -8,4 +8,6 @@ urlpatterns = [
     path("test/", views.test, name="test"),
     path("create/<int:park_pk>", views.create, name="create"),
     path("detail/<int:dogroup_pk>", views.detail, name="detail"),
+    path("join/<int:dogroup_pk>", views.join, name="join"),
+    path("delete/<int:dogroup_pk>", views.delete, name="delete"),
 ]
