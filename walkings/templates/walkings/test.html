@@ -74,7 +74,34 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5002adb5652b8017c76603959cbbf663&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  var pos_latitude = 0.0
+  let pos_longtitude = 0
+  // 현재 위치 받아오기
+  function getLocation() {
+    if (navigator.geolocation) { // GPS를 지원하면
+      navigator.geolocation.getCurrentPosition(function(position) {
+        //alert(position.coords.latitude + ' ' + position.coords.longitude);
+        pos_latitude = position.coords.latitude
+        pos_longtitude = position.coords.longitude
+        return pos_latitude
+      }, function(error) {
+        console.error(error);
+      }, {
+        enableHighAccuracy: false,
+        maximumAge: 0,
+        timeout: Infinity
+      });
+    } else {
+      alert('GPS를 지원하지 않습니다');
+    }
+    return pos_latitude
+  }
+
+  getLocation()
+console.log(getLocation())
+
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 //------------------------------------지도 기본 설정--------------------------------------------
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div
   mapOption = {
