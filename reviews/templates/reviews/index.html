@@ -172,10 +172,10 @@
       return 0;
     }
     $.ajax({
-      url: "/reviews/comments/",
+      url: `/reviews/${review_id}/comments/`,
       data: {
         review_id: review_id,
-        comment_content: comment_content,
+        content: comment_content,
         csrfmiddlewaretoken: "{{ csrf_token }}"
         
       },
