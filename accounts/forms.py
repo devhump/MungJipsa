@@ -75,3 +75,29 @@ class DogForm(forms.ModelForm):
             "personality": "성격",
             "dogtype": "반려동물 크기",
         }
+
+
+class DogChangeForm(forms.ModelForm):
+    class Meta:
+
+        model = Dog
+
+        fields = (
+            "name",
+            "dogphoto",
+            "gender",
+            "neutered",
+            "age",
+            "personality",
+            "dogtype",
+        )
+
+        labels = {
+            "name": "이름",
+            "dogphoto": "사진",
+            "gender": "성별",
+            "neutered": "중성화 여부",
+            "age": "나이",
+            "personality": "성격",
+            "dogtype": "반려동물 크기",
+        }
