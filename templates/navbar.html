@@ -16,18 +16,6 @@
           <img src="{% static 'images/namung_logo_horizon.png' %}" alt="Logo" style="width: 11rem; height: 4rem;">
         </a>
       </div>
-      <!-- 검색창 -->
-      <div style="width: 30rem;">
-        <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 d-flex" style="position:sticky; top:70px; right:25px;" action="#" method="get">
-            <input class="form-control bg-light" type="search" placeholder="검색어를 입력하세요" aria-label="Search" name="q">
-            <button class="btn btn-search rounded-pill px-3 ms-2" type="submit">
-              <i class="bi bi-search">🔍</i>
-            </button>
-          </form>
-          <!-- 서치바 -->
-        </li>
-      </div>
       <!-- 토글러 -->
       <div class="d-flex">
         {% if request.user.is_authenticated %}
