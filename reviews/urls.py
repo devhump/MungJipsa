@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import ToggleLike
 
 # Create your views here.
 
@@ -24,5 +25,6 @@ urlpatterns = [
         views.comment_delete,
         name="comment_delete",
     ),
+    path("like/", ToggleLike.as_view()),
     # 해시태그
 ]

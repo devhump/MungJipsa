@@ -2,7 +2,10 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-
+<head>
+  <link rel="icon" href="https://templates.pingendo.com/assets/Pingendo_favicon.ico">
+  {% csrf_token %}
+</head>
 {% block content %}
 
 <div class=" d-flex m-4 py-4 px-2 ">
@@ -35,9 +38,22 @@
         {% comment %} 내용 {% endcomment %}
         <p>{{ review.content }}</p></a>
 
-        {% comment %} 댓글작성 {% endcomment %}
+        {% comment %} 좋아요 {% endcomment %}
+        <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
         
-
+          <div>
+            <span id="favorite_{{ review.id }}" review_id="{{ review.id }}"
+                  class="favorite material-icons-outlined"
+                  style="color: red;cursor: pointer">{% if review.is_liked %}
+                favorite{% else %}favorite_border{% endif %}</span>
+        </div>
+     
+      </div>
+      <div style="margin: 0 20px;text-align: left;font-size: 14px"> 춘식이 <b>외 {{ review.like_count }}명</b>이
+          좋아합니다.
+      </div>
+        
+{% comment %} 댓글작성 {% endcomment %}
 
         <div style="display:flex;flex-direction: row;align-items: center; border-top: solid 1px gray ">
           <input id="comment_{{ review.id }}" type="text" class="form-control"
@@ -111,6 +127,38 @@
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
 <script>
+  $(".favorite").click(function (event) {
+    let review_id = event.target.attributes.getNamedItem('review_id').value;
+    let favorite_id = event.target.id;
+    console.log(favorite_id);
+    let favorite_text = $.trim($('#' + favorite_id).html());
+    console.log(favorite_text);
+    if (favorite_text == 'favorite') {
+        $('#' + favorite_id).html('favorite_border');
+    } else {
+        $('#' + favorite_id).html('favorite');
+    }
+
+    $.ajax({
+        url: "/reviews/like/",
+        data: {
+          review_id: review_id,
+          favorite_text: favorite_text,
+          csrfmiddlewaretoken: "{{ csrf_token }}"
+        },
+        method: "POST",
+        success: function (data) {
+            console.log("성공");
+        },
+        error: function (request, status, error) {
+            console.log("에러");
+        },
+        complete: function () {
+            console.log("완료");
+        }
+    });
+});
+
 
   $(".upload_reply").click(function (event) {
     let review_id = event.target.attributes.getNamedItem('review_id').value;
@@ -127,13 +175,15 @@
       url: "/reviews/comments/",
       data: {
         review_id: review_id,
-        comment_content: comment_content
+        comment_content: comment_content,
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+        
       },
       method: "POST",
       success: function (data) {
           console.log("성공");
           alert("댓글 성공");
-          $("#reply_list_" +review_id).append("<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>")
+          $("#reply_list_" +review_id).append('csrfmiddlewaretoken', "<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>", "{{ csrf_token }}")
           {#location.replace('/');#}
           
 
@@ -146,6 +196,8 @@
           $('#' + review_id).val('');
       }
     });
+
+
 
  
 

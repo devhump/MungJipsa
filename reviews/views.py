@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.paginator import Paginator
 from reviews.forms import ReviewForm, CommentForm, ImageForm
-from .models import Review, Comment, Images
-
+from .models import Review, Comment, Images, Like
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 # 멍스타그렘
 def index(request):
@@ -124,7 +125,7 @@ def comment_create(request, pk):
         comment.review = review
         comment.user = request.user
         comment.save()
-    return redirect("reviews:detail", review.pk)
+    return redirect("reviews:index")
 
 
 # 댓글 지우기
@@ -135,3 +136,25 @@ def comment_delete(request, comment_pk, pk):
     if request.user.is_authenticated and request.user == comment.user:
         comment.delete()
         return redirect("reviews:detail", pk)
+
+
+class ToggleLike(APIView):
+    def post(self, request):
+        review = request.data.get("review", None)
+        favorite_text = request.data.get("favorite_text", True)
+
+        if favorite_text == "favorite_border":
+            is_like = True
+        else:
+            is_like = False
+        user = request.session.get("user", None)
+
+        like = Like.objects.filter(review=review, user=user).first()
+
+        if like:
+            like.is_like = is_like
+            like.save()
+        else:
+            Like.objects.create(review=review, is_like=is_like, user=user)
+
+        return Response(status=200)
