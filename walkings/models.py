@@ -19,9 +19,10 @@ class Dogroup(models.Model):
     dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     park = models.ForeignKey(Park, on_delete=models.CASCADE)
-    date = models.DateField(default=datetime.date.today)
+    datetime = models.DateTimeField(default=datetime.datetime.now)
     title = models.CharField(max_length=20)
     membercnt = models.IntegerField(default=5)
+    create_at = models.DateTimeField(auto_now_add=True)
     join = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="joiner")
 
 
