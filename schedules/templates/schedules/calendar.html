@@ -1,122 +1,234 @@
-{% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
-
-{% block css %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네이멍</title>
+  <link rel="icon" href="{% static '/images/namung_logo.png' %}">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <!-- 외부 CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <!-- CSS -->
-  <link href="{% static 'css/cal.css' %}" rel="stylesheet"/>
-{% endblock css %}
-
-
-{% block content %}
-<div class="app sidebar-mini">
-  <!-- sub navbar-->
-  <header class="" style="background-color: black;">
-    <!-- Sidebar toggle button-->
-    {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
-    <div class="app-sidebar__user">
-      <!-- 프로필 이미지 -->
-      {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
-      <span>
-          <p class="">유저 아이디</p>
-          <p class="">강아지 이름</p>
-          <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
-          <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
-          <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>
-          <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> All</a>
-      </span>
+  <link href="{% static 'CSS/main.css' %}" rel="stylesheet"/>
+  <style>
+    .navback {
+      background-color: #544B44;
+      color: #C17F34;
+  }
+  </style>
+</head>
+<body>
+<!-- Navbar 1 -->
+<nav class="navbar-stretch navbar-expand-lg p-0 sticky-top navback">
+  <div class="d-flex flex-column px-5 py-2">
+    <ul class="navbar-nav me-0 mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
+      <!-- 로고 -->
+      <div>
+        <a class="navbar-brand" href="#">
+          <img src="{% static 'images/namung_logo_horizon.png' %}" alt="Logo" style="width: 11rem; height: 4rem;">
+        </a>
+      </div>
+      <!-- 토글러 -->
+      <div class="d-flex">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item me-4 nav1-text">
+            {% comment %} <a class="nav-link" href="{% url 'accounts:mypage' %}">{{ request.user }}</a> {% endcomment %} MY PAGE
+          </li>
+          <li class="nav-item nav1-text">
+            {% comment %} <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a> {% endcomment %} LOGOUT
+          </li>
+        {% else %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+          </li>
+          <li class="nav-item nav1-text">
+            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+          </li>
+        {% endif %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'reviews:index' %}">멍스타그램</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'schedules:calendar' %}">일정관리</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'walkings:index' %}">산책나가기</a>
+          </li>
+      </div>
+    </ul>
+  </div>
+</nav>
+<div>
+  <div class="app sidebar-mini">
+    <!-- sub navbar-->
+    <header class="" style="background-color: black;">
+      <!-- Sidebar toggle button-->
+      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
+      <div class="app-sidebar__user">
+        <!-- 프로필 이미지 -->
+        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
+        <span>
+            <p class="">유저 아이디</p>
+            <p class="">강아지 이름</p>
+            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
+            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
+            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>
+            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> All</a>
+        </span>
+      </div>
+    </header>
+  </div>
+  <div class="app-content">
+    <div class="app-title">
+    <div>
+        <h1><i class="fa fa-calendar"></i> Calendar</h1>
+        <p>Event Calendar</p>
     </div>
-  </header>
-</div>
-<div class="app-content">
-  <div class="app-title">
-  <div>
-      <h1><i class="fa fa-calendar"></i> Calendar</h1>
-      <p>Event Calendar</p>
-  </div>
-  <ul class="app-breadcrumb breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Calendar</a></li>
-  </ul>
-  </div>
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="tile row">
-            <div class="col-md-9">
-              <div id="calendar"></div>
-            </div>
-
-          <!-- 이벤트 생성 모달 -->
-            <div class="modal fade show" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            <h5 class="modal-title text-white" id="exampleModalLongTitle">Add New Event</h5>
-                            <button id="modalClose1" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="recipient-name" class="col-form-label">Event Title:</label>
-                                    {{ form.title }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Description:</label>
-                                    {{ form.description }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">Start Date:</label>
-                                    {{ form.start_time }}
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="col-form-label">End Date:</label>
-                                    {{ form.end_time }}
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="modalClose2" type="button" class="btn btn-danger">Close</button>
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </div>
-                        </form>
-                    </div>
+    <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Calendar</a></li>
+    </ul>
+    </div>
+  
+  <div class="row">
+      <div class="col-md-12">
+          <div class="tile row">
+              <div class="col-md-9">
+                <div id="calendar"></div>
+              </div>
+  
+            <!-- 이벤트 생성 모달 -->
+              <div class="modal fade show" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header bg-primary">
+                              <h5 class="modal-title text-white" id="exampleModalLongTitle">Add New Event</h5>
+                              <button id="modalClose1" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <form method="post">
+                              {% csrf_token %}
+                              <div class="modal-body">
+                                  <div class="form-group">
+                                      <label for="recipient-name" class="col-form-label">Event Title:</label>
+                                      {{ form.title }}
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="message-text" class="col-form-label">Description:</label>
+                                      {{ form.description }}
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="message-text" class="col-form-label">Start Date:</label>
+                                      {{ form.start_time }}
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="message-text" class="col-form-label">End Date:</label>
+                                      {{ form.end_time }}
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button id="modalClose2" type="button" class="btn btn-danger">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save</button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              <!-- 진행중 이벤트 모음 -->
+              <div class="col-md-3">
+                <div id="external-events">
+                    <h4 class="mb-4">Running Events</h4>
+                    {% for event in events_month %}
+                      <div class="fc-event">
+                          <h3>{{ event.title }}</h3>
+                          <p>From: {{ event.start_time }}</p>
+                          <p>To: {{ event.end_time }}</p>
+                      </div>
+                    {% empty %}
+                      <p>No Running Events Found</p>
+                    {% endfor %}
                 </div>
             </div>
-            <!-- 진행중 이벤트 모음 -->
-            <div class="col-md-3">
-              <div id="external-events">
-                  <h4 class="mb-4">Running Events</h4>
-                  {% for event in events_month %}
-                    <div class="fc-event">
-                        <h3>{{ event.title }}</h3>
-                        <p>From: {{ event.start_time }}</p>
-                        <p>To: {{ event.end_time }}</p>
-                    </div>
-                  {% empty %}
-                    <p>No Running Events Found</p>
-                  {% endfor %}
-              </div>
           </div>
-        </div>
-    </div>
+      </div>
+  </div>
+  </div>
 </div>
-</div>
-{% endblock content %}
 
-{% block script %}
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
+<footer class="">
+  <div class="d-flex justify-content-end mb-4 me-4 fixed-bottom" style="z-index: 2;">
+    <button onclick="topFunction()" class="topBtn" title="Go to top">Top</button>
+  </div>
+  <nav class="navbar d-flex justify-content-center align-content-center opacity-75 fixed-bottom" style="background-color: #C17F34; height: 3rem; z-index: 1;">
+      <a class="text-decoration-none text-white" href="#">
+        🐕🐶 Supported by HyperGrowth 🐶🐕
+      </a>
+  </nav>
+</footer>
+<script type="text/javascript" src="/static/js/footer.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+// https://webdir.tistory.com/481
+// Hide .lower-navbar on on scroll down
+var didScroll;
+var lastScrollTop = 0;
+var delta = 5;
+var navbarHeight = $('.lower-navbar').outerHeight();
+
+$(window).scroll(function (event) {
+didScroll = true;
+});
+
+setInterval(function () {
+if (didScroll) {
+  hasScrolled();
+  didScroll = false;
+}
+}, 250);
+
+function hasScrolled() {
+var st = $(this).scrollTop();
+
+// Make sure they scroll more than delta
+if (Math.abs(lastScrollTop - st) <= delta) 
+  return;
+
+// If they scrolled down and are past the navbar, add class .nav-up.
+// This is necessary so you never see what is "behind" the navbar.
+if (st > lastScrollTop && st > navbarHeight) {
+  // Scroll Down
+  $('.lower-navbar')
+    .removeClass('nav-down')
+    .addClass('nav-up');
+} else {
+  // Scroll Up
+  if (st + $(window).height() < $(document).height()) {
+    $('.lower-navbar')
+      .removeClass('nav-up')
+      .addClass('nav-down');
+  }
+}
+
+lastScrollTop = st;
+}
+</script>
+
+
+
+
+
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/popper.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+<!-- The javascript plugin to display page loading on top-->
+<script src="{% static 'js/plugins/pace.min.js'%}"></script>
   <!-- 달력 구현 스크립트 -->
   <script src="{% static 'js/calendarsMain.js' %}"></script>
   <script>
@@ -191,4 +303,6 @@
         eventModal.style.display = 'none';
       });
   </script>
-{% endblock script %}
+</body>
+
+</html>
