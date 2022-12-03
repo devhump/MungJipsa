@@ -5,6 +5,7 @@ from django.template.defaultfilters import slugify
 from imagekit.processors import ResizeToFill
 from imagekit.models import ProcessedImageField
 
+
 # 이미지
 
 
@@ -15,6 +16,9 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="like_reviews"
+    )
 
 
 class Comment(models.Model):
@@ -56,9 +60,3 @@ class Images(models.Model):
     # 이것도 역시 post title 로 반환
     def __str__(self):
         return str(self.post)
-
-
-class Like(models.Model):
-    review = models.IntegerField(default=0)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    is_like = models.BooleanField(default=True)

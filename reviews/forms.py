@@ -42,3 +42,7 @@ class ImageForm(forms.ModelForm):
         labels = {
             "image": _("Image"),
         }
+
+
+class PostSearchForm(forms.Form):
+    search_word = forms.CharField(label="Search Word")

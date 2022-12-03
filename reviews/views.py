@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.core.paginator import Paginator
-from reviews.forms import ReviewForm, CommentForm, ImageForm
-from .models import Review, Comment, Images, Like
+from reviews.forms import ReviewForm, CommentForm, ImageForm, PostSearchForm
+from .models import Review, Comment, Images
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import JsonResponse
+from django.views.generic.edit import FormView
+from django.db.models import Q
 
 # 멍스타그렘
 def index(request):
@@ -139,23 +142,40 @@ def comment_delete(request, comment_pk, pk):
         return redirect("reviews:detail", pk)
 
 
-class ToggleLike(APIView):
-    def post(self, request):
-        review = request.data.get("review", None)
-        favorite_text = request.data.get("favorite_text", True)
+def like(request, pk):
+    review = get_object_or_404(Review, pk=pk)
+    # print('hi') 요청 확인 위함
+    # 만약 로그인한 유저(request.user)가 이 글을 좋아요 눌렀다면,
 
-        if favorite_text == "favorite_border":
-            is_like = True
-        else:
-            is_like = False
-        user = request.session.get("user", None)
+    if request.user in review.like_users.all():
 
-        like = Like.objects.filter(review=review, user=user).first()
+        # 좋아요 삭제하고
+        review.like_users.remove(request.user)
+        is_liked = False
+    else:  # 좋아요 누르지 않은 상태라면 좋아요에 추가하고
+        review.like_users.add(request.user)
+        is_liked = True
+        # 상세 페이지로 redirect
+    context = {"isLiked": is_liked, "likeCount": review.like_users.count()}
+    return JsonResponse(context)
 
-        if like:
-            like.is_like = is_like
-            like.save()
-        else:
-            Like.objects.create(review=review, is_like=is_like, user=user)
 
-        return Response(status=200)
+# 검색
+class SearchFormView(FormView):
+    form_class = PostSearchForm
+    template_name = "reviews/search.html"
+
+    def form_valid(self, form):
+        searchWord = form.cleaned_data["search_word"]
+        post_list = Review.objects.filter(
+            Q(title__icontains=searchWord)
+            | Q(comment__icontains=searchWord)
+            | Q(content__icontains=searchWord)
+        ).distinct()
+
+        context = {}
+        context["form"] = form
+        context["search_term"] = searchWord
+        context["object_list"] = post_list
+
+        return render(self.request, self.template_name, context)
