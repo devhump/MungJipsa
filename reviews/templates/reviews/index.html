@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
+{% block content %}
+
 
 <head>
-  <link rel="icon" href="https://templates.pingendo.com/assets/Pingendo_favicon.ico">
+{% block css %}
+<link rel="icon" href="https://templates.pingendo.com/assets/Pingendo_favicon.ico">
+{% endblock css %}
+  
   {% csrf_token %}
 </head>
-{% block content %}
 
 <div class=" d-flex m-4 py-4 px-2 ">
 
@@ -39,21 +43,34 @@
         <p>{{ review.content }}</p></a>
 
         {% comment %} 좋아요 {% endcomment %}
-        <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
+         {% if request.user.is_authenticated %}
+        <div class="  d-flex justify-content-between" id="review_like_{{ review.id }}" >
+            <form data-review-id='{{ review.pk }}' id='like-btn' class="like-heart" >
+                {% csrf_token %}
+                <button style='background-color:transparent; border:none;' class='review-detail-like-btn' type='submit' review_id="{{ review.id }}">
+                    {% if request.user in review.like_users.all %}
+                    <i style='color:red' class="bi bi-heart-fill"></i>
+                    <span id='review-like-user-cnt'>{{ review.like_users.count }}</span>
+                    {% else %}
+                    <i style='color:red' class="bi bi-heart"></i>
+                    <span id='review-like-user-cnt'>{{ review.like_users.count }}</span>
+                    {% endif %}
+                </button>
+            </form>
+            {% endif %}
+      <li>
+        {% comment %} 댓글 리스트 {% endcomment %}
+       {% for comment in  review.comment_set.all %}
+       <div class='py-3'>
+           <div id="review-content" class="me-3-5 mt-3 text-break align-items-center" >
+               {{ comment.user.username }} : {{ comment.content }}
+               <p id="review-content" class="d-flex justify-content-end" >{{ comment.created_at }}</p>
+           </div>
+       {% endfor %}
+      {% endfor %}
+       </li>
         
-          <div>
-            <span id="favorite_{{ review.id }}" review_id="{{ review.id }}"
-                  class="favorite material-icons-outlined"
-                  style="color: red;cursor: pointer">{% if review.is_liked %}
-                favorite{% else %}favorite_border{% endif %}</span>
-        </div>
-     
-      </div>
-      <div style="margin: 0 20px;text-align: left;font-size: 14px"> 춘식이 <b>외 {{ review.like_count }}명</b>이
-          좋아합니다.
-      </div>
-        
-{% comment %} 댓글작성 {% endcomment %}
+        {% comment %} 댓글작성 {% endcomment %}
 
         <div style="display:flex;flex-direction: row;align-items: center; border-top: solid 1px gray ">
           <input id="comment_{{ review.id }}" type="text" class="form-control"
@@ -62,19 +79,10 @@
           <div review_id="{{ review.id }}" class="upload_reply"
                style="width: 50px;color: cornflowerblue; font-weight: bold">
                게시
-          </div>
-      </div>
-      </li>
-      <li>
-       
-      <div id="reply_list_{{ review.id }}">
-          {% for reply in review.reply_list %}
-              <div style="margin: 0 20px;text-align: left;font-size: 14px">
-                  <b>{{ reply.username }}</b> {{ reply.comment_content }}</div>
-          {% endfor %}
-      </div>
-      {% endfor %}
-      </li>
+        </div>
+    </div>
+        </li>
+      
     </ul>
 
   </div>
@@ -126,38 +134,46 @@
 </ul>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  $(".favorite").click(function (event) {
-    let review_id = event.target.attributes.getNamedItem('review_id').value;
-    let favorite_id = event.target.id;
-    console.log(favorite_id);
-    let favorite_text = $.trim($('#' + favorite_id).html());
-    console.log(favorite_text);
-    if (favorite_text == 'favorite') {
-        $('#' + favorite_id).html('favorite_border');
-    } else {
-        $('#' + favorite_id).html('favorite');
-    }
+  const likeBtn = document.querySelector('#like-btn')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  
+  
 
-    $.ajax({
-        url: "/reviews/like/",
-        data: {
-          review_id: review_id,
-          favorite_text: favorite_text,
-          csrfmiddlewaretoken: "{{ csrf_token }}"
-        },
-        method: "POST",
-        success: function (data) {
-            console.log("성공");
-        },
-        error: function (request, status, error) {
-            console.log("에러");
-        },
-        complete: function () {
-            console.log("완료");
-        }
-    });
-});
+    console.log(likeBtn)
+    // (2) 좋아요 버튼을 클릭하면, 함수 실행
+    likeBtn.addEventListener('click', function (event) {3
+        let review_id = event.target.attributes.getNamedItem('review_id').value;
+        // 서버로 비동기 요청(axios)을 하고 싶음
+        event.preventDefault()
+        console.log(event.currentTarget.dataset.reviewId)
+        axios({
+            method: 'post',
+            url: `/reviews/${event.currentTarget.dataset.reviewId}/like/`,
+            headers: { 'X-CSRFToken': csrftoken },
+            review_id: review_id,
+           
+
+        })
+            .then(response => {
+                console.log(response)
+                console.log(response.data)
+                const likeReview = document.querySelector('#like-btn > button > i')
+                likeReview.classList.toggle('bi-heart')
+                likeReview.classList.toggle('bi-heart-fill')
+                // 다음 주석 처리한 내용과 동일
+                // if (response.data.isLiked === true) {
+                //     event.target.classList.add('bi-heart-fill')
+                //     event.target.classList.remove('bi-heart')
+                // } else {
+                //     event.target.classList.add('bi-heart')
+                //     event.target.classList.remove('bi-heart-fill')
+                // }
+                const likeCount = document.querySelector('#review-like-user-cnt')
+                likeCount.innerText = response.data.likeCount
+            })
+    })
 
 
   $(".upload_reply").click(function (event) {
@@ -183,8 +199,8 @@
       success: function (data) {
           console.log("성공");
           alert("댓글 성공");
-          $("#reply_list_" +review_id).append('csrfmiddlewaretoken', "<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>", "{{ csrf_token }}")
-          {#location.replace('/');#}
+          $("#reply_list_" +review_id).append( "<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>")
+          {location.replace('');}
           
 
       },

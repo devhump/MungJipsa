@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
-from .views import ToggleLike
+from .views import SearchFormView
+
 
 # Create your views here.
 
@@ -25,6 +26,6 @@ urlpatterns = [
         views.comment_delete,
         name="comment_delete",
     ),
-    path("like/", ToggleLike.as_view()),
-    # 해시태그
+    path("<int:pk>/like/", views.like, name="like"),
+    path("search/", views.SearchFormView.as_view(), name="search"),
 ]
