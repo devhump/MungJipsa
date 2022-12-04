@@ -56,6 +56,11 @@ GENDER_CHOICES = (
     ("암컷", "암컷"),
 )
 
+NEUTERED_CHOICES = (
+    ("O", "O"),
+    ("X", "X"),
+    ("?", "?"),
+)
 
 class Dog(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -68,9 +73,10 @@ class Dog(models.Model):
         upload_to="images/dogphoto/",
     )
     gender = models.CharField(max_length=255, choices=GENDER_CHOICES)
-    neutered = models.BooleanField(default=False)
-    age = models.PositiveIntegerField(default=0)
+    neutered = models.CharField(max_length=255, choices=NEUTERED_CHOICES)
+    age = models.PositiveIntegerField(default=1)
 
     # 체크박스로 변경 고민중
     personality = models.CharField(max_length=255)
     dogtype = models.CharField(max_length=255, choices=DOGTYPE_CHOICES)
+    
