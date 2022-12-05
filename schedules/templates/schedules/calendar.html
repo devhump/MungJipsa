@@ -74,19 +74,20 @@
             <p class="">{{ user.username }}</p>
             <p class="">강아지 이름</p>
         </span>
-            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>
-            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> All</a>
+      </div>
+      <div class="nav2_link">
+        <span>
+            <a class="mx-1" href="{% url 'schedules:calendar' %}">Calendar</a>
+            <a class="mx-1" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
+            <a class="mx-1" href="{% url 'schedules:all_events' %}">All</a>
         </span>
       </div>
     </header>
   </div>
-  <div class="app-content">
+  <div class="app-content container">
     <div class="app-title">
     <div>
         <h1><i class="fa fa-calendar"></i> Calendar</h1>
-        <p>Event Calendar</p>
     </div>
     <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><a href="#">Calendar</a></li>
@@ -104,8 +105,8 @@
               <div class="modal fade show" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
-                          <div class="modal-header bg-primary">
-                              <h5 class="modal-title text-white" id="exampleModalLongTitle">Add New Event</h5>
+                          <div class="modal-header" style="background-color:#544B44;">
+                              <h5 class="modal-title text-white" id="exampleModalLongTitle">일정 추가하기</h5>
                               <button id="modalClose1" type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                               </button>
@@ -114,25 +115,25 @@
                               {% csrf_token %}
                               <div class="modal-body">
                                   <div class="form-group">
-                                      <label for="recipient-name" class="col-form-label">Event Title:</label>
+                                      <label for="recipient-name" class="col-form-label">일정 이름:</label>
                                       {{ form.title }}
                                   </div>
                                   <div class="form-group">
-                                      <label for="message-text" class="col-form-label">Description:</label>
+                                      <label for="message-text" class="col-form-label">일정 내용:</label>
                                       {{ form.description }}
                                   </div>
                                   <div class="form-group">
-                                      <label for="message-text" class="col-form-label">Start Date:</label>
+                                      <label for="message-text" class="col-form-label">시작 날짜/시간:</label>
                                       {{ form.start_time }}
                                   </div>
                                   <div class="form-group">
-                                      <label for="message-text" class="col-form-label">End Date:</label>
+                                      <label for="message-text" class="col-form-label">종료 날짜/시간:</label>
                                       {{ form.end_time }}
                                   </div>
                               </div>
                               <div class="modal-footer">
-                                  <button id="modalClose2" type="button" class="btn btn-danger">Close</button>
-                                  <button type="submit" class="btn btn-primary">Save</button>
+                                  <button id="modalClose2" type="button" class="btn btn-danger">닫기</button>
+                                  <button type="submit" class="btn btn-primary">저장</button>
                               </div>
                           </form>
                       </div>
@@ -141,15 +142,16 @@
               <!-- 진행중 이벤트 모음 -->
               <div class="col-md-3">
                 <div id="external-events">
-                    <h4 class="mb-4">Running Events</h4>
+                    <h4 class="mb-4">진행 예정 일정</h4>
                     {% for event in events_month %}
                       <div class="fc-event">
-                          <h3>{{ event.title }}</h3>
-                          <p>From: {{ event.start_time }}</p>
-                          <p>To: {{ event.end_time }}</p>
+                          <span><span style="font-size: 1.5rem;">"{{ event.title }}" </span><span style="font-size: 1rem;">일정은</span></span>
+                          <p>{{ event.start_time }}부터</p>
+                          <p>{{ event.end_time }}까지<br>입니다.</p>
+                          
                       </div>
                     {% empty %}
-                      <p>No Running Events Found</p>
+                      <p>일정이 없어요 ㅠㅠ</p>
                     {% endfor %}
                 </div>
             </div>
