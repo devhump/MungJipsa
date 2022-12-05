@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <!-- CSS -->
-  <link href="{% static 'CSS/main.css' %}" rel="stylesheet"/>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
   <style>
     .navback {
       background-color: #544B44;
@@ -64,17 +64,16 @@
   </div>
 </nav>
 <div>
-  <div class="app sidebar-mini">
+  <div class="nav">
     <!-- sub navbar-->
-    <header class="" style="background-color: black;">
-      <!-- Sidebar toggle button-->
-      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
-      <div class="app-sidebar__user">
+    <header class="nav2">
+      <div class="nav_div">
         <!-- 프로필 이미지 -->
-        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
+        {% comment %} <img class="nav2 navimg" src="{{ user.profile }}" alt="{{ user.username }}"> {% endcomment %}
         <span>
-            <p class="">유저 아이디</p>
+            <p class="">{{ user.username }}</p>
             <p class="">강아지 이름</p>
+        </span>
             <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
             <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
             <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>

@@ -20,16 +20,16 @@
       <div class="d-flex">
         {% if request.user.is_authenticated %}
           <li class="nav-item me-4 nav1-text">
-            {% comment %} <a class="nav-link" href="{% url 'accounts:mypage' %}">{{ request.user }}</a> {% endcomment %} MY PAGE
+            <a class="nav-link" href="{% url 'accounts:index' %}">{{ request.user }}</a>
           </li>
-          <li class="nav-item nav1-text">
-            {% comment %} <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a> {% endcomment %} LOGOUT
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
           </li>
         {% else %}
           <li class="nav-item me-4 nav1-text">
             <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
           </li>
-          <li class="nav-item nav1-text">
+          <li class="nav-item me-4 nav1-text">
             <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
           </li>
         {% endif %}
