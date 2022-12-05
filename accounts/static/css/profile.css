@@ -1,32 +1,3 @@
-.tab-container {
-  width: 100%;
-}
-
-/* 개인정보 글자 부분 */
-.info-letter {
-  display: flex;
-  flex-direction: column;
-  margin-left: 2.5rem;
-}
-
-.info-upper {
-  align-items: center;
-  display: flex;
-}
-
-/* 메뉴 탭*/
-.personal-tabs {
-  align-items: center;
-  border-top: 0.1rem solid #E3B57E;
-  border-bottom: 0.1rem solid #E3B57E;
-  display: flex;
-  height: 3rem;
-  justify-content: space-around;
-  margin: 0;
-  padding: 0.3rem 0;
-  width: 100%;
-}
-
 /* 메뉴 안에 내용이 없을 경우 */
 .no-contents {
   color: #E3B57E;
@@ -61,4 +32,7 @@
   justify-content: space-around;
 }
 
-
+/* 프로필 사진 radious */
+.radious {
+  border-radius: 50%;
+}

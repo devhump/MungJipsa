@@ -5,36 +5,20 @@
     <link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
 {% endblock css %}
 {% block content %}
+
+
     <!-- MY PAGE -->
     <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
         <div class="d-flex mt-3"> 
             <div>
             {% if user.profile %}
-            <img class="d-flex" src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
+            <img class="d-flex " src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
             {% else %}
             <img src="https://dummyimage.com/50x50" alt="기본 프로필 사진"/>
             {% endif %}
             </div>
             <p>{{ user.username }}</p>
         </div>
-        <div class="d-flex mt-3"> 
-            <div>
-            {% if user.dog_set.all %}
-                {% for dog in user.dog_set.all %}
-                
-                    {% if dog.dogphoto %}
-                    <img class="d-flex" src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진"/>
-                    {% else %}
-                    <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진"/>
-                    {% endif %}
-                    <p>{{ dog.name }}</p>
-                {% endfor %}
-            {% else %}
-                <p>등록된 강아지 정보가 없어요ㅠㅠ</p>
-            {% endif %}
-            </div>
-        </div>
-
             <!-- 팔로우 -->
             {% if request.user.is_authenticated and user != request.user %}
                 <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex">
@@ -61,10 +45,11 @@
             
             <!-- 기타 버튼 -->
             <div class="text-end mb-5">
-                <div class="text-end mb-5">
+                    {% if request.user == user %}
                     <a class="btn btn-primary" href="{% url 'accounts:update' user.pk %}">회원 정보 수정</a>
-                    <a class="btn btn-primary" href="{% url 'accounts:dogupdate' %}">강아지 정보 수정</a>
                     <a class="btn btn-primary" href="{% url 'accounts:dogsignup' %}">강아지 등록</a>
+                    {% endif %}
+                    <a class="btn btn-primary" href="{% url 'accounts:dogprofile' user.pk %}">강아지 프로필</a>
                     <a class="btn btn-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
                     <a class="btn btn-primary" href="{% url 'accounts:index' %}">뒤로가기</a>
                     <a class="btn btn-secondary"href="{% url 'accounts:delete' %}" >회원탈퇴</a>
@@ -72,7 +57,7 @@
             <!--임시 메뉴 -->
             <ul class="nav nav-tabs profilemenu">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#qwe">즐겨찾기</a>
+                    <a class="nav-link active" data-toggle="tab" href="#qwe">MY 강아지</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#asd">MY 작성글</a>
@@ -81,10 +66,31 @@
                     <a class="nav-link" data-toggle="tab" href="#zxc">MY 댓글</a>
                 </li>
             </ul>
-            <!-- 임시 메뉴 내용 -->
+            <!-- 메뉴 내용 -->
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="qwe">
-                    <p>즐겨찾기 x</p>
+                    <p>
+                        <div class="d-flex mt-3 "> 
+                            <div>
+                                <ul class = "d-flex">
+                            {% if user.dog_set.all %}
+                                {% for dog in user.dog_set.all %}
+                                    {% if dog.dogphoto %}
+                                    <img class="d-flex row col-1 doglist" src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진"/>
+                                    {% else %}
+                                    <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진"/>
+                                    {% endif %}
+                                    
+                                    <p class="m-3">{{ dog.name }} <a class="btn btn-primary" href="{% url 'accounts:dogupdate' dog.pk %}">강아지 정보 수정</a></p>
+                                    
+                                {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>등록된 강아지 정보가 없어요ㅠㅠ</p>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </p>
                 </div>
                 <div class="tab-pane fade" id="asd">
                     <p>작성글 x</p>
