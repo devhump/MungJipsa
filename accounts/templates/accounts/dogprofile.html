@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+{% endblock css %} {% block content %}
+<!-- MY PAGE -->
+<!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
+<div class="d-flex mt-3">
+  <div>
+    {% if dog.profile %}
+    <img
+      class="d-flex"
+      src="{{ dog.profile.url }}"
+      alt="직접 설정해둔 프로필 사진"
+    />
+    {% else %}
+    <img src="https://dummyimage.com/50x50" alt="기본 프로필 사진" />
+    {% endif %}
+  </div>
+  <p>{{ dog.name }}</p>
+</div>
+<div class="d-flex mt-3">
+  <div>
+    {% if user.dog_set.all %} {% for dog in user.dog_set.all %} {% if
+    dog.dogphoto %}
+    <img
+      class="d-flex"
+      src="{{ dog.dogphoto.url }}"
+      alt="직접 설정해둔 강아지 사진"
+    />
+    {% else %}
+    <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진" />
+    {% endif %}
+    <p>{{ dog.name }}</p>
+    {% endfor %} {% else %}
+    <p>등록된 강아지 정보가 없어요ㅠㅠ</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 기타 버튼 -->
+<div class="text-end mb-5">
+  <div class="text-end mb-5">
+    <a class="btn btn-primary" href="{% url 'accounts:dogupdate' %}"
+      >강아지 정보 수정</a
+    >
+    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
+    <a class="btn btn-primary" href="{% url 'accounts:index' %}">뒤로가기</a>
+    <a class="btn btn-secondary" href="{% url 'accounts:dogdelete' %}"
+      >강아지 등록 취소</a
+    >
+  </div>
+</div>

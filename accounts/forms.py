@@ -39,12 +39,6 @@ class CustomUserChangeForm(UserChangeForm):
             "profile": "사진",
         }
 
-    # def clean_email(self):
-    #     email = self.cleaned_data["email"]
-    #     if len(get_user_model().objects.filter(email=email)) >= 2:
-    #         raise ValidationError("중복된 이메일이 있습니다.")
-    #     return
-
 
 class ProfileForm(forms.ModelForm):
     class Meta:
@@ -79,9 +73,7 @@ class DogForm(forms.ModelForm):
 
 class DogChangeForm(forms.ModelForm):
     class Meta:
-
         model = Dog
-
         fields = (
             "name",
             "dogphoto",
