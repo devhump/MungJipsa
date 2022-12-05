@@ -12098,3 +12098,8 @@ aside {
   top: 180px;
   text-align: center;
 }
+
+.enter {
+  text-decoration: none;
+  color: #c17f34;
+}
