@@ -70,6 +70,7 @@ body {
   line-height: 1.5;
   color: #c17f34;
   text-align: left;
+  display: flex;
   background-color: #544b44;
 }
 
@@ -12083,5 +12084,17 @@ textarea.form-control {
 }
 
 .banner {
-  border-radius: 50px;
+  border-radius: 5px;
+}
+
+aside {
+  float: right;
+  width: 150px;
+  background: transparent;
+}
+
+.floating {
+  position: relative;
+  top: 180px;
+  text-align: center;
 }
