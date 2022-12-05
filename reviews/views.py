@@ -13,6 +13,11 @@ from django.db.models import Q
 # 멍스타그렘
 def index(request):
     reviews = Review.objects.all()
+    search = request.GET.get("search")
+    if search:
+        reviews = reviews.filter(
+            Q(title__icontains=search) | Q(content__icontains=search)
+        )
 
     comment_form = CommentForm()
     page = request.GET.get("page", "1")
@@ -23,6 +28,7 @@ def index(request):
         "posts": posts,
         "reviews": reviews,
         "comment_form": comment_form,
+        "search": search,
     }
     return render(request, "reviews/index.html", context)
 
@@ -156,7 +162,7 @@ def like(request, pk):
         review.like_users.add(request.user)
         is_liked = True
         # 상세 페이지로 redirect
-    context = {"isLiked": is_liked, "likeCount": review.like_users.count()}
+    context = {"is_liked": is_liked, "likeCount": review.like_users.count()}
     return JsonResponse(context)
 
 
@@ -168,9 +174,7 @@ class SearchFormView(FormView):
     def form_valid(self, form):
         searchWord = form.cleaned_data["search_word"]
         post_list = Review.objects.filter(
-            Q(title__icontains=searchWord)
-            | Q(comment__icontains=searchWord)
-            | Q(content__icontains=searchWord)
+            Q(title__icontains=searchWord) | Q(content__icontains=searchWord)
         ).distinct()
 
         context = {}
@@ -179,3 +183,29 @@ class SearchFormView(FormView):
         context["object_list"] = post_list
 
         return render(self.request, self.template_name, context)
+
+
+# 댓글 좋아요
+def likes(request, pk, comment_pk):
+    review = Review.objects.get(pk=pk)
+    if request.user.is_authenticated:
+        comment = Comment.objects.get(pk=comment_pk)
+        if request.user in comment.like_users.all():
+            comment.like_users.remove(request.user)
+            is_liked = False
+
+            comment.user.save()
+
+        else:
+            comment.like_users.add(request.user)
+            is_liked = True
+
+            comment.user.save()
+        context = {
+            "is_liked": is_liked,
+            "likeCount": comment.like_users.count(),
+        }
+        return JsonResponse(context)
+
+
+#
