@@ -43,6 +43,7 @@ def search(request, x, y):
             "latitude": park.latitude,
             "longitude": park.longitude,
             "park_pk": park.pk,
+            "address": park.address,
         }
 
         parksJson.append(temp)

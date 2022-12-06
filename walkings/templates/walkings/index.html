@@ -101,11 +101,7 @@
     maximumAge: 0
   };
   
-  function clickListener(map, marker, infowindow) {
-    return function () {
-      infowindow.open(map, marker);
-    };
-  }
+  
 
   // 마커 이미지의 이미지 크기 입니다
   var imageSrc = "/static/images/442dog_100700.png";
@@ -145,43 +141,79 @@
         var parksJson = response.data.parksJson
         
 
-        for (var i = 0; i < parksJson.length; i++) {
+        for (let i = 0; i < parksJson.length; i++) {
+          var data = parksJson[i]
+          displayMarker(data)
+        }
 
+        function displayMarker(data) {
           // 마커 이미지를 생성합니다    
           var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
         
           // 마커를 생성합니다
           var marker = new kakao.maps.Marker({
             map: map, // 마커를 표시할 지도
-            position: new kakao.maps.LatLng(parksJson[i].latitude, parksJson[i].longitude), // 마커를 표시할 위치
-            title: parksJson[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+            position: new kakao.maps.LatLng(data.latitude, data.longitude), // 마커를 표시할 위치
             image: markerImage, // 마커 이미지
             clickable: true,
           });
         
-        
-          var iwContent = `
-          <div>${parksJson[i].parkName}<div>
-          <button onclick=pick_park(this) class="btn" data-parkname=${parksJson[i].parkName} data-park-id=${parksJson[i].park_pk}>같이 산책하기</button>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-            iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-        
-          var infowindow = new kakao.maps.InfoWindow({
-            content: iwContent,
-            removable: iwRemoveable
-          });
+          var overlay = new kakao.maps.CustomOverlay({
+            yAnchor: 1.3,
+            position: marker.getPosition(),
+          })
+          // 커스텀 오버레이에 표시할 컨텐츠 입니다
+          // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+          // 별도의 이벤트 메소드를 제공하지 않습니다 
+
+          var overlayContent = document.createElement('div')
+          overlayContent.classList.add('wrap');
+
+          var overlayInfo = document.createElement('div')
+          overlayInfo.classList.add('info');
+
+          var overlayTitle = document.createElement('div')
+          overlayTitle.classList.add('title')
+          overlayTitle.innerText = data.parkName
+
+          var closeBtn = document.createElement('div')
+          closeBtn.classList.add('close')
+          closeBtn.onclick = function(){
+            overlay.setMap(null)
+          }
 
 
-        
-          // 마커에 클릭이벤트를 등록합니다
-          kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
-        
+          var overlayBody = document.createElement('div')
+          overlayBody.classList.add('body')
+
+          var overlayBodyContent = document.createElement('p')
+          overlayBodyContent.innerText = data.address
+
+          var choiceBtn = document.createElement('button')
+          choiceBtn.classList.add('btn')
+          choiceBtn.innerHTML = '<i class="bi bi-pin-map-fill"></i>같이 산책하기'
+          choiceBtn.setAttribute('data-parkname', `${data.parkName}`)
+          choiceBtn.setAttribute('data-park-id', `${data.park_pk}`)
+          choiceBtn.setAttribute('onclick', 'pick_park(this)')
+
+          overlayTitle.append(closeBtn)
+          overlayBody.append(overlayBodyContent, choiceBtn)
+          overlayInfo.append(overlayTitle, overlayBody)
+          overlayContent.append(overlayInfo)
+
+          overlay.setContent(overlayContent)            
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+              overlay.setMap(map)
+            })
 
         }// 마커 반복문 종료
       
       })
 
   }
-  
+
+
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
