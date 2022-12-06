@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Hospital, Deserted
+from .models import Hospital, Deserted, PetPlace, PetPlaceSlideImage, PetPlaceBodyImage
 from django.core.paginator import Paginator
 from django.db.models import Q
 
@@ -112,3 +112,60 @@ def deserted_detail(request, pk):
     animal = Deserted.objects.get(pk=pk)
     context = {"animal": animal}
     return render(request, "info/deserted_detail.html", context)
+
+
+def place(request):
+    places = PetPlace.objects.all()
+    slideimages = PetPlaceSlideImage.objects.all()
+    bodyimages = PetPlaceBodyImage.objects.all()
+
+    search = request.GET.get("search")
+    areaSearch = request.GET.get("areaSearch")
+    if not areaSearch:
+        areaSearch = "전국"
+    if areaSearch == "전국":
+        areaSearch = ""
+
+    if search:
+        places = places.filter(Q(name__icontains=search) | Q(address__icontains=search))
+        places = places.filter(Q(address__icontains=areaSearch))
+    else:
+        search = ""
+        places = places.filter(Q(address__icontains=areaSearch))
+    paginator = Paginator(places, 12)
+    page = request.GET.get("page")
+    posts = paginator.get_page(page)
+
+    context = {
+        "searchval": search,
+        "areaval": areaSearch,
+        "places": places,
+        "posts": posts,
+        "paginator": paginator,
+        "slideimages": slideimages,
+        "bodyimages": bodyimages,
+    }
+
+    if page:
+        leftIndex = int(page) - 3
+        if leftIndex < 1:
+            leftIndex = 1
+
+        rightIndex = int(page) + 3
+        if rightIndex > paginator.num_pages:
+            rightIndex = paginator.num_pages
+
+        custom_range = range(leftIndex, rightIndex + 1)
+
+        context = {
+            "searchval": search,
+            "areaval": areaSearch,
+            "animals": places,
+            "posts": posts,
+            "paginator": paginator,
+            "custom_range": custom_range,
+            "slideimages": slideimages,
+            "bodyimages": bodyimages,
+        }
+
+    return render(request, "info/place_index.html", context)
