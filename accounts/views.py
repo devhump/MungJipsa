@@ -11,7 +11,7 @@ from django.views.decorators.http import (
     require_http_methods,
     require_POST,
 )
-
+from django.http import JsonResponse
 
 
 def index(request):
@@ -134,14 +134,14 @@ def follow(request, username):
     if user != request.user:
         if user.followers.filter(username=request.user.username).exists():
             user.followers.remove(request.user)
-            # is_followed = False
+            is_followed = False
         else:
             user.followers.add(request.user)
-            # is_followed = True
+            is_followed = True
         # context = {
-        #     "is_followed": is_followed,
-        #     "followersCount": user.followers.all().count(),
-        #     "followingsCount": user.followings.all().count(),
+        # "is_followed": is_followed,
+        # "followersCount": user.followers.all().count(),
+        # "followingsCount": user.followings.all().count(),
         # }
         # return JsonResponse(context)
     return redirect("accounts:profile", user.username)
@@ -164,18 +164,17 @@ def dogsignup(request):
 
 @login_required
 def dogdelete(request):
-    request.user.delete() 
+    request.dog.delete()
     messages.success(request, "등록 취소 완료")
     return redirect("accounts:index")
 
 
-
 @login_required
-def dogupdate(request,dog_pk):
+def dogupdate(request, dog_pk):
     dog = Dog.objects.get(pk=dog_pk)
     if request.method == "POST":
         form = DogChangeForm(request.POST, request.FILES, instance=dog)
-        if form.is_valid() and dog.user == request.user: 
+        if form.is_valid() and dog.user == request.user:
             form.save()
             return redirect("accounts:profile", dog.user)
     else:
@@ -187,7 +186,7 @@ def dogupdate(request,dog_pk):
 
 
 @login_required
-def dogprofile(request):
-    return render(request, "accounts/dogprofile.html")
-
-
+def dogprofile(request, dog_pk):
+    dog = Dog.objects.get(pk=dog_pk)
+    context = {"dog": dog}
+    return render(request, "accounts/dogprofile.html", context)
