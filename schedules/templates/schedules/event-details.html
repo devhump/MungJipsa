@@ -4,41 +4,37 @@
   <link href="{% static 'css/main.css' %}" rel="stylesheet"/>
 {% endblock css %}
 {% block content %}
-<div class="app sidebar-mini">
-    <!-- sub navbar-->
-    <header class="" style="background-color: black;">
-      <!-- Sidebar toggle button-->
-      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
-      <div class="app-sidebar__user">
-        <!-- 프로필 이미지 -->
-        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
-        <span>
-            <p class="">유저 아이디</p>
-            <p class="">강아지 이름</p>
-            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> 진행중인 일정</a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> 다가오는 일정</a>
-            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> 모든 일정</a>
-        </span>
-      </div>
-    </header>
-  </div>
+<div class="nav">
+  <!-- sub navbar-->
+  <header class="nav2">
+    <div class="nav_div">
+      <!-- 프로필 이미지 -->
+      <a href="{% url 'accounts:profile' user.username %}"><img class="nav2 navimg" src="../../../../media/{{ user.profile }}" alt="{{ user.username }}"></a>
+      <span>
+          <a style="text-decoration: none; color: #544B44;" href="{% url 'accounts:profile' user.username %}"><p>{{ user.username }}</p></a>
+          <p>강아지 이름</p>
+      </span>
+    </div>
+    <div class="nav2_link">
+      <span>
+          <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:calendar' %}">달력</a>
+          <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i>다가오는 일정</a>
+          <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:all_events' %}">모든 일정</a>
+      </span>
+    </div>
+  </header>
+</div>
     <div class="container">
-        <div class="clearfix">
-            <a class="btn btn-primary left" href="{% url 'schedules:calendar' %}"> Calendar </a>
-            <a class="btn btn-info right mr-2" href="{% url 'schedules:event_edit' event.pk %}"> Edit Event </a>
-        </div>
-
-        <div class="clearfix">
+        <div class="clearfix mt-3">
             <h3>{{ event.title }}</h3>
-            <p>From <span style="color: gray;">{{ event.start_time }}</span> To <span style="color: gray;">{{ event.end_time }}</span></p>
+            <p>'<span style="color: gray;">{{ event.start_time }}</span>' 부터&nbsp&nbsp '<span style="color: gray;">{{ event.end_time }}</span>' 까지</p>
             <hr>
             <p>{{ event.description }}</p>
         </div>
         <hr>
         <div class="clearfix">
             <h4 class="left" > 일정을 함께할 동료 </h4>
-            <a class="btn btn-success right" href="{% url 'schedules:add_eventmember' event.id %}"> 같이할 친구 추가 </a>
+            <a class="btn btn-success right mb-2" href="{% url 'schedules:add_eventmember' event.id %}"> 같이할 친구 추가 </a>
         </div>
         <table class="table table-bordered">
             <thead>
@@ -54,16 +50,17 @@
                 {% for member in eventmember %}
                 <tr role="row">
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
                     <td>{{ member.user.username }}</td>
+                    <td>{{ member.user.dogname }}</td>
                     <td>{{ member.user.email }}</td>
                     <td>
-                        <a class="btn btn-danger" href="{% url 'schedules:remove_member' member.id %}">동료제거</a>
+                        <a class="btn btn-warning" href="{% url 'schedules:remove_member' member.id %}">동료제거</a>
                     </td>
                 </tr>
                 {% endfor %}
               </tbody>
         </table>
+        <a class="btn btn-primary right mr-2" href="{% url 'schedules:event_edit' event.pk %}"> Edit Event </a>
         <a class="btn btn-danger" href="{% url 'schedules:remove_event' event.id %}">일정삭제</a>
     </div>
 {% endblock %}
