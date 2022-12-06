@@ -1,8 +1,11 @@
-{% extends 'base.html' %} 
-{% load django_bootstrap5 %}
-{% load static %} 
-{% block content %} 
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} 
 
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% load socialaccount %} {% providers_media_js %}
+{% block content %}
+<a href="{% provider_login_url 'google' %}"> 구글 로그인</a>
+
+<a href="{% provider_login_url 'naver' %}"> 네이버 로그인</a>
 <div class="bg-effect">
   <form
     action="{% url 'accounts:login' %}"
@@ -17,4 +20,5 @@
     <button type="submit" class="login-button">로그인</button>
   </form>
 </div>
+
 {% endblock content %}

@@ -1,17 +1,12 @@
-{% extends 'base.html' %} {% load django_bootstrap5 %} {% block content %} {% load static %} {% load socialaccount %} 
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% block content %} {% load static %} 
 <div class="row text-center m-5">
- 
-    <title>네이버 로그인</title>
-    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-    </head>
-    <body>
+
+
+
   <!-- 회원인 경우 보이는 화면 -->
   <!-- 회원인 경우에만 강아지 등록 할 수 있게-->
   {% if user.is_authenticated %}
   <div>
-    <p class="offcanvas-title" id="offcanvasLightNavbarLabel">
       안녕하세요,
       <br />
       <a href="{% url 'accounts:profile' user %}" class="name"
@@ -28,29 +23,6 @@
 
   <!-- 회원이 아닌 경우 보이는 화면 -->
   {% else %}
-      <!-- 네이버 로그인 버튼 노출 영역 -->
-      <div id="naver_id_login"></div>
-      <!-- //네이버 로그인 버튼 노출 영역 -->
-      <script type="text/javascript">
-          var naver_id_login = new naver_id_login("gpcwpeugCYHsV7IfP6t5", "http://127.0.0.1:8000/accounts/naver/login/callback/");
-          var state = naver_id_login.getUniqState();
-          naver_id_login.setButton("white", 2,40);
-          naver_id_login.setDomain("http://127.0.0.1:8000");
-          naver_id_login.setState(state);
-          naver_id_login.setPopup();
-          naver_id_login.init_naver_id_login();
-          var naver_id_login = new naver_id_login("gpcwpeugCYHsV7IfP6t5", "http://127.0.0.1:8000/accounts/naver/login/callback/");
-          // 접근 토큰 값 출력
-          alert(naver_id_login.oauthParams.access_token);
-          // 네이버 사용자 프로필 조회
-          naver_id_login.get_naver_userprofile("naverSignInCallback()");
-          // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
-          function naverSignInCallback() {
-            alert(naver_id_login.getProfileData('email'));
-            alert(naver_id_login.getProfileData('nickname'));
-            alert(naver_id_login.getProfileData('age'));
-          }
-      </script>
   <div>
     <a class="" href="{% url 'accounts:login' %}">로그인</a>
     <p class="mt-5">회원이 아니신가요?</p>

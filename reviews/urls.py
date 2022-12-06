@@ -26,6 +26,10 @@ urlpatterns = [
         views.comment_delete,
         name="comment_delete",
     ),
+    # 리뷰 글 좋아요
     path("<int:pk>/like/", views.like, name="like"),
+    # 검색
     path("search/", views.SearchFormView.as_view(), name="search"),
+    # 댓글 좋아요
+    path("<int:pk>/<int:comment_pk>/likes/", views.likes, name="likes"),
 ]

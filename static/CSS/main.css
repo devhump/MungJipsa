@@ -24,6 +24,11 @@
   border-radius: 15px;
 }
 
+.nav2_link {
+  text-decoration: none;
+  color: #544B44;
+}
+
 .nav2_lst {
   list-style: none;
   color: #544B44;

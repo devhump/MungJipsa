@@ -4,36 +4,32 @@
 <div class="container mt-3">
   <section class="map_form-area d-flex">
     <div id="map" style="width:60%;height:350px;"></div>
-    <div class="form-area d-flex" style="width:40%;">
+    
+    <div class="form-area d-flex" style="margin: 2rem; width:40%;">
       <div class="row">
-        <form id="location-form" action="">
-          <input id="address" type="text">
-          <input type="submit">
-        </form> 
+        {% comment %} <form id="location-form" action="" style="width:60%;">
+            <input id="address" class="form-control" type="text" style="">
+            <input class="" type="submit" value="찾기" style="">
+        </form>  {% endcomment %}
         <P>주최자 : {{ request.user.username }}</P>
-        <P>멍멍이 이름 : 
-          <span>
-          {% for dog in user_dogs %}
-            {{ dog.name }},
-          {% endfor %}
-          </span></P>
-        <form id="walking_form" class="" method="post" style="margin: 5rem; width:60%;" >
+        <form action="{% url 'walkings:create2' %}" id="walking_form" class="" method="post" style="width:60%;" >
           {% csrf_token %}
           <div>
-            <p id="park_location"></p>
+            <p id="park_location">공원명</p>
+            <input id="walk_location" type='text' name='park_pk' style="display: none;">
             <label for="walk_title">모임명</label>
-            <input id="walk_title" type='text' name='title'>
+            <input id="walk_title" class="form-control" type='text' name='title'>
           </div>
           <div>
             <label for="walk_date">모임날짜</label>
-            <input id="walk_date" type='datetime-local' name="datetime" >
+            <input id="walk_date" class="form-control" type='datetime-local' name="datetime" >
           </div>
           <div>
             <label for="walk_cnt">인원수</label>
-            <input id="walk_cnt" type="number" name="membercnt" min="2" max="5">
+            <input id="walk_cnt" class="form-control" type="number" name="membercnt" min="2" max="5">
           </div>
           <div>
-            <input id="walk_form_btn" type="submit" onclick="w_create(this)">
+            <input id="walk_form_btn" class="btn btn-outline-primary" type="submit" onclick="">
           </div>
         </form>
       </div>
@@ -44,22 +40,25 @@
     {% for dogr in dogroups %}
       <div class="card col-5 mx-2 mt-2" style="">
         <div class="card-body">
-          <h5 class="card-title">제목: {{dogr.title}}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
-          <p class="card-text">{{dogr.user.username}}</p>
-          <p class="card-text">{{dogr.dog.name}}</p>
-          {% if request.user.is_authenticated %}
-            {% if dogr.user != request.user %}
-              {% if request.user in dogr.join.all  %}
-                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소하기</a>
+          <h5 class="card-title"><img src="{{ dogr.user.profile.url }}" alt="" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+            {{dogr.title}}</h5>
+          <hr>
+          <p class="card-text"> 위치: {{ dogr.park.address}}</p>
+          <h6 class="card-subtitle mb-2 text-muted text-end">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
+          <div class="float-end">
+            {% if request.user.is_authenticated %}
+              {% if dogr.user != request.user %}
+                {% if request.user in dogr.join.all  %}
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소하기</a>
+                {% else %}
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+                {% endif %}
               {% else %}
-                <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+                <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-danger card-link">삭제하기</a>
               {% endif %}
-            {% else %}
-              <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-danger card-link">삭제하기</a>
             {% endif %}
-          {% endif %}
-          <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>
+            <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>
+          </div>
         </div>
       </div>
     {% endfor %}
@@ -74,6 +73,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5002adb5652b8017c76603959cbbf663&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
   const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -141,7 +141,7 @@
         
           var iwContent = `
           <div>${parksJson[i].parkName}<div>
-          <button onclick=pick_park(this) data-park-id=${parksJson[i].park_pk}>같이 산책하기</button>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          <button onclick=pick_park(this) class="btn" data-parkname=${parksJson[i].parkName} data-park-id=${parksJson[i].park_pk}>같이 산책하기</button>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
             iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
         
           var infowindow = new kakao.maps.InfoWindow({
@@ -152,16 +152,7 @@
           // 마커에 클릭이벤트를 등록합니다
           kakao.maps.event.addListener(marker, 'click', clickListener(map, marker, infowindow));
         
-          function pick_park(e) {
-            console.log("공원이름 바꾸기 실행")
-            const park_location = document.querySelector('#park_location')
-            park_location.innerText = '공원이름:' + event.target.dataset.parkId
-            park_location.setAttribute('park-id', `${event.target.dataset.parkId} `)
-            const walking_form = document.querySelector('#walking_form')
-            walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
-            const walk_form_btn = document.querySelector('#walk_form_btn')
-            walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
-          }
+
         }
       
       })
@@ -172,6 +163,36 @@
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
   
+  function pick_park(e) {
+    console.log("공원이름 바꾸기 실행")
+    const park_location = document.querySelector('#park_location')
+    park_location.innerText = '공원이름:' + event.target.dataset.parkname
+    park_location.setAttribute('park-id', `${event.target.dataset.parkId} `)
+    const walk_location = document.querySelector('#walk_location')
+    walk_location.setAttribute('value', `${event.target.dataset.parkId}`)
+    const walking_form = document.querySelector('#walking_form')
+    walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
+    const walk_form_btn = document.querySelector('#walk_form_btn')
+    walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
+  }
+
+  function w_create(e) {
+    console.log("산책 약속 잡기 실행")
+    const walking_form = document.querySelector('#walking_form')
+    event.preventDefault();
+    axios({
+      method: 'post',
+      url: `/walkings/create/${event.target.dataset.parkId}`,
+      headers: { 'X-CSRFToken': csrftoken },
+      data: new FormData(walking_form)
+    })
+    .then(response => {
+      console.log(response.data)
+      const dogroup_data = (response.data.dogroup_data)
+      console.log(dogroup_data)
+    })
+  }
+
   navigator.geolocation.getCurrentPosition(success, error, options);
   
 

@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import CustomUserCreationForm, CustomUserChangeForm, DogForm, DogChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
-from django.http import JsonResponse
 from .models import Dog
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -12,8 +11,7 @@ from django.views.decorators.http import (
     require_http_methods,
     require_POST,
 )
-from django.http import JsonResponse
-import json
+
 
 
 def index(request):
@@ -38,20 +36,6 @@ def signup(request):
         form = CustomUserCreationForm()
     context = {"form": form}
     return render(request, "accounts/signup.html", context)
-
-
-def dogsignup(request):
-    if request.method == "POST":
-        forms = DogForm(request.POST, request.FILES)
-        if forms.is_valid():
-            forms = forms.save(commit=False)
-            forms.user = request.user
-            forms.save()
-            return redirect("accounts:index")
-    else:
-        forms = DogForm()
-    context = {"forms": forms}
-    return render(request, "accounts/dogsignup.html", context)
 
 
 def login(request):
@@ -132,7 +116,6 @@ def update(request, pk):
             form.save()
             messages.success(request, "프로필 정보가 성공적으로 변경되었습니다.")
             return redirect("accounts:index")
-
     else:
         form = CustomUserChangeForm(instance=request.user)
     context = {
@@ -164,52 +147,47 @@ def follow(request, username):
     return redirect("accounts:profile", user.username)
 
 
-def database_naver(request):
-    jsonObject = json.loads(request.body)
-    username = list(jsonObject.get("email").split("@"))[0] + "_naver"
-
-    users = get_user_model().objects.filter(username=username)
-    if users:
-        user = get_user_model().objects.get(username=username)
-        auth_login(request, user)
-
+@login_required
+def dogsignup(request):
+    if request.method == "POST":
+        forms = DogForm(request.POST, request.FILES)
+        if forms.is_valid():
+            forms = forms.save(commit=False)
+            forms.user = request.user
+            forms.save()
+            return redirect("accounts:index")
     else:
-        user = get_user_model()()
-        user.username = list(jsonObject.get("email").split("@"))[0] + "_naver"
-
-        user.nickname = jsonObject.get("name")
-        user.email = jsonObject.get("email")
-        user.save()
-        user = get_user_model().objects.get(username=username)
-        auth_login(request, user)
-    return JsonResponse({"username": user.username, "email": user.email})
-
-
-def callback(request):
-    return render(request, "accounts/callback.html")
+        forms = DogForm()
+    context = {"forms": forms}
+    return render(request, "accounts/dogsignup.html", context)
 
 
 @login_required
 def dogdelete(request):
-    request.user.dogdelete()
-    auth_logout(request)
+    request.user.delete() 
     messages.success(request, "등록 취소 완료")
     return redirect("accounts:index")
 
 
-@login_required
-@require_http_methods(["GET", "POST"])
-def dogupdate(request):
-    dog = Dog.objects.all
-    if request.method == "POST":
-        form = DogChangeForm(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect("accounts:index")
 
+@login_required
+def dogupdate(request,dog_pk):
+    dog = Dog.objects.get(pk=dog_pk)
+    if request.method == "POST":
+        form = DogChangeForm(request.POST, request.FILES, instance=dog)
+        if form.is_valid() and dog.user == request.user: 
+            form.save()
+            return redirect("accounts:profile", dog.user)
     else:
-        form = DogChangeForm(instance=request.user)
+        form = DogChangeForm(instance=dog)
     context = {
         "form": form,
     }
     return render(request, "accounts/dogupdate.html", context)
+
+
+@login_required
+def dogprofile(request):
+    return render(request, "accounts/dogprofile.html")
+
+

@@ -28,6 +28,9 @@ class Comment(models.Model):
     )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="like_comments"
+    )
 
 
 def get_image_filename(instance, filename):
