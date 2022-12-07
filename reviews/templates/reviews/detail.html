@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-
+{% load humanize %}
 {% block content %}
 
 {% block css %}
@@ -9,104 +9,153 @@
 
 
 {% endblock css %}
+<style>
+.review_delete button{
+  width: 20%;
+  margin-top: 0px;
+  border-radius: 50px;
+  padding: 30px 40px;
+  background: #fff;
+  item-align :center;
+  font-size: 35px;
+  margin-left: 10px;
+  display: inline-block;
+  border: 1px solid #ddd;
 
-<div>
-    <!-- 아이템 이름 -->
-    <div class='container'>
-        <h2 class='text-center mb-5'> {{ review.title }}</h2>
-        
-        <!-- 사용자 이름 프로필 구현  -->
-        <h4  class='mb-5'> {{ review.user.username }}</h4>
-     
-     
-       
-        <!-- 리뷰 이미지 있으면 -->
+  }
+</style> 
 
-        {% if review.image %}
-        {% for i in review.image.all %}
-            <img src="{{ i.image.url }}" /><br />
 
-            {% endfor %}
-        {% endif %}
+<div class='container center' style='position:absolute; left:15%; top:30%; '>
+  <div style="display: flex; justify-content: center; item-align-center" >
+    <div style=" width: 500px; height: 500px">
+      왼쪽화면
+      {% if review.image %}
+      <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide " data-ride="carousel" style="width: 100% padding-bottom: 100%;">
+        <div class="carousel-inner bg-dark"  style='width : 100%; height : 80% ; overflow: hidde' >
+          {% for photo in review.image.all %}
+    
+            <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style='width : 100%; height : 50%;'>
+              <img class='carousel-image ' src="{{ photo.image.url }}" alt="" style=' width : 100%; height : 200%;' >
+            </div>
+          {% endfor %}
+          
+    
+        </div>
+    
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
 
-      
-        
-        
-        <!-- 리뷰 내용 -->
-        <p id="review-content" class="me-3-5 mt-3 text-break" >{{ review.content }}</p>
-
-        {% if request.user == review.user %}
-        <div class=' mt-2 d-flex'>
+      {% endif %}
+      {% if request.user == review.user %}
+        <div class='review_delete mt-2 d-flex' >
             {% comment %} 요청한 user가 리뷰를 작성한 user일 경우에 수정 및 삭제{% endcomment %}
             <p>
-                <button type="button" class="btn btn-warning me-2">
+                <button type="button" class="" style=''>
                     <a href="{% url 'reviews:update' review.pk %}" style='text-decoration:none; color:white'
-                        class='fw-bolder'>수정하기</a>
+                        class='fw-bolder'><i class="bi bi-pencil-square " style='color : black'></i></a>
                 </button>
             </p>
-            <p>
+            <p class='review_delete'>
             <form action="{% url 'reviews:delete' review.pk %}" method="POST">
                 {% csrf_token %}
-                <input type="submit" class="btn btn-danger fw-bolder" value="삭제하기">
+                <button type="submit" class="" style='color : gray'>
+                  <i class="bi bi-trash"></i>
+                </button>
             </form>
             </p>
             
         </div>
         {% endif %}
-        <!-- 댓글 -->
-        <h4>댓글</h4>
-        {% if request.user.is_authenticated %}
-        <form action="{% url 'reviews:comment_create' review.pk %}" method="POST">
-            {% csrf_token %}
-            {% bootstrap_form comment_form layout='inline'%}
-            <input type="submit" value="작성" class="btn btn-primary">
-        </form>
-        {% endif %}
-        <!-- 댓글 순서대로 출력 -->
-        {% for comment in comments %}
-        <div class='py-3'>
-            <div id="review-content" class="me-3-5 mt-3 text-break align-items-center" >
-                {{ comment.user.username }} : {{ comment.content }}
-                <small class="text-muted">
-                    <i style='color:red' class="bi bi-heart-fill" id="like-count-{{ comment.pk }}">좋아요 {{ comment.like_users.all|length }}개</i>
-                </small>
+    </div>
+    <div style=" width: 300px; height: 1000px " >
+      오른쪽화
 
-                {% comment %} 좋아요 버튼 {% endcomment %}
-                {% if request.user.is_authenticated %}
-                <form class="like-form" data-comment-id="{{ comment.pk }}" data-review-id="{{ review.pk }}">
-                  {% csrf_token %}
-                  {% if request.user in comment.like_users.all %}
-                    <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-comment-{{ comment.pk }}">
-                      <i style='color:red' id="like-i-{{ comment.pk }}" class="like-fficial bi bi-suit-heart-fill"></i>
-                    </button>
-                  {% else %}
-                    <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-comment-{{ comment.pk }}">
-                      <i style='color:red' id="like-i-{{ comment.pk }}" class="like-fficial bi bi-suit-heart"></i>
-                    </button>
-                  {% endif %}
-                </form>
-              {% endif %}
 
-                <p id="review-content" class="d-flex justify-content-end" >{{ comment.created_at }}</p>
-             
-                
-              </div>
-                
-            </div>
-           
 
-            {% comment %} 댓글을 작성한 user가 리뷰를 쓴 유저인 경우 {% endcomment %}
-            {% if user.is_authenticated and comment.user == request.user %}
-            <form action="{% url 'reviews:comment_delete' review.pk comment.pk %}" method="POST" class="my-0">
+
+      <div style="margin: 0 20px;text-align: left;font-size: 16px " class='mb-2'>
+        <b> <h5 style='text-align:center;'>{{ review.title}} </h5></b>
+        <a href="{% url 'accounts:profile' review.user %}" style='color :black;' class='text-decoration-none ' ><img class="profile" src="{{ review.user.profile.url }} " style='border-radius: 100%; height: 40px; weight:40px;'>
+        <b>{{ user.username }}</b></a> {{ review.content}}
+      </div>
+      <hr>
+      {% comment %} 댓글 {% endcomment %}
+      <div id="review-content_{{ review.id }}" class='mt-3' style="overflow:scroll; width:350px; height:400px;">
+        {% for comment in  review.comment_set.all %}
+        
+        <div style="margin: 0 20px;text-align: left;font-size: 14px">
+          <div class="d-flex align-items-center  ">
+            <a href="{% url 'accounts:profile' comment.user %}" style='color :black;' class='text-decoration-none ' ><img class="profile" src="{{ comment.user.profile.url }} " style='border-radius: 100%; height: 40px; weight:40px;'></a>
+            <div class="p-0 "><b>{{ comment.user.username }} </b></div> &nbsp;<div class="p-0 "> {{ comment.content}}</div>
+          <div class="ms-auto p-0 ">
+            {% if request.user.is_authenticated %}
+              <form class="like-form" data-comment-id="{{ comment.pk }}" data-review-id="{{ review.pk }}">
                 {% csrf_token %}
-                <input type="submit" class="btn btn-outline-danger mt-2" value="삭제">
-            </form>
+                {% if request.user in comment.like_users.all %}
+                  <button class="btn border-0 " style="background-color: transparent;" type="submit" id="like-comment-{{ comment.pk }}">
+                    <i style='color:red' id="like-i-{{ comment.pk }}" class="like-fficial bi bi-suit-heart-fill"></i>
+                  </button>
+                {% else %}
+                  <button class="btn border-0 " style="background-color: transparent;" type="submit" id="like-comment-{{ comment.pk }}">
+                    <i style='color:red' id="like-i-{{ comment.pk }}" class="like-fficial bi bi-suit-heart"></i>
+                  </button>
+                {% endif %}
+              </form>
             {% endif %}
-            {% empty %}
-            <br>
-
+            
+          </div>
+          
+          
         </div>
+        <small class="text-muted">
+            
+          {% comment %} 댓글 시간및 좋아요 {% endcomment %}
+          <d id="review-content" >{{ comment.created_at| naturaltime  }}
+            <i style='color:red' class="bi bi-heart-fill" id="like-count-{{ comment.pk }}"> {{ comment.like_users.all|length }}</i>
+            {% if user.is_authenticated and comment.user == request.user %}
+            <a href="{% url 'reviews:comment_delete' review.pk comment.pk %}"style="color: gray" class='text-decoration-none '>삭제</a>
+            {% endif %}
+          </p>
+        </small>
+        
+          
+        
+        
+          
+        </div>
+          
         {% endfor %}
+      </div>
+      <div style="display:flex;flex-direction: row;align-items: center; border-top: solid 1px gray ">
+        <input id="comment_{{ review.id }}" type="text" class="form-control"
+               style="box-shadow: none; border: none; outline: none"
+               placeholder="댓글 달기..">
+        <div review_id="{{ review.id }}" class="upload_reply"
+             style="width: 50px;color: cornflowerblue; font-weight: bold">
+             게시</div>
+        </div>
+     
+      
+      
+    </div >
+  </div>
+
+</div>
+
+
+
+
+
+
+
 
 
 
@@ -165,6 +214,50 @@
             })
           })
       })
+
+      
+  $(".upload_reply").click(function (event) {
+    let review_id = event.target.attributes.getNamedItem('review_id').value;
+    let comment_id = 'comment_' + review_id;
+      console.log(comment_id)
+    let comment_content = $('#'+ comment_id).val();
+    console.log(comment_content);
+    
+    if (comment_content.length <= 0) {
+      alert("댓글을 입력하세요");
+      return 0;
+    }
+    $.ajax({
+      url: `/reviews/${review_id}/comments/`,
+      data: {
+        review_id: review_id,
+        content: comment_content,
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+        
+      },
+      method: "POST",
+      success: function (data) {
+          console.log("성공");
+          alert("댓글 성공");
+          $("#reply_list_" +review_id).append( "<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>")
+          {location.replace('');}
+          
+
+      },
+      error: function (request, status, error) {
+          console.log("에러");
+      },
+      complete: function () {
+          console.log("완료");
+          $('#' + review_id).val('');
+      }
+    });
+
+
+
+ 
+
+  });
   </script>
 
 

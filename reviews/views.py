@@ -9,10 +9,11 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from django.views.generic.edit import FormView
 from django.db.models import Q
+import random
 
 # 멍스타그렘
 def index(request):
-    reviews = Review.objects.all()
+    reviews = Review.objects.all().order_by("-created_at")
     search = request.GET.get("search")
     if search:
         reviews = reviews.filter(
@@ -23,12 +24,26 @@ def index(request):
     page = request.GET.get("page", "1")
     paginator = Paginator(reviews, 6)
     posts = paginator.get_page(page)
+    num = random.randrange(1, 9)
+    lst = [
+        "01.png",
+        "02.png",
+        "03.png",
+        "04.png",
+        "05.png",
+        "06.jpg",
+        "07.jpg",
+        "08.jpg",
+    ]
+    hospital = lst[num - 1]
+    sub = "../../static/images/" + hospital
 
     context = {
         "posts": posts,
         "reviews": reviews,
         "comment_form": comment_form,
         "search": search,
+        "aside": sub,
     }
     return render(request, "reviews/index.html", context)
 
