@@ -1,3 +1,10 @@
+* {
+  font-family: 'Noto Sans KR',Nanum Gothic,나눔고딕,sans-serif;
+}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+}
 .sContainer {
   float: left;
   text-align: center;
@@ -30,4 +37,173 @@
 .s21_detail_box {
   width: 100%;
   margin: 30px auto;
+}
+.swiper-container {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  z-index: 1;
+}
+.s21_detail_img {
+  float: left;
+  width: 53%;
+}
+.s21_detail_tbox {
+  float: right;
+  width: 42%;
+  border-top: 3px solid #646361;
+}
+ul {
+  list-style: none;
+}
+.s21_detail_tbox .s21_detail_twrap {
+  width: 100%;
+  padding: 0px 0;
+}
+.s21_detail_tbox .s21_detail_twrap li {
+  float: left;
+  width: 100%;
+  padding: 15px 0;
+  border-bottom: 1px solid #dddbd6;
+}
+.s21_detail_tbox .s21_detail_twrap li dl {
+  width: 100%;
+  margin: auto;
+}
+.s21_detail_tbox .s21_detail_twrap li dt {
+  float: left;
+  width: 21%;
+  font-size: 14px;
+  color: #626262;
+  padding-left: 3px;
+  text-align: left;
+}
+.s21_detail_tbox .s21_detail_twrap li dd {
+  margin: auto;
+  font-size: 14px;
+  color: #a1a1a1;
+  line-height: 18px;
+  text-align: left;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  overflow: hidden;
+}
+.s21_tour_de_btm {
+  width: 100%;
+  background: #fff;
+  padding: 60px 0;
+  margin: 0px auto;
+}
+.s21_tab {
+  float: left;
+  width: 100%;
+  margin: 40px 0;
+  overflow: hidden;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  border-left: 1px solid #e0e0e0;
+}
+.s21_tab button {
+  background-color: #fff;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 0px;
+  transition: 0.3s;
+  font-size: 17px;
+  border-right: 1px solid #e0e0e0;
+  width: 50%;
+}
+.s21_tab button.active {
+  background-color: #999;
+  color: #fff;
+}
+.s21_tabcontent {
+  display: block;
+  /* display: none; */
+  padding: 6px 0px;
+  border: 0px solid #e0e0e0;
+  border-top: none;
+}
+.s21_tabcontent_center {
+  float: left;
+  width: 100%;
+  text-align: center;
+  min-height: 1180px;
+}
+.s21_tabcontent_center p {
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+}
+.s21_tabcontent_center img {
+  width: 680px;
+}
+.s21_map_twrap {
+  width: 90%;
+  padding: 0px 0;
+  border-top: 2px solid #878787;
+  margin: auto;
+}
+.s21_map_twrap li {
+  float: left;
+  width: 100%;
+  padding: 18px 0;
+  border-bottom: 1px solid #dddbd6;
+}
+.s21_map_twrap li dl {
+  width: 100%;
+}
+.s21_map_twrap li dt {
+  float: left;
+  width: 21%;
+  font-size: 18px;
+  color: #626262;
+  padding-left: 3px;
+  text-align: left;
+}
+.s21_map_twrap li dd {
+  font-size: 16px;
+  color: #a1a1a1;
+  text-align: left;
+}
+.s21_map {
+  width: 100%;
+  display: inline-block;
+  margin: 30px 0;
+}
+.add_navi {
+  position: absolute;
+  top: 40px;
+  right: 15px;
+  z-index: 9999;
+  margin-right: 75px;
+  margin-top: 15px;
+  width: 120px;
+  height: 40px;
+  color: #fff;
+  background: #222 url(http://appdata.hungryapp.co.kr/images/hatdog/img/common/hd_T_location_on.png) 10px center no-repeat;
+  background-size: 30px;
+  font-size: 18px;
+  text-align: left;
+  padding-left: 42px;
+  border-radius: 60px;
+  border: 1px solid #222;
+}
+button {
+  margin: 0px;
+  padding: 0px;
+  cursor: pointer;
+  border: 0px;
+  background: none;
+}
+.map_cont{
+  margin: auto;
+  width: 90%;
+  height: 700px;
+  overflow: hidden;
 }

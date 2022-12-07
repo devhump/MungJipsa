@@ -6,29 +6,148 @@
 {% endblock css %}
 {% block content %}
 <div class="sContainer">
+  <!--상단 정보-->
   <div class="s21_tour_de_top">
     <h3 class="area">{{place.name}}</h3>
-  </div>
-</div>
-<div>
-  <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide" data-ride="carousel" style="width: 100%">
-    <div class="carousel-inner bg-dark"  style='width : 100%; height : 300px;'>
-      {% for photo in slideimages %}
-        <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style='width : 100%; height : 50%;'>
-          <img class='carousel-image' src="{{ photo.slideimage }}" alt="" style=' width : 100%; height : 200%;' >
+    <div class="s21_detail_box area pr">
+      <!--이미지 슬라이드-->
+      <div class="s21_detail_img swiper-container">
+        <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner bg-dark">
+            {% for photo in slideimages %}
+              <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                <img class='carousel-image' src="{{ photo.slideimage }}" alt="" style='width:668px; height:467px' >
+              </div>
+            {% endfor %}
+        
+          </div>
+        
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
         </div>
-      {% endfor %}
-  
+      </div>
+      <!--우측 정보-->
+      <div class="s21_detail_tbox">
+        <ul class="s21_detail_twrap">
+          <li>
+            <dl>
+              <dt>이름</dt>
+              <dd>{{place.name}}</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>주소</dt>
+              <dd>{{place.address}}</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>연락처</dt>
+              <dd>{{place.tel}}</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>홈페이지</dt>
+              <dd>{{place.url}}</dd>
+            </dl>
+          </li>
+        </ul>
+        <a href="{% url 'info:deserted' %}">
+          <img src="{{ banner }}" alt="DogAdopt" class="mt-4 banner" width="100%" height="auto">
+        </a>
+      </div>   
     </div>
-  
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
+  </div>
+  <div class="s21_tour_de_btm area">
+    <!--정보 전환 탭-->
+    <div class="s21_tab">
+      <button class="tablinks active">기본정보</button>
+      <button class="tablinks">위치정보</button>
+    </div>
+    <!--기본정보-->
+    <div id="info" class="s21_tabcontent" style="display: none;">
+      <div class="s21_tabcontent_center">
+        {% for image in bodyimages %}
+        <img src="{{image.bodyimage}}" style="max-width: 100%" alt="">
+        {% endfor %}
+      </div>
+    </div>
+    <!--위치정보-->
+    <div id="map_info" class="s21_tabcontent" style="display: block;">
+      <div class="s21_tabcontent_center">
+        <!--주소등 정보-->
+        <ul class="s21_map_twrap">
+          <li>
+            <dl>
+              <dt>주소</dt>
+              <dd>{{place.address}}</dd>
+            </dl>
+          </li>
+          <li>
+            <dl>
+              <dt>연락처</dt>
+              <dd>{{place.tel}}</dd>
+            </dl>
+          </li>
+        </ul>
+        <!--길찾기버튼-->
+        <p class="s21_map pr">
+          <a href="https://map.kakao.com/?eName={{place.name}}" target="_blank">
+            <button type="button" class="add_navi">길찾기</button>
+          </a>
+        </p>
+        <div id="map" class="map_cont">
+          <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5d75b4d8877cf6890293eb3c5930fc1c&libraries=services"></script>
+          <script>
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+                mapOption = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };  
+
+            // 지도를 생성합니다    
+            var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch('{{place.address}}', function(result, status) {
+
+                // 정상적으로 검색이 완료됐으면 
+                if (status === kakao.maps.services.Status.OK) {
+
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">{{place.name}}</div>'
+                    });
+                    infowindow.open(map, marker);
+
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                } 
+            });    
+          </script>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
 {% endblock content %}

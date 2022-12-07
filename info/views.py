@@ -174,13 +174,22 @@ def place(request):
     return render(request, "info/place_index.html", context)
 
 
+import random
+
+
 def place_detail(request, pk):
     place = PetPlace.objects.get(pk=pk)
     slideimages = PetPlaceSlideImage.objects.filter(petplace_id=pk)
     bodyimages = PetPlaceBodyImage.objects.filter(petplace_id=pk)
+    num = random.randrange(1, 7)
+    lst = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"]
+    photo = lst[num - 1]
+    banner = "../../static/images/" + photo
+
     context = {
         "place": place,
         "slideimages": slideimages,
         "bodyimages": bodyimages,
+        "banner": banner,
     }
     return render(request, "info/place_detail.html", context)
