@@ -10,8 +10,8 @@ from info.models import PetPlace, PetPlaceSlideImage, PetPlaceBodyImage
 
 # idx range: 76 - 11503
 
-idx = 83
-while idx < 11505:
+idx = 76
+while idx < 1000:
     url = (
         "http://hatdog.co.kr/pc_hatdog/?m1Code=ar_info&m2Code=ar_info&mode=view&idx="
         + str(idx)
@@ -30,15 +30,17 @@ while idx < 11505:
             continue
 
         basic = soup.select("li > dl > dd")
+        slideimages = soup.select("p.swiper-slide img")
+
         _petplace = PetPlace(
             name=_name,
             address=basic[0].text,
             tel=basic[1].text,
             url=basic[2].text,
+            imageURL=slideimages[0].attrs["src"],
         )
         _petplace.save()
 
-        slideimages = soup.select("p.swiper-slide img")
         for image in slideimages:
             _slideimage = PetPlaceSlideImage(
                 petplace=_petplace,

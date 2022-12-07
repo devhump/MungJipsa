@@ -125,7 +125,6 @@ class PlaceViewSet(ModelViewSet):
 
 def place(request):
     places = PetPlace.objects.all()
-    slideimages = PetPlaceSlideImage.objects.all()
 
     search = request.GET.get("search")
     areaSearch = request.GET.get("areaSearch")
@@ -150,7 +149,6 @@ def place(request):
         "places": places,
         "posts": posts,
         "paginator": paginator,
-        "slideimages": slideimages,
     }
 
     if page:
@@ -171,7 +169,6 @@ def place(request):
             "posts": posts,
             "paginator": paginator,
             "custom_range": custom_range,
-            "slideimages": slideimages,
         }
 
     return render(request, "info/place_index.html", context)
