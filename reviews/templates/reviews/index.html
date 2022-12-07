@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
+{% load humanize %}
 {% load static %}
 {% block content %}
 
@@ -14,166 +15,198 @@
   {% csrf_token %}
 </head>
 
-<div class=" d-flex justify-content-center m-4 py-4 px-2">
+<style>
+  .box {
+      width: 150px;
+      height: 150px;
+      border-radius: 70%;
+      overflow: hidden;
+  }
 
+
+
+  .feed_box {
+      margin: 20px 0;
+      border: solid 1px gray;
+      background-color: white
+  }
+</style>
 {% comment %} 검색기능 {% endcomment %}
-<form action="{% url 'reviews:index'%}" role='search' id='searchfunc1'>
-  <input type="text" id="search-type-01" name='search'>
-  <button type="submit"><i class="fas fa-search"></i></button>
-</form>
+<nav class="navbar navbar-expand-lg navbar-light bg-light " style="position: fixed;width: 100%; z-index: 999">
+  <div class="container-fluid d-flex justify-content-around " style="flex-wrap: nowrap; min-width: 1000px">
+    
+    <form action="{% url 'reviews:index'%}" role='search' id='searchfunc1'>
+      <input type="text" id="search-type-01" name='search'  style="width: 400px">
+      <button type="submit"><i class="fas fa-search" style="padding-right: 10px" ></i></button>
+    </form>
+    
 
-  <a href="{% url 'reviews:create' %}"><button type="button" class="btn btn-primary">글쓰기</button></a>
-  
+    <a href="{% url 'reviews:create' %}"style="color: black" class='text-decoration-none '><i class="bi bi-plus-square" ></i>글쓰기</a>
+    
+  </div>
+</nav>
+
+
   {% comment %} 리뷰 글 반복 {% endcomment %}
-<div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA">
-  <div style="width: 500px;min-width: 500px;margin-right: 300px">
-    <div class="feed_box">
-      {% for review in reviews %}
-      {% comment %} 작성자 프로필 사진 및 이름 {% endcomment %}
-      <div style="display: flex;flex-direction: row; align-items: center; margin: 50px">
-          <div class="box" style="width: auto; height: auto">
-            <a href="{% url 'accounts:profile' user %}" style='color :black;' ><img class="profile" src="{{ review.user.profile.url }} " style='border-radius: 100%;'></a>
+<div style="display: flex; flex-direction: row;text-align: center; justify-content: center;padding-top: 60px; background-color:#FAFAFA ">
+  <div style="width: 500px;min-width: 500px;margin-right: 150px ">
+    {% for review in reviews %}
+      <div class=" card feed_box ">
+        {% comment %} 작성자 프로필 사진 및 이름 {% endcomment %}
+        <div style="display: flex;flex-direction: row; align-items: center; margin: 30px">
+          <div class="box" style="width: 90px; height: 90px">
+                <a href="{% url 'accounts:profile' user %}" style='color :black;' ><img class="profile" src="{{ review.user.profile.url }} " style='border-radius: 100%; '></a>
+                
+              </div>
+              <div class='d-flex justify-content: space-around'><a href="{% url 'accounts:profile' user %}" style='color :black;' class='text-decoration-none ' >&nbsp; <b>{{ user.username }}</b></a></div>
+                <p class='ms-auto'>{{ review.created_at| naturaltime  }}</p>
+            </div>
+            <div>
+
+            {% comment %} 사진 {% endcomment %}
+            {% if review.image %}
+            <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide " data-ride="carousel" style="width: 100%">
+              <div class="carousel-inner bg-dark"  style='width : 100%; height : 300px;'>
+                {% for photo in review.image.all %}
+          
+                  <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style='width : 100%; height : 50%;'>
+                    <img class='carousel-image ' src="{{ photo.image.url }}" alt="" style=' width : 100%; height : 200%;' >
+                  </div>
+                {% endfor %}
+          
+              </div>
+          
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+              </div>
+            {% endif %}
+
+          </div>
+        {% comment %} 좋아요 {% endcomment %}
+        <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
+          <div>
+            {% if request.user.is_authenticated %}
+            <form class="like-form"  data-review-id="{{ review.pk }}">
+              {% csrf_token %}
+              {% if request.user in review.like_users.all %}
+                <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-review-{{ review.pk }}">
+                  <i style='color:red' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart-fill"></i>
+                  <span id="like-count-{{ review.pk }}">{{ review.like_users.count }}</span>
+                </button>
+              {% else %}
+                <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-review-{{ review.pk }}">
+                  <i style='color:red' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart"></i>
+                  <span id="like-count-{{ review.pk }}">{{ review.like_users.count }}</span>
+                </button>
+              {% endif %}
+            </form>
+            {% endif %}
+          </div>
+          <div style="margin: 0 20px;text-align: left;font-size: 14px"> <b> {{ review.like_users.count }}명</b>이
+            좋아합니다.
+          </div>
+        </div>
+      {% comment %} 제목 및 글 내용 {% endcomment %}
+      <div style="margin: 0 20px;text-align: left;font-size: 16px " class='mb-2'>
+        <b> <h5>{{ review.title|truncatechars:10 }} </h5></b>
+        <b>{{ user.username }}</b> {{ review.content|truncatechars:15 }}
+      </div>
+      <small > <a style='color :black;' class='text-decoration-none ' href="{% url 'reviews:detail' review.pk %}">댓글 모두 보기</a> </small>
+      {% comment %} 댓글 {% endcomment %}
+          <div id="review-content_{{ review.id }}" class='mt-3'>
+            {% for comment in  review.comment_set.all %}
+            {% if forloop.counter < 5  %}
+            <div style="margin: 0 20px;text-align: left;font-size: 14px">
+              <b>{{ comment.user.username }} </b> {{ comment.content|truncatechars:20 }}</div>
+              {% else %}
+                    {% endif %}
+            {% endfor %}
             
           </div>
-          <div class='d-flex justify-content: space-around'><a href="{% url 'accounts:profile' user %}" style='color :black;' > <b>{{ user.username }}</b></a>
-            </div><p class='ms-auto'>{{ review.created_at }}</p>
-      </div>
-      <div>
+          
+    
+          
+          {% comment %} 댓글작성 {% endcomment %}
 
-         {% comment %} 사진 {% endcomment %}
-         {% if review.image %}
-         <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide" data-ride="carousel" style="width: 100%">
-           <div class="carousel-inner bg-dark"  style='width : 100%; height : 300px;'>
-             {% for photo in review.image.all %}
-       
-               <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style='width : 100%; height : 50%;'>
-                 <img class='carousel-image' src="{{ photo.image.url }}" alt="" style=' width : 100%; height : 200%;' >
-               </div>
-             {% endfor %}
-       
-           </div>
-       
-           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="prev">
-             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-             <span class="visually-hidden">Previous</span>
-           </button>
-           <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="next">
-             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-             <span class="visually-hidden">Next</span>
-           </button>
+          <div style="display:flex;flex-direction: row;align-items: center; border-top: solid 1px gray ">
+            <input id="comment_{{ review.id }}" type="text" class="form-control"
+                  style="box-shadow: none; border: none; outline: none"
+                  placeholder="댓글 달기..">
+              <div review_id="{{ review.id }}" class="upload_reply"
+                style="width: 50px;color: cornflowerblue; font-weight: bold">
+                게시
+              </div>
+            </div>
+            
           </div>
- 
-         {% endif %}
-
-      </div>
-      {% comment %} 좋아요 {% endcomment %}
-      <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
-        <div>
-          {% if request.user.is_authenticated %}
-          <form class="like-form"  data-review-id="{{ review.pk }}">
-            {% csrf_token %}
-            {% if request.user in review.like_users.all %}
-              <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-review-{{ review.pk }}">
-                <i style='color:red' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart-fill"></i>
-                <span id="like-count-{{ review.pk }}">{{ review.like_users.count }}</span>
-              </button>
-            {% else %}
-              <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-review-{{ review.pk }}">
-                <i style='color:red' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart"></i>
-                <span id="like-count-{{ review.pk }}">{{ review.like_users.count }}</span>
-              </button>
-            {% endif %}
-          </form>
-        {% endif %}
-        
-     
-        </div>
-        <div style="margin: 0 20px;text-align: left;font-size: 14px"> <b> {{ review.like_users.count }}명</b>이
-          좋아합니다.
-        </div>
-    </div>
-    {% comment %} 제목 및 글 내용 {% endcomment %}
-    <div style="margin: 0 20px;text-align: left;font-size: 16px " class='mb-2'>
-      <b> <h5>{{ review.title|truncatechars:10 }} </h5></b>
-      <b>{{ user.username }}</b> {{ review.content|truncatechars:15 }}
-    </div>
-    <small > <a style='color :black;' class='text-decoration-none ' href="{% url 'reviews:detail' review.pk %}">댓글 모두 보기</a> </small>
-    {% comment %} 댓글 {% endcomment %}
-      <div id="review-content_{{ review.id }}" class='mt-3'>
-        {% for comment in  review.comment_set.all %}
-        {% if forloop.counter < 5  %}
-        <div style="margin: 0 20px;text-align: left;font-size: 14px">
-          <b>{{ comment.user.username }} </b> {{ comment.content|truncatechars:20 }}</div>
-          {% else %}
-                {% endif %}
+            
+          
         {% endfor %}
-      </div>
+        
+          
+    </div>
+    <aside class="floating  " >
+      <a href="{% url 'info:hospital' %}">
+          <img src="{{ aside }}" alt="DogAdopt"  style='position:fixed' class="mt-4 banner2 " width="200px" height="auto"></a>
+    </aside>  
       
-  
-        
-        {% comment %} 댓글작성 {% endcomment %}
+</div>
 
-        <div style="display:flex;flex-direction: row;align-items: center; border-top: solid 1px gray ">
-          <input id="comment_{{ review.id }}" type="text" class="form-control"
-                 style="box-shadow: none; border: none; outline: none"
-                 placeholder="댓글 달기..">
-          <div review_id="{{ review.id }}" class="upload_reply"
-               style="width: 50px;color: cornflowerblue; font-weight: bold">
-               게시
-        </div>
-        </div>
+
+
+</div>
+
+  <!-- {% comment %} 페이지네이션 {% endcomment %}
+  <ul class="pagination">
+    {% comment %} 이전 페이지 {% endcomment %}
+      {% if posts.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% else %}
+      <li class="page-item disabled">
+        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% endif %}
+      {% comment %} 페이지리스트 {% endcomment %}
+      {% for page_number in posts.paginator.page_range %}
+      {% if page_number >= posts.number|add:-5 and page_number <= posts.number|add:5 %} {% if page_number == posts.number %}
+        <li class="page-item active" aria-current="page">
+        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
         </li>
+        {% else %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endif %}
+        {% endif %}
         {% endfor %}
-    </div>
-
-  </div>
-</div>
-
-</div>
-{% comment %} 페이지네이션 {% endcomment %}
-<ul class="pagination">
-  {% comment %} 이전 페이지 {% endcomment %}
-  {% if posts.has_previous %}
-  <li class="page-item">
-    <a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous">
-      <span aria-hidden="true">&laquo;</span>
-    </a>
-  </li>
-  {% else %}
-  <li class="page-item disabled">
-    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-      <span aria-hidden="true">&laquo;</span>
-    </a>
-  </li>
-  {% endif %}
-  {% comment %} 페이지리스트 {% endcomment %}
-  {% for page_number in posts.paginator.page_range %}
-  {% if page_number >= posts.number|add:-5 and page_number <= posts.number|add:5 %} {% if page_number == posts.number %}
-    <li class="page-item active" aria-current="page">
-    <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
-    {% else %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-    </li>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
-    {% comment %} 다음 페이지 {% endcomment %}
-    {% if posts.has_next %}
-    <li class="page-item">
-      <a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-    {% else %}
-    <li class="page-item disabled">
-      <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-    {% endif %}
-</ul>
+        {% comment %} 다음 페이지 {% endcomment %}
+        {% if posts.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" tabindex="-1" aria-disabled="true" href="#">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+  </ul> -->
+ 
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
