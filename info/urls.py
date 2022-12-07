@@ -12,5 +12,6 @@ urlpatterns = [
     path("deserted/", views.deserted, name="deserted"),
     path("deserted/<int:pk>", views.deserted_detail, name="deserted_detail"),
     path("place/", views.place, name="place"),
+    path("place/<int:pk>", views.place_detail, name="place_detail"),
     path("", include(router.urls)),
 ]
