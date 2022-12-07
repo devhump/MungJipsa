@@ -125,10 +125,8 @@ def create(request, park_pk):
 
 
 def create2(request):
-    print("create2 실행")
+    # print(request.POST)
     park_pk = request.POST["park_pk"]
-    print(park_pk)
-    # park_pk = request.POST["park_location"].parkId
 
     park = Park.objects.get(pk=park_pk)
     user = request.user
