@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "django.contrib.humanize",
     "accounts",
     "walkings",
     "info",
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "imagekit",
     "main",
+    "rest_framework",
     "django_bootstrap5",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -93,9 +95,7 @@ TEMPLATES = [
     },
 ]
 
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
 
 WSGI_APPLICATION = "namung.wsgi.application"
 

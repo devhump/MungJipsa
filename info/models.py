@@ -25,3 +25,25 @@ class Deserted(models.Model):
     careTel = models.CharField(max_length=100)
     careAddr = models.CharField(max_length=100)
     imageURL = models.CharField(max_length=255)
+
+
+class PetPlace(models.Model):
+    name = models.CharField(max_length=200)
+    address = models.CharField(max_length=200)
+    tel = models.CharField(max_length=30)
+    url = models.CharField(max_length=200)
+    imageURL = models.CharField(max_length=200)
+
+
+class PetPlaceSlideImage(models.Model):
+    petplace = models.ForeignKey(
+        PetPlace, on_delete=models.CASCADE, related_name="slideimage"
+    )
+    slideimage = models.CharField(max_length=200)
+
+
+class PetPlaceBodyImage(models.Model):
+    petplace = models.ForeignKey(
+        PetPlace, on_delete=models.CASCADE, related_name="bodyimage"
+    )
+    bodyimage = models.CharField(max_length=200)

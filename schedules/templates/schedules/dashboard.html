@@ -6,25 +6,26 @@
 {% endblock css %}
 
 {% block content %}
-<div class="app sidebar-mini">
+<div class="nav">
     <!-- sub navbar-->
-    <header class="" style="background-color: black;">
-      <!-- Sidebar toggle button-->
-      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
-      <div class="app-sidebar__user">
+    <header class="nav2">
+      <div class="nav_div">
         <!-- 프로필 이미지 -->
-        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
+        <a href="{% url 'accounts:profile' %}"><img class="nav2 navimg" src="media/{{ user.profile }}" alt="{{ user.username }}"></a>
         <span>
-            <p class="">유저 아이디</p>
+            <p class="">{{ user.username }}</p>
             <p class="">강아지 이름</p>
-            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>
-            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> All</a>
+        </span>
+      </div>
+      <div class="nav2_link">
+        <span>
+            <a class="mx-1" href="{% url 'schedules:calendar' %}">Calendar</a>
+            <a class="mx-1" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
+            <a class="mx-1" href="{% url 'schedules:all_events' %}">All</a>
         </span>
       </div>
     </header>
-</div>
+  </div>
 
   <div class="app-content">
     <div class="app-title">

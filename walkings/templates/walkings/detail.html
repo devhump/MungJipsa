@@ -16,7 +16,9 @@
 
     {% endfor %}
     <p id="park_lat">{{dogroup.park.latitude}}</p>
-    <p id="park_lon"> {{dogroup.park.longitude}}</p>
+    <p id="park_lon">{{dogroup.park.longitude}}</p>
+    <button onclick="test1()">테스트</button>
+  </div>
 
 
 {% endblock content %}
@@ -27,6 +29,9 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
 
+function test1(){
+  console.log("테스트1")
+}
 
 const latitude = document.querySelector('#park_lat').innerText
 const longtitude = document.querySelector('#park_lon').innerText

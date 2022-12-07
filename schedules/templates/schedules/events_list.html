@@ -2,39 +2,33 @@
 {% load static %}
 
 {% block css %}
-  <link href="{% static 'css/main.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
 {% endblock css %}
 
 {% block content %}
-<div class="app sidebar-mini">
+<div class="nav">
     <!-- sub navbar-->
-    <header class="" style="background-color: black;">
-      <!-- Sidebar toggle button-->
-      {% comment %} <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a> {% endcomment %}
-      <div class="app-sidebar__user">
+    <header class="nav2">
+      <div class="nav_div">
         <!-- 프로필 이미지 -->
-        {% comment %} <img class="app-sidebar__user-avatar" src="#" alt="User Image" height="50px" width="50px"/> {% endcomment %}
-        <span>
-            <p class="">유저 아이디</p>
+        <a href="{% url 'accounts:profile' user.username %}"><img class="nav2 navimg" src="../../media/{{ user.profile }}" alt="{{ user.username }}"></a>
+        <span class="ml-4">
+            <a style="text-decoration:none; color: #544B44;" href="{% url 'accounts:profile' user.username %}"><p class="">{{ user.username }}</p></a>
             <p class="">강아지 이름</p>
-            <a class="" href="{% url 'schedules:calendar' %}"><span class="app-menu__label">Calendar</span></a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Running</a>
-            <a class="treeview-item" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i> Upcoming</a>
-            <a class="treeview-item" href="{% url 'schedules:all_events' %}"><i class="icon fa fa-circle-o"></i> All</a>
+        </span>
+      </div>
+      <div class="nav2_link">
+        <span>
+            <a style="text-decoration:none; color: #544B44;" class="mx-1" href="{% url 'schedules:calendar' %}">달력</a>
+            <a style="text-decoration:none; color: #544B44;" class="mx-1" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i>다가오는 일정</a>
+            <a style="text-decoration:none; color: #544B44;" class="mx-1" href="{% url 'schedules:all_events' %}">모든 일정</a>
         </span>
       </div>
     </header>
   </div>
-<div class="app-content">
-    <div class="app-title">
-    <div>
-        <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
-        <p>Event List</p>
-    </div>
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Event List</a></li>
-    </ul>
+<div class="app-content container">
+    <div class="app-title mt-3">
+        <h1 class="mx-4"><i class="fa fa-dashboard"></i>일정 목록</h1>
     </div>
 <div class="row">
     <div class="col-md-12">
@@ -48,18 +42,18 @@
                                     <thead>
                                         <tr role="row">
                                             <th class="sorting_asc" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 261.641px;">SL</th>
-                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 417.312px;">Event Name</th>
-                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 189.281px;">Start Time</th>
-                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">End Time</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 417.312px;">일정</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 189.281px;">시작시간</th>
+                                            <th class="sorting" tabindex="0" aria-controls="sampleTable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 102.141px;">종료시간</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for event in object_list %}
                                             <tr role="row" class="odd">
-                                                <td class="sorting_1">{{ forloop.counter }}</td>
-                                                <td><a href="{% url 'schedules:event-detail' event.pk %}">{{ event.title }}</a></td>
-                                                <td>{{ event.start_time }}</td>
-                                                <td>{{ event.end_time }}</td>
+                                                <td class="sorting_1"><a style="text-decoration: none; color: #544B44;" href="{% url 'schedules:event-detail' event.pk %}">{{ forloop.counter }}</a></td>
+                                                <td><a style="text-decoration: none; color: #544B44;" href="{% url 'schedules:event-detail' event.pk %}">{{ event.title }}</a></td>
+                                                <td><a style="text-decoration: none; color: #544B44;" href="{% url 'schedules:event-detail' event.pk %}">{{ event.start_time }}</a></td>
+                                                <td><a style="text-decoration: none; color: #544B44;" href="{% url 'schedules:event-detail' event.pk %}">{{ event.end_time }}</a></td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

@@ -6,10 +6,10 @@
     <div id="map" style="width:60%;height:350px;"></div>
     <div class="form-area d-flex" style="width:40%;">
       <div class="row">
-        <form id="location-form" action="">
+        {% comment %} <form id="location-form" action="">
           <input id="address" type="text">
           <input type="submit">
-        </form> 
+        </form>  {% endcomment %}
         <P>주최자 : {{ request.user.username }}</P>
         <P>멍멍이 이름 : 
           <span>

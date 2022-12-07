@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Park, Dog, Dogroup, Mylotations
-from .forms import MylocationForm, DogroupForm
+from .models import Park, Dog, Dogroup
+from .forms import DogroupForm
 import json
 from pprint import pprint
 from django.http import JsonResponse
@@ -10,7 +10,7 @@ from django.db.models import Q
 # Create your views here.
 def index(request):
 
-    dogroups = Dogroup.objects.all()
+    dogroups = Dogroup.objects.order_by("-pk")
 
     context = {
         "dogroups": dogroups,
@@ -35,11 +35,15 @@ def search(request, x, y):
     parksJson = []
     for park in parks:
 
+        if not park.parkName.endswith("공원"):
+            park.parkName += park.parkType
+
         temp = {
             "parkName": park.parkName,
             "latitude": park.latitude,
             "longitude": park.longitude,
             "park_pk": park.pk,
+            "address": park.address,
         }
 
         parksJson.append(temp)
@@ -95,29 +99,52 @@ def create(request, park_pk):
             dogroup.save()
             dogroup.join.add(request.user)
 
-    # dogroup = Dogroup.objects.all()
+    dogroup = Dogroup.objects.all()
 
-    # dogroup_data = []
+    dogroup_data = []
 
-    # for dogr in dogroup:
+    for dogr in dogroup:
 
-    #     temp = {
-    #         "dogroup_pk": dogr.pk,
-    #         "dogroup_date": dogr.date,
-    #         "dogroup_title": dogr.membercnt,
-    #         "dogroup_dog_pk": dogr.dog.pk,
-    #         "dogroup_park_pk": dogr.park.pk,
-    #         "dogroup_park_pk": dogr.user.pk,
-    #     }
+        temp = {
+            "dogroup_pk": dogr.pk,
+            "dogroup_date": dogr.datetime,
+            "dogroup_title": dogr.membercnt,
+            "dogroup_dog_pk": dogr.dog.pk,
+            "dogroup_park_pk": dogr.park.pk,
+            "dogroup_park_pk": dogr.user.pk,
+        }
 
-    #     dogroup_data.append(temp)
-    # print(dogroup_data)
-    # context = {
-    #     "dogroup_data": dogroup_data,
-    # }
+        dogroup_data.append(temp)
+    print(dogroup_data)
+    context = {
+        "dogroup_data": dogroup_data,
+    }
 
-    # return JsonResponse(context)
-    return redirect("walkings:test")
+    return JsonResponse(context)
+    return render(request, "walkings/index.html")
+
+
+def create2(request):
+    # print(request.POST)
+    park_pk = request.POST["park_pk"]
+
+    park = Park.objects.get(pk=park_pk)
+    user = request.user
+    dog = Dog.objects.get(pk=1)
+
+    if request.method == "POST":
+        dogroup_form = DogroupForm(request.POST)
+        if dogroup_form.is_valid():
+            dogroup = dogroup_form.save(commit=False)
+            dogroup.user = user
+            dogroup.dog = dog
+            dogroup.park = park
+            dogroup.save()
+            dogroup.join.add(request.user)
+
+    dogroup = Dogroup.objects.all()
+
+    return redirect("walkings:index")
 
 
 def detail(request, dogroup_pk):
@@ -139,7 +166,7 @@ def join(request, dogroup_pk):
             dogroup.join.remove(request.user)
         else:
             dogroup.join.add(request.user)
-    return redirect("walkings:test")
+    return redirect("walkings:index")
 
 
 def delete(request, dogroup_pk):
@@ -151,4 +178,4 @@ def delete(request, dogroup_pk):
     else:
         messages.warning(request, "본인이 개설한 모임만 삭제 할 수 있습니다.")
 
-    return redirect("walkings:test")
+    return redirect("walkings:index")
