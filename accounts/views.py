@@ -155,7 +155,7 @@ def dogsignup(request):
             forms = forms.save(commit=False)
             forms.user = request.user
             forms.save()
-            return redirect("accounts:index")
+            return redirect("accounts:profile")
     else:
         forms = DogForm()
     context = {"forms": forms}
@@ -163,10 +163,11 @@ def dogsignup(request):
 
 
 @login_required
-def dogdelete(request):
-    request.dog.delete()
+def dogdelete(request,dog_pk):
+    dog = Dog.objects.get(pk=dog_pk)
+    dog.delete()
     messages.success(request, "등록 취소 완료")
-    return redirect("accounts:index")
+    return redirect("accounts:profile", dog.user)
 
 
 @login_required
@@ -181,6 +182,7 @@ def dogupdate(request, dog_pk):
         form = DogChangeForm(instance=dog)
     context = {
         "form": form,
+        "dog" : dog,
     }
     return render(request, "accounts/dogupdate.html", context)
 
@@ -190,3 +192,4 @@ def dogprofile(request, dog_pk):
     dog = Dog.objects.get(pk=dog_pk)
     context = {"dog": dog}
     return render(request, "accounts/dogprofile.html", context)
+
