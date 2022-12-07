@@ -172,3 +172,15 @@ def place(request):
         }
 
     return render(request, "info/place_index.html", context)
+
+
+def place_detail(request, pk):
+    place = PetPlace.objects.get(pk=pk)
+    slideimages = PetPlaceSlideImage.objects.filter(petplace_id=pk)
+    bodyimages = PetPlaceBodyImage.objects.filter(petplace_id=pk)
+    context = {
+        "place": place,
+        "slideimages": slideimages,
+        "bodyimages": bodyimages,
+    }
+    return render(request, "info/place_detail.html", context)

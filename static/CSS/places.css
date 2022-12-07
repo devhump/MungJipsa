@@ -1,0 +1,33 @@
+.sContainer {
+  float: left;
+  text-align: center;
+  width: 100%;
+  margin: 0px auto 70px auto;
+  border: 0px solid #000;
+}
+.area {
+  max-width: 1200px ! important;
+  min-width: 1260px ! important;
+  margin: 0px auto;
+}
+.pr {
+  position: relative;
+}
+.s21_tour_de_top {
+  float: left;
+  width: 100%;
+  background: #f8f7f2;
+  min-height: 500px;
+  padding: 50px 0;
+}
+.s21_tour_de_top h3 {
+  width: 100%;
+  font-size: 30px;
+  color: #3a3a3a;
+  font-weight: 400;
+  text-align: left;
+}
+.s21_detail_box {
+  width: 100%;
+  margin: 30px auto;
+}

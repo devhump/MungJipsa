@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/places.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock css %}
+{% block content %}
+<div class="sContainer">
+  <div class="s21_tour_de_top">
+    <h3 class="area">{{place.name}}</h3>
+  </div>
+</div>
+<div>
+  <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide" data-ride="carousel" style="width: 100%">
+    <div class="carousel-inner bg-dark"  style='width : 100%; height : 300px;'>
+      {% for photo in slideimages %}
+        <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style='width : 100%; height : 50%;'>
+          <img class='carousel-image' src="{{ photo.slideimage }}" alt="" style=' width : 100%; height : 200%;' >
+        </div>
+      {% endfor %}
+  
+    </div>
+  
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls-{{ review.pk }}" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+{% endblock content %}
