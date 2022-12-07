@@ -8,26 +8,28 @@
 {% endblock css %}
 
 {% block content %}
-<div class="personal-info">
+<div class = "container">
+<div class="personal-info mb-5">
   {% if request.user.profile %}
-  <img src="{{ request.user.profile.url }}" alt="직접 설정해둔 프로필 사진">
+  <img src="{{ request.user.profile.url }}" alt="직접 설정해둔 프로필 사진" class="mt-5">
   {% else %}
   <img
     src=""
     alt="기본 프로필 사진">
   {% endif %}
-  <p>{{ request.user }}</p>
 </div>
 <div class="update">
   <form action="" method="POST" enctype="multipart/form-data" class="update-form">
     {% csrf_token %}
     {% bootstrap_form form %}
+    <form> 
     <a href="{% url 'accounts:delete' %}" class="delete">회원 탈퇴</a>
     <div class="buttons">
       <button type="submit" class="update-button">수정</button>
       <button type="button" class="back-button"
         onclick="location.href='{% url 'accounts:profile' user.username %}'">취소</button>
   </form>
+</div>
 </div>
 </div>
 {% endblock content %}

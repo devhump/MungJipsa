@@ -2,11 +2,11 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="">
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
 {% endblock css %}
 {% block content %}
 
-<div class="personal-info m-3">
+<div class="personal-info m-3 ">
 {% if user.dog_set.all %}
 {% for dog in user.dog_set.all %}
   {% if dog.dogphoto %}
@@ -22,13 +22,13 @@
 
 </div>
 <div class="update">
-  <form action="" method="POST" enctype="multipart/form-data" class="update-form">
+  <form action="" method="POST" enctype="multipart/form-data" class="update-form container">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <a href="{% url 'accounts:dogdelete'%}" class="delete">강아지 등록 취소</a>
+    <a href="{% url 'accounts:dogdelete' dog.pk %}" class="btn button btnPush btnOrange m-3" title="Button push orange">강아지 등록 취소</a>
     <div class="buttons">
-      <button type="submit" class="update-button">수정</button>
-      <button type="button" class="back-button"
+      <button type="submit" class="btn button btnPush btnOrange m-3" title="Button push orange">수정</button>
+      <button type="button" class="btn button btnPush btnOrange m-3" title="Button push orange"
         onclick="location.href='{% url 'accounts:profile' user.username %}'">취소</button>
   </form>
 </div>

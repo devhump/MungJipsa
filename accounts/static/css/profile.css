@@ -1,13 +1,23 @@
-/* 메뉴 안에 내용이 없을 경우 */
-.no-contents {
-  color: #E3B57E;
-  text-align: center;
-  margin-top: 5rem;
+body{
+  background-color:#e6e0db;
 }
 
+.google-font{
+  font-family: 'Rubik', sans-serif;
+}
 
+.username{
+    display: flex!important;
+    align-content: center;
+    flex-wrap: wrap;
+
+}
+/* 팔로우 css*/
 .follow {
   margin-right: 2.5rem;
+    display: flex!important;
+    align-content: stretch;
+    align-items: center;
 }
 
 .follow-button {
@@ -26,13 +36,85 @@
   width: 8.5rem;
 }
 
+
+/* 프로필 이미지 */
+.profileimage {
+  border-radius: 50%;
+
+}
+/* MY 강아지 > 강아지 프로필 사진*/
+.dogprofile {
+  border-radius: 50%;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  margin: 2px;
+  overflow: hidden;
+}
+.nav-link{
+  color :rgb(185, 113, 25)
+}
+
+/* MY 강아지 > 강아지 정보수정,프로필 카드*/
+.dogmenu {
+  display: flex;
+  align-items: center;
+  
+
+}
+
+/* MY 강아지 탭 프로필 사진 */
+.mydog-tab {
+  align-items: center;
+  display: flex!important;
+  justify-content: center;
+
+}
+
+
 /* 프로필 메뉴 */
 .profilemenu {
   display: flex!important;
   justify-content: space-around;
+
 }
 
-/* 프로필 사진 radious */
-.radious {
-  border-radius: 50%;
+/* 버튼 css*/
+.btnOrange {
+  background: #E3B57E;
 }
+.btnFade.btnOrange:hover {
+  background: rgb(185, 113, 25);
+}
+
+.btnOrange:hover {
+  background: #e79026;
+}
+.btnOrange.btnPush {
+  box-shadow: 0px 5px 0px 0px #A66615;
+  width: 130px;
+  font-size:small;
+}
+
+.btnOrange.btnPush:hover {
+  box-shadow: 0px 0px 0px 0px #A66615;
+}
+
+.card {
+  /* if not hovered : dark */
+  filter: brightness(90%);
+  transition: 
+    transform .4s,
+    filter .4s,
+    z-index .2s;
+    
+}
+
+.card:hover{ 
+  filter: brightness(100%);
+  box-shadow: 0 15px 20px 10px rgba(217, 215, 215, 0.974);
+  z-index: 1;
+}
+
+
+

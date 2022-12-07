@@ -5,32 +5,25 @@
     <link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
 {% endblock css %}
 {% block content %}
-
-
+    <script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
     <!-- MY PAGE -->
     <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
-        <div class="d-flex mt-3"> 
-            <div>
+    <div class="d-flex mt-3 background container">
+        <div>
             {% if user.profile %}
-            <img class="d-flex " src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
+                <img class="d-flex profileimage m-3" src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
             {% else %}
-            <img src="https://dummyimage.com/50x50" alt="기본 프로필 사진"/>
+                <img class="d-flex profileimage m-3" src="https://dummyimage.com/50x50" alt="기본 프로필 사진"/>
             {% endif %}
-            </div>
-            <p>{{ user.username }}</p>
         </div>
-            <!-- 팔로우 -->
-            {% if request.user.is_authenticated and user != request.user %}
-                <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex">
-                    {% csrf_token %}
-                        {% if request.user in user.followers.all %}
-                        <input type="submit" value='팔로우 취소' class="follow-button">
-                        {% else %}
-                            <input type="submit" value='팔로우' class="follow-button">
-                        {% endif %}
-                    </form>
-                {% endif %}
-                        <p class="text-muted m-0">
+        <p class="d-flex username">{{ user.username }}</p>
+        <!-- 팔로우 -->
+        {% if request.user.is_authenticated and user != request.user %}
+            <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex follow">
+                {% csrf_token %}
+                {% if request.user in user.followers.all %}
+                    <input type="submit" value='팔로우 취소' class="follow-button">
+                        <p class="text-muted m-0 ">
                             <span class="mx-2" style="font-size: 16px;">팔로잉</span>
                             <span style="color: #E3B57E; font-weight:700;" id="followings-count">
                                 {{ user.followings.all|length }}</span>
@@ -41,68 +34,123 @@
                             <span class="mx-1">명</span>
                         </p>
                     </div>
-                    
-            
-            <!-- 기타 버튼 -->
-            <div class="text-end mb-5">
-                    {% if request.user == user %}
-                    <a class="btn btn-primary" href="{% url 'accounts:update' user.pk %}">회원 정보 수정</a>
-                    <a class="btn btn-primary" href="{% url 'accounts:dogsignup' %}">강아지 등록</a>
-                    {% endif %}
-                    <a class="btn btn-primary" href="{% url 'accounts:dogprofile' user.pk %}">강아지 프로필</a>
-                    <a class="btn btn-primary" href="{% url 'accounts:logout' %}">로그아웃</a>
-                    <a class="btn btn-primary" href="{% url 'accounts:index' %}">뒤로가기</a>
-                    <a class="btn btn-secondary"href="{% url 'accounts:delete' %}" >회원탈퇴</a>
-            </div>
-            <!--임시 메뉴 -->
-            <ul class="nav nav-tabs profilemenu">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#qwe">MY 강아지</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#asd">MY 작성글</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#zxc">MY 댓글</a>
-                </li>
-            </ul>
-            <!-- 메뉴 내용 -->
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="qwe">
-                    <p>
-                        <div class="d-flex mt-3 "> 
-                            <div>
-                                <ul class = "d-flex">
+                {% else %}
+                    <input type="submit" value='팔로우' class="follow-button">
+                        <p class="text-muted m-0 ">
+                            <span class="mx-2" style="font-size: 16px;">팔로잉</span>
+                            <span style="color: #E3B57E; font-weight:700;" id="followings-count">
+                                {{ user.followings.all|length }}</span>
+                            <span class="mx-1">명</span>
+                            <span class="mx-2" style="font-size: 16px;">팔로워</span>
+                            <span style="color: #E3B57E; font-weight:700;" id="followers-count">
+                                {{ user.followers.all|length }}</span>
+                            <span class="mx-1">명</span>
+                        </p>
+                    </div>
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+    <!-- 기타 버튼 -->
+    <div class="text-end mb-5">
+        {% if request.user == user %}
+            <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:update' user.pk %}">회원 정보 수정</a>
+            <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:dogsignup' %}">강아지 등록</a>
+        {% endif %}
+        <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:logout' %}">로그아웃</a>
+        <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:index' %}">뒤로가기</a>
+        <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:delete' %}">회원탈퇴</a>
+    </div>
+    <!--메뉴 -->
+    {% if request.user.is_authenticated and user != request.user %}
+        <ul class="nav nav-tabs profilemenu">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#qwe">
+                    <i class="fa-solid fa-dog fa-bounce"></i>
+                    {{ user }}
+                    님의 강아지</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#asd">
+                    <i class="fa-regular fa-keyboard fa-fade " style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"></i>
+                    {{ user }}
+                    님의 작성글</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#zxc">
+                    <i class="fa-regular fa-comment fa-fade" style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6;"></i>
+                    {{ user }}
+                    님의 일정</a>
+            </li>
+        </ul>
+    {% else %}
+        <ul class="nav nav-tabs profilemenu">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#qwe">
+                    <i class="fa-solid fa-dog fa-bounce"></i>
+                    MY 강아지</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#asd">
+                    <i class="fa-regular fa-keyboard fa-fade " style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"></i>
+                    MY 작성글</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#zxc">
+                    <i class="fa-regular fa-comment fa-fade" style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6;"></i>
+                    MY 일정</a>
+            </li>
+        </ul>
+    {% endif %}
+    <!-- 메뉴 내용 -->
+    <div class="tab-content container">
+        <div class="tab-pane fade show active" id="qwe">
+            <p>
+                <div class=" d-flex mt-3">
+                    <div>
+                        <ul class="d-flex row row-cols-auto mydog-tab">
                             {% if user.dog_set.all %}
                                 {% for dog in user.dog_set.all %}
-                                    {% if dog.dogphoto %}
-                                    <img class="d-flex row col-1 doglist" src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진"/>
-                                    {% else %}
-                                    <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진"/>
-                                    {% endif %}
-                                    
-                                    <p class="m-3">{{ dog.name }} <a class="btn btn-primary" href="{% url 'accounts:dogupdate' dog.pk %}">강아지 정보 수정</a></p>
-                                    
+                                    <p class="m-3 card dogmenu dog">
+                                        {{ dog.name }}
+                                        <img class="d-flex row dogprofile" src="{{ dog.dogphoto.url }}" alt=""/>
+                                        {% if request.user == user %}
+                                            <a class="btn button btnPush btnOrange" title="Button push orange" href="{% url 'accounts:dogupdate' dog.pk %}">강아지 정보 수정</a>
+                                        {% endif %}
+                                        <a class="btn button btnPush btnOrange m-3" title="Button push orange" href="{% url 'accounts:dogprofile' dog.pk %}">강아지 프로필</a>
+                                    </p>
                                 {% endfor %}
-                                </ul>
-                            {% else %}
-                                <p>등록된 강아지 정보가 없어요ㅠㅠ</p>
-                            {% endif %}
-                            </div>
-                        </div>
+                            </ul>
+                        {% else %}
+                            <p>등록된 강아지 정보가 없어요ㅠㅠ</p>
+                        {% endif %}
                     </p>
                 </div>
-                <div class="tab-pane fade" id="asd">
-                    <p>작성글 x</p>
-                </div>
-                <div class="tab-pane fade" id="zxc">
-                    <p>
-                        댓글x</p>
-                </div>
             </div>
-        {% endblock content %}
-        <!--비동기-->
-        <!-- {% block js %}
+        </p>
+    </div>
+    <div class="tab-pane fade" id="asd">
+        {% if user.review_set.all %}
+            {% for review in user.review_set.all %}
+                <p class="m-3 card dogmenu dog">
+                    {{ review.content }}
+                    {% if review.image %}
+                        {% for i in review.image.all %}
+                            <img src="{{ i.image.url }}"/><br/>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>작성한 글이 없어요ㅠㅠ</p>
+        {% endif %}
+    </div>
+    <div class="tab-pane fade" id="zxc">
+        <p>
+            댓글x</p>
+    </div>
+</div>{% endblock content %}<!--비동기-->{% comment %}
+{% block js %}
             <script src="http://code.jquery.com/jquery-latest.js"></script>
             <script src="{% static 'accounts/js/profile.js' %}"></script>
             <script>
@@ -141,4 +189,57 @@
                     });
                 });
             </script>
-        {% endblock js %} -->
+        {% endblock js %} -->{% endcomment %}{% comment %}
+<script>
+            // 좋아요
+            const form = document.querySelectorAll('.like-form')
+            console.log(form)
+            const csrftokens = document
+              .querySelector('[name=csrfmiddlewaretoken]')
+              .value
+        
+              form
+              .forEach((form) => {
+                form.addEventListener('submit', function (event) {
+                  event.preventDefault()
+                  const userId = event.target.dataset.userId
+                  const commentId = event
+                    .target
+                    .dataset
+                    .commentId
+        
+                    axios({
+                      method: 'post',
+                      url: `/accounts/${userId}/likes/`,
+                      headers: {
+                        'X-CSRFToken': csrftokens
+                      }
+                    })
+                    .then((response) => {
+                      const isLiked = response.data.is_liked
+                      const likeBtn = document.querySelector(`#like-i-${userId}`)
+                      if (isLiked === true) {
+                        likeBtn
+                          .classList
+                          .remove('bi-suit-heart')
+                        likeBtn
+                          .classList
+                          .add('bi-suit-heart-fill')
+                      } else {
+                        likeBtn
+                          .classList
+                          .remove('bi-suit-heart-fill')
+                        likeBtn
+                          .classList
+                          .add('bi-suit-heart')
+                      }
+                      const likeCountTag = document.querySelector(`#like-count-${userId}`)
+                      const likeCount = response.data.likeCount
+                      likeCountTag.innerText = likeCount
+                    })
+                    .catch((error) => {
+                      console.log(error.response)
+                    })
+                  })
+              })
+          </script>{% endcomment %}
