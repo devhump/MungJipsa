@@ -34,9 +34,11 @@
             <label for="walk_date" class="walking-form-item-label">모임날짜</label>
             <input id="walk_date" class="form-control walking-form-item" type='datetime-local' name="datetime" >
           </div>
-          <div>
             <label for="walk_cnt" class="walking-form-item-label">인원수</label>
-            <input id="walk_cnt" class="form-control walking-form-item" type="number" name="membercnt" min="2" max="5">
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" onclick='counter("minus")' id="minus-button">-</button>
+            <input id="walk_cnt" class="form-control walking-form-item text-center" type="text" name="membercnt" aria-describedby="button-addon1" value="3" min="2" max="5">
+            <button class="btn btn-outline-secondary" type="button" onclick='counter("plus")' id="plus-button">+</button>
           </div>
           <div>
             <input id="walk_form_btn" class="btn walking-form-btn" type="submit" value="같이 산책하기" onclick="">

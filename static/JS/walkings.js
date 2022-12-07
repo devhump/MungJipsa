@@ -195,4 +195,40 @@ function w_create(e) {
     })
 }
 
+const walkCnt = document.querySelector('#walk_cnt')
+
+function counter(type) {
+  let number = walkCnt.value;
+
+  if (type === 'minus') {
+    number = parseInt(number) - 1
+  } else if (type === 'plus') {
+    number = parseInt(number) + 1
+  }
+  // walkCnt.value = number 도 가능하나, element의 변화가 없음
+  walkCnt.setAttribute('value', number)
+
+  counterCheck(number)
+}
+
+function counterCheck(number) {
+  if (number < 1 || number > 6) {
+    alert('지정가능한 범위를 벗어났습니다.')
+    walkCnt.setAttribute('value', 3)
+    walkCnt.value = 3
+  } else if (number == 1) {
+    alert('같이 산책하기 위한 최소 인원은 2명입니다.')
+    counter('plus')
+  } else if (number == 6) {
+    alert('같이 산책하기 위한 최대 인원은 5명까지 입니다.')
+    counter('minus')
+  }
+}
+
+walkCnt.addEventListener('change', function (event) {
+  let number = walkCnt.value;
+
+  counterCheck(number)
+})
+
 navigator.geolocation.getCurrentPosition(success, error, options);
