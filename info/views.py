@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Hospital, Deserted, PetPlace, PetPlaceSlideImage, PetPlaceBodyImage
 from django.core.paginator import Paginator
 from django.db.models import Q
+from .serializer import PlaceSerializer
 
 # Create your views here.
 def hospital(request):
@@ -114,10 +115,17 @@ def deserted_detail(request, pk):
     return render(request, "info/deserted_detail.html", context)
 
 
+from rest_framework.viewsets import ModelViewSet
+
+
+class PlaceViewSet(ModelViewSet):
+    queryset = PetPlace.objects.all()
+    serializer_class = PlaceSerializer
+
+
 def place(request):
     places = PetPlace.objects.all()
     slideimages = PetPlaceSlideImage.objects.all()
-    bodyimages = PetPlaceBodyImage.objects.all()
 
     search = request.GET.get("search")
     areaSearch = request.GET.get("areaSearch")
@@ -143,7 +151,6 @@ def place(request):
         "posts": posts,
         "paginator": paginator,
         "slideimages": slideimages,
-        "bodyimages": bodyimages,
     }
 
     if page:
@@ -165,7 +172,6 @@ def place(request):
             "paginator": paginator,
             "custom_range": custom_range,
             "slideimages": slideimages,
-            "bodyimages": bodyimages,
         }
 
     return render(request, "info/place_index.html", context)

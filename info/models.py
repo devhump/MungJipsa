@@ -32,6 +32,7 @@ class PetPlace(models.Model):
     address = models.CharField(max_length=200)
     tel = models.CharField(max_length=30)
     url = models.CharField(max_length=200)
+    imageURL = models.CharField(max_length=200)
 
 
 class PetPlaceSlideImage(models.Model):
