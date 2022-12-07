@@ -6,7 +6,7 @@
 {% endblock css %}
 {% block content %}
 
-<div class="personal-info m-3">
+<div class="personal-info m-3 ">
 {% if user.dog_set.all %}
 {% for dog in user.dog_set.all %}
   {% if dog.dogphoto %}
@@ -22,7 +22,7 @@
 
 </div>
 <div class="update">
-  <form action="" method="POST" enctype="multipart/form-data" class="update-form">
+  <form action="" method="POST" enctype="multipart/form-data" class="update-form container">
     {% csrf_token %}
     {% bootstrap_form form %}
     <a href="{% url 'accounts:dogdelete'%}" class="delete">강아지 등록 취소</a>
