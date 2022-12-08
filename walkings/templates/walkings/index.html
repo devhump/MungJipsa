@@ -8,13 +8,13 @@
 
 {% block content %}
 <div class="container mt-3">
-  <section class="d-flex justify-content-center align-items-center">
-    <div class="map-area col-8">
+  <section class="d-flex row justify-content-center align-items-center">
+    <div class="map-area col-7">
       <div id="map" style="height:350px;"></div>
     </div>
     
-    <div class="walking-form-area d-flex col-2" style="">
-      <div class="row">
+    <div class="walking-form-area d-flex col-3" style="">
+      <div class="">
         {% comment %} <form id="location-form" action="" style="width:60%;">
             <input id="address" class="form-control" type="text" style="">
             <input class="" type="submit" value="찾기" style="">
@@ -22,9 +22,10 @@
         <form action="{% url 'walkings:create2' %}" id="walking_form" class="walking-form" method="post" style="" >
           {% csrf_token %}
           <div>
-            <label for="walk_location2" class="walking-form-item-label">공원명</label>
-            <input id="walk_location2" class="form-control" type='text' name='parkname' style="">
-            <input id="walk_location" class="form-control" type='text' name='park_pk' style="display : none;">
+            <label for="parkSelect" class="walking-form-item-label">공원명</label>
+            <select id="parkSelect" name='park_pk' class="form-select">
+              <option selected>공원을 선택하세요</option>
+            </select>
           </div>
           <div>
             <label for="walk_title" class="walking-form-item-label">모임명</label>
@@ -48,7 +49,7 @@
     </div>
   </section>
 
-  <section class="dogroups-list-area row justify-content-center">
+  <section class="dogroups-list-area row justify-content-center mt-3">
     {% for dogr in dogroups %}
       <div class="card dogroup-card col-5" style="width:%">
         <div class="card-body">
@@ -97,8 +98,8 @@
                       {% endfor %}
                 
                     {% endfor %}
-                    <p id="park_lat-{{dogr.pk}}">{{dogr.park.latitude}}</p>
-                    <p id="park_lon-{{dogr.pk}}">{{dogr.park.longitude}}</p>
+                    <p id="park_lat-{{dogr.pk}}" style="display:none;">{{dogr.park.latitude}}</p>
+                    <p id="park_lon-{{dogr.pk}}" style="display:none;">{{dogr.park.longitude}}</p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

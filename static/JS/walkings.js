@@ -155,6 +155,12 @@ function success(pos) {
           overlay.setMap(map)
         })
 
+        var option = document.createElement('option')
+        option.innerText = data.parkName;
+        option.classList.add('parkSelect-options')
+        option.value = data.park_pk
+        parkSelect.append(option)
+
       }// 마커 반복문 종료
 
     })
@@ -167,34 +173,42 @@ function error(err) {
 }
 
 function pick_park(e) {
-  const walk_location = document.querySelector('#walk_location')
-  walk_location.setAttribute('value', `${event.target.dataset.parkId}`)
-  const walk_location2 = document.querySelector('#walk_location2')
-  walk_location2.setAttribute('value', `${event.target.dataset.parkname}`)
-  // 아래는 비동기 코드
-  const walking_form = document.querySelector('#walking_form')
-  walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
-  const walk_form_btn = document.querySelector('#walk_form_btn')
-  walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
+  const parkSelectOptions = document.querySelectorAll('.parkSelect-options')
+  console.log(parkSelectOptions)
+
+  for (let i = 0; i < parkSelectOptions.length; i++) {
+    if (parkSelectOptions[i].value === event.target.dataset.parkId) {
+      parkSelectOptions[i].setAttribute('selected', true)
+      break;
+    }
+  }
+
+  // // 아래는 비동기 코드
+  // const walking_form = document.querySelector('#walking_form')
+  // walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
+  // const walk_form_btn = document.querySelector('#walk_form_btn')
+  // walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
 }
 
-function w_create(e) {
-  console.log("산책 약속 잡기 실행")
-  const walking_form = document.querySelector('#walking_form')
-  event.preventDefault();
-  axios({
-    method: 'post',
-    url: `/walkings/create/${event.target.dataset.parkId}`,
-    headers: { 'X-CSRFToken': csrftoken },
-    data: new FormData(walking_form)
-  })
-    .then(response => {
-      console.log(response.data)
-      const dogroup_data = (response.data.dogroup_data)
-      console.log(dogroup_data)
-    })
-}
+// function w_create(e) {
+//   console.log("산책 약속 잡기 실행")
+//   const walking_form = document.querySelector('#walking_form')
+//   event.preventDefault();
+//   axios({
+//     method: 'post',
+//     url: `/walkings/create/${event.target.dataset.parkId}`,
+//     headers: { 'X-CSRFToken': csrftoken },
+//     data: new FormData(walking_form)
+//   })
+//     .then(response => {
+//       console.log(response.data)
+//       const dogroup_data = (response.data.dogroup_data)
+//       console.log(dogroup_data)
+//     })
+// }
 
+
+// 인원수 카운트 하는 코드
 const walkCnt = document.querySelector('#walk_cnt')
 
 function counter(type) {
