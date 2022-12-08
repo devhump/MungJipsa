@@ -5,6 +5,7 @@ function detailMap(e) {
 
   const latitude = document.querySelector(`#park_lat-${e}`).innerText
   const longtitude = document.querySelector(`#park_lon-${e}`).innerText
+  const parkName = document.querySelector(`#parkname-${e}`).innerText
   //------------------------------------지도 기본 설정--------------------------------------------
   var mapContainer = document.getElementById(`detail-map-${e}`), // 지도를 표시할 div
     mapOption = {
@@ -22,15 +23,14 @@ function detailMap(e) {
   map.panTo(currentPos);
 
   // 마커 이미지의 이미지 크기 입니다
-  var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-  var imageSize = new kakao.maps.Size(24, 35);
-
+  var imageSrc = "/static/images/dog2.png";
+  var imageSize = new kakao.maps.Size(30, 30);
 
   var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
   // 마커를 생성합니다
   var marker = new kakao.maps.Marker({
-    map: map, // 마커를 표시할 지도
+    map: map,
     position: new kakao.maps.LatLng(latitude, longtitude), // 마커를 표시할 위치
     //  title: , // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
     image: markerImage, // 마커 이미지
@@ -38,6 +38,20 @@ function detailMap(e) {
   });
 
   setTimeout(function () { map.relayout(); map.setCenter(currentPos); }, 500);
+
+  var iwContent = `<div class="detailmap-info">${parkName}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    iwPosition = new kakao.maps.LatLng(latitude, longtitude), //인포윈도우 표시 위치입니다
+    iwRemoveable = false; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+  // 인포윈도우를 생성하고 지도에 표시합니다
+  var infowindow = new kakao.maps.InfoWindow({
+    position: iwPosition,
+    content: iwContent,
+    removable: iwRemoveable
+  });
+
+  infowindow.open(map, marker);
+
 }
 
 //-----------------------------------------메인 지도------------------------------------------------------
@@ -51,8 +65,8 @@ const options = {
 
 
 // 마커 이미지의 이미지 크기 입니다
-var imageSrc = "/static/images/442dog_100700.png";
-var imageSize = new kakao.maps.Size(24, 35);
+var imageSrc = "/static/images/dog2.png";
+var imageSize = new kakao.maps.Size(30, 30);
 
 function success(pos) {
   const latitude = pos.coords.latitude

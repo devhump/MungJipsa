@@ -176,3 +176,26 @@
   padding-right: 20px;
   font-weight: bold;
 }
+
+
+/* detail-modal */
+.modal-header,
+.modal-footer {
+  background-color: #C17F34;
+  color: white;
+}
+
+.modal-item-list {
+  margin-left: 0.5rem;
+  margin-top: 1rem;
+}
+
+.modal-item-title {
+  font-weight: 900;
+  font-size: larger;
+}
+
+/* detail-map */
+.detailmap-info {
+  text-align: center;
+}
