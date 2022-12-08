@@ -69,11 +69,11 @@
   <div class="s21_tour_de_btm area">
     <!--정보 전환 탭-->
     <div class="s21_tab">
-      <button class="tablinks active">기본정보</button>
-      <button class="tablinks">위치정보</button>
+      <button class="tablinks" id="defaultOpen" onclick="openCity(event, 'info')">기본정보</button>
+      <button class="tablinks" onclick="openCity(event, 'map_info')">위치정보</button>
     </div>
     <!--기본정보-->
-    <div id="info" class="s21_tabcontent" style="display: none;">
+    <div id="info" class="s21_tabcontent" style="">
       <div class="s21_tabcontent_center">
         {% for image in bodyimages %}
         <img src="{{image.bodyimage}}" style="max-width: 100%" alt="">
@@ -81,7 +81,7 @@
       </div>
     </div>
     <!--위치정보-->
-    <div id="map_info" class="s21_tabcontent" style="display: block;">
+    <div id="map_info" class="s21_tabcontent" style="">
       <div class="s21_tabcontent_center">
         <!--주소등 정보-->
         <ul class="s21_map_twrap">
@@ -104,6 +104,7 @@
             <button type="button" class="add_navi">길찾기</button>
           </a>
         </p>
+        <!--지도-->
         <div id="map" class="map_cont">
           <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5d75b4d8877cf6890293eb3c5930fc1c&libraries=services"></script>
           <script>
@@ -135,7 +136,7 @@
 
                     // 인포윈도우로 장소에 대한 설명을 표시합니다
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: '<div style="width:150px;text-align:center;padding:6px 0;">{{place.name}}</div>'
+                        content: '<div>{{place.name}}</div>'
                     });
                     infowindow.open(map, marker);
 
@@ -149,5 +150,5 @@
     </div>
   </div>
 </div>
-
+<script src="{% static 'js/place.js' %}"></script>
 {% endblock content %}
