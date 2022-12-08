@@ -19,8 +19,9 @@
                     <div class="wrap d-md-flex">
                         <div class="text-wrap p-4 p-lg-5 d-flex img" style="background-image: url({% static 'images/main_background.gif' %});">
                             <div class="text w-100">
-                                <h2 class="mb-4">네이멍에 오신것을 환영합니다!</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                <h3 style="color:white;">안녕하세요!!</h3>
+                                <h2 class="mb-4">네이멍에 오신 것을 환영합니다</h2>
+                                <p>Welcome to NAMUNG, the place to find all things about your pet</p>
                             </div>
                         </div>
                         <div class="login-wrap p-4 p-md-5">
@@ -54,15 +55,17 @@
                     </div>
                 </div>
             </div>
-            <a href="{% url 'info:deserted' %}">
-            <img src="{{ banner }}" alt="DogAdopt" class="mt-4 banner" width="100%" height="auto"></a>
+            <a href="{% url 'info:place' %}">
+            <img src="{{ banner }}" alt="DogPlace" class="mt-4 banner" width="100%" height="auto"></a>
 
         </div>
 
     </section>
     <aside class="floating">
         <a href="{% url 'info:hospital' %}">
-            <img src="{{ aside }}" alt="DogAdopt" class="mt-4 banner2" width="150px" height="auto"></a>
+            <img src="{{ aside1 }}" alt="DogHospital" class="mt-4 banner2" width="150px" height="auto"></a>
+        <a href="{% url 'info:deserted' %}">
+            <img src="{{ aside2 }}" alt="DogAdopt" class="mt-4 banner2" width="150px" height="auto"></a>
     </aside>
     <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static 'js/popper.js' %}"></script>
