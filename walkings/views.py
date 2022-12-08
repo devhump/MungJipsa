@@ -82,8 +82,7 @@ def test(request):
 
     return render(request, "walkings/test.html", context)
 
-
-def create(request, park_pk):
+    # def create(request, park_pk):
 
     park = Park.objects.get(pk=park_pk)
     user = request.user
@@ -125,7 +124,7 @@ def create(request, park_pk):
 
 
 def create2(request):
-    # print(request.POST)
+    print(request.POST)
     park_pk = request.POST["park_pk"]
 
     park = Park.objects.get(pk=park_pk)
