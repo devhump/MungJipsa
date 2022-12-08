@@ -10,8 +10,8 @@ from info.models import PetPlace, PetPlaceSlideImage, PetPlaceBodyImage
 
 # idx range: 76 - 11503
 
-idx = 76
-while idx < 1000:
+idx = 107
+while idx < 109:
     url = (
         "http://hatdog.co.kr/pc_hatdog/?m1Code=ar_info&m2Code=ar_info&mode=view&idx="
         + str(idx)
@@ -26,6 +26,11 @@ while idx < 1000:
             _name = soup.select_one("p.swiper-slide img").attrs["alt"]
         except:
             print(idx, "문제가 있는 페이지. 다음으로 넘어갑니다.")
+            idx += 1
+            continue
+
+        if _name == "":
+            print(idx, "정보가 공백인 페이지. 다음으로 넘어갑니다")
             idx += 1
             continue
 
