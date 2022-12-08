@@ -44,7 +44,11 @@
                                     <div class="w-100">
                                         <p class="mt-4">새로 오셨나봐요? <a href="{% url 'accounts:signup' %} " class="enter">Sign Up</a></p>
                                     </div>
-                                    {{ request.user.username }}님, 환영합니다!!
+                                        {% if request.user.is_authenticated %}
+                                            {{ request.user.username }}님, 환영합니다!!
+                                        {% else %}
+                                            새로운 멍집사님, 환영합니다!!
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
