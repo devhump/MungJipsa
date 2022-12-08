@@ -156,7 +156,7 @@ def dogsignup(request):
             forms = forms.save(commit=False)
             forms.user = request.user
             forms.save()
-            return redirect("accounts:profile")
+            return redirect("accounts:profile", request.user.username)
     else:
         forms = DogForm()
     context = {"forms": forms}
