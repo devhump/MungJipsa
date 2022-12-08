@@ -5,13 +5,17 @@ import random
 
 
 def main(request):
-    num = random.randrange(1, 7)
-    lst = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"]
-    photo = lst[num - 1]
-    address = "../../static/images/" + photo
+    num = random.randrange(1, 6)
+    lst1 = ["P1.png", "P2.png", "P3.png", "P4.png", "P5.png"]
+    below = lst1[num - 1]
+    place = "../../static/images/" + below
     num2 = random.randrange(1, 6)
-    lst2 = ["01.png", "02.png", "03.png", "04.png", "05.png"]
-    hospital = lst2[num2 - 1]
+    lst2 = ["D1.png", "D2.png", "D3.png", "D4.png", "D5.png"]
+    photo = lst2[num2 - 1]
+    address = "../../static/images/" + photo
+    num3 = random.randrange(1, 6)
+    lst3 = ["H1.png", "H2.png", "H3.png", "H4.png", "H5.png"]
+    hospital = lst3[num3 - 1]
     sub = "../../static/images/" + hospital
-    context = {"banner": address, "aside": sub}
+    context = {"aside2": address, "aside1": sub, "banner": place}
     return render(request, "main/main.html", context)
