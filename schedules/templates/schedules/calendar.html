@@ -1,239 +1,326 @@
-{% load django_bootstrap5 %}
-{% load static %}
+{% load django_bootstrap5 %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>네이멍</title>
-  <link rel="icon" href="{% static '/images/namung_logo.png' %}">
-  <!-- CSS only -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  <!-- 외부 CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-  <!-- CSS -->
-  <link rel="stylesheet" href="{% static 'css/main.css' %}">
-  <style>
-    .navback {
-      background-color: #544B44;
-      color: #C17F34;
-  }
-  </style>
-</head>
-<body>
-<!-- Navbar 1 -->
-<nav class="navbar-stretch navbar-expand-lg p-0 sticky-top navback">
-  <div class="d-flex flex-column px-5 py-2">
-    <ul class="navbar-nav me-0 mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
-      <!-- 로고 -->
-      <div>
-        <a class="navbar-brand" href="{% url 'reviews:index' %}">
-          <img src="{% static 'images/namung_horizontalLogo.png' %}" alt="Logo" style="width: 11rem; height: 4rem;">
-        </a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>네이멍</title>
+    <link rel="icon" href="{% static '/images/namung_logo.png' %}" />
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <!-- 외부 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+    <style>
+      .navback {
+        background-color: #544b44;
+        color: #c17f34;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar 1 -->
+    <nav class="navbar-stretch navbar-expand-lg p-0 sticky-top navback">
+      <div class="d-flex flex-column px-5 py-2">
+        <ul
+          class="navbar-nav me-0 mb-2 mb-lg-0 d-flex justify-content-between align-items-center"
+        >
+          <!-- 로고 -->
+          <div>
+            <a class="navbar-brand" href="{% url 'reviews:index' %}">
+              <img
+                src="{% static 'images/namung_horizontalLogo.png' %}"
+                alt="Logo"
+                style="width: 11rem; height: 4rem"
+              />
+            </a>
+          </div>
+          <!-- 토글러 -->
+          <div class="d-flex">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'accounts:index' %}"
+                >{{ request.user }}</a
+              >
+            </li>
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'accounts:logout' %}"
+                >로그아웃</a
+              >
+            </li>
+            {% else %}
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+            </li>
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'accounts:signup' %}"
+                >회원가입</a
+              >
+            </li>
+            {% endif %}
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'reviews:index' %}"
+                >멍스타그램</a
+              >
+            </li>
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'schedules:calendar' %}"
+                >일정관리</a
+              >
+            </li>
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'walkings:index' %}"
+                >산책나가기</a
+              >
+            </li>
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'info:hospital' %}">병원찾기</a>
+            </li>
+            <li class="nav-item me-4 nav1-text">
+              <a class="nav-link" href="{% url 'info:deserted' %}"
+                >유기견보호소</a
+              >
+            </li>
+          </div>
+        </ul>
       </div>
-      <!-- 토글러 -->
-      <div class="d-flex">
-        {% if request.user.is_authenticated %}
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'accounts:index' %}">{{ request.user }}</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
-          </li>
-        {% else %}
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
-          </li>
-        {% endif %}
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'reviews:index' %}">멍스타그램</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'schedules:calendar' %}">일정관리</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'walkings:index' %}">산책나가기</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'info:hospital' %}">병원찾기</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'info:deserted' %}">유기견보호소</a>
-          </li>
+    </nav>
+    <div>
+      <div class="nav">
+        <!-- sub navbar-->
+        <header class="nav2">
+          <div class="nav_div">
+            <!-- 프로필 이미지 -->
+            <a href="{% url 'accounts:profile' user.username %}"
+              ><img
+                class="nav2 navimg"
+                src="../media/{{ user.profile }}"
+                alt="{{ user.username }}"
+            /></a>
+            <span>
+              <a
+                style="text-decoration: none; color: #544b44"
+                href="{% url 'accounts:profile' user.username %}"
+                ><p class="">{{ user.username }}</p></a
+              >
+              <p class="">강아지 이름</p>
+            </span>
+          </div>
+          <div class="nav2_link">
+            <span>
+              <a
+                style="text-decoration: none; color: #544b44"
+                class="mx-1"
+                href="{% url 'schedules:calendar' %}"
+                >달력</a
+              >
+              <a
+                style="text-decoration: none; color: #544b44"
+                class="mx-1"
+                href="{% url 'schedules:running_events' %}"
+                ><i class="icon fa fa-circle-o"></i>다가오는 일정</a
+              >
+              <a
+                style="text-decoration: none; color: #544b44"
+                class="mx-1"
+                href="{% url 'schedules:all_events' %}"
+                >모든 일정</a
+              >
+            </span>
+          </div>
+        </header>
       </div>
-    </ul>
-  </div>
-</nav>
-<div>
-  <div class="nav">
-    <!-- sub navbar-->
-    <header class="nav2">
-      <div class="nav_div">
-        <!-- 프로필 이미지 -->
-        <a href="{% url 'accounts:profile' user.username %}"><img class="nav2 navimg" src="../media/{{ user.profile }}" alt="{{ user.username }}"></a>
-        <span>
-          <a style="text-decoration: none; color: #544B44;" href="{% url 'accounts:profile' user.username %}"><p class="">{{ user.username }}</p></a>
-            <p class="">강아지 이름</p>
-        </span>
-      </div>
-      <div class="nav2_link">
-        <span>
-            <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:calendar' %}">달력</a>
-            <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i>다가오는 일정</a>
-            <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:all_events' %}">모든 일정</a>
-        </span>
-      </div>
-    </header>
-  </div>
-  <div class="app-content container">
-
+      <div class="app-content container">
         <h1><i class="fa fa-calendar"></i> Calendar</h1>
 
-  
-  <div class="row">
-      <div class="col-md-12">
-          <div class="tile row">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="tile row">
               <div class="col-md-9">
                 <div id="calendar"></div>
               </div>
-  
-            <!-- 이벤트 생성 모달 -->
-              <div class="modal fade show" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header" style="background-color:#544B44;">
-                              <h5 class="modal-title text-white" id="exampleModalLongTitle">일정 추가하기</h5>
-                              <button id="modalClose1" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                              </button>
-                          </div>
-                          <form method="post">
-                              {% csrf_token %}
-                              <div class="modal-body">
-                                  <div class="form-group">
-                                      <label for="recipient-name" class="col-form-label">일정 이름:</label>
-                                      {{ form.title }}
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="message-text" class="col-form-label">일정 내용:</label>
-                                      {{ form.description }}
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="message-text" class="col-form-label">시작 날짜/시간:</label>
-                                      {{ form.start_time }}
-                                  </div>
-                                  <div class="form-group">
-                                      <label for="message-text" class="col-form-label">종료 날짜/시간:</label>
-                                      {{ form.end_time }}
-                                  </div>
-                              </div>
-                              <div class="modal-footer">
-                                  <button id="modalClose2" type="button" class="btn btn-danger">닫기</button>
-                                  <button type="submit" class="btn btn-primary">저장</button>
-                              </div>
-                          </form>
+
+              <!-- 이벤트 생성 모달 -->
+              <div
+                class="modal fade show"
+                id="eventModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header" style="background-color: #544b44">
+                      <h5
+                        class="modal-title text-white"
+                        id="exampleModalLongTitle"
+                      >
+                        일정 추가하기
+                      </h5>
+                      <button
+                        id="modalClose1"
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form method="post">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        <div class="form-group">
+                          <label for="recipient-name" class="col-form-label"
+                            >일정 이름:</label
+                          >
+                          {{ form.title }}
+                        </div>
+                        <div class="form-group">
+                          <label for="message-text" class="col-form-label"
+                            >일정 내용:</label
+                          >
+                          {{ form.description }}
+                        </div>
+                        <div class="form-group">
+                          <label for="message-text" class="col-form-label"
+                            >시작 날짜/시간:</label
+                          >
+                          {{ form.start_time }}
+                        </div>
+                        <div class="form-group">
+                          <label for="message-text" class="col-form-label"
+                            >종료 날짜/시간:</label
+                          >
+                          {{ form.end_time }}
+                        </div>
                       </div>
+                      <div class="modal-footer">
+                        <button
+                          id="modalClose2"
+                          type="button"
+                          class="btn btn-danger"
+                        >
+                          닫기
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          저장
+                        </button>
+                      </div>
+                    </form>
                   </div>
+                </div>
               </div>
               <!-- 진행중 이벤트 모음 -->
               <div class="col-md-3">
                 <div id="external-events">
-                    <h4 class="mb-4">진행 예정 일정</h4>
-                    {% for event in events_month %}
-                      <div class="fc-event">
-                          <span><span style="font-size: 1.5rem;">"{{ event.title }}" </span><span style="font-size: 1rem;">일정은</span></span>
-                          <p>{{ event.start_time }}부터</p>
-                          <p>{{ event.end_time }}까지<br>입니다.</p>
-                          
-                      </div>
-                    {% empty %}
-                      <p>일정이 없어요 ㅠㅠ</p>
-                    {% endfor %}
+                  <h4 class="mb-4">진행 예정 일정</h4>
+                  {% for event in events_month %}
+                  <div class="fc-event">
+                    <span
+                      ><span style="font-size: 1.5rem"
+                        >"{{ event.title }}" </span
+                      ><span style="font-size: 1rem">일정은</span></span
+                    >
+                    <p>{{ event.start_time }}부터</p>
+                    <p>{{ event.end_time }}까지<br />입니다.</p>
+                  </div>
+                  {% empty %}
+                  <p>일정이 없어요 ㅠㅠ</p>
+                  {% endfor %}
                 </div>
+              </div>
             </div>
           </div>
+        </div>
       </div>
-  </div>
-  </div>
-</div>
+    </div>
 
-<footer class="">
-  <div class="d-flex justify-content-end mb-4 me-4 fixed-bottom" style="z-index: 2;">
-    <button onclick="topFunction()" class="topBtn" title="Go to top">Top</button>
-  </div>
-  <nav class="navbar d-flex justify-content-center align-content-center opacity-75 fixed-bottom" style="background-color: #C17F34; height: 3rem; z-index: 1;">
-      <a class="text-decoration-none text-white" href="#">
-        🐕🐶 Supported by HyperGrowth 🐶🐕
-      </a>
-  </nav>
-</footer>
-<script type="text/javascript" src="/static/js/footer.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>
-// https://webdir.tistory.com/481
-// Hide .lower-navbar on on scroll down
-var didScroll;
-var lastScrollTop = 0;
-var delta = 5;
-var navbarHeight = $('.lower-navbar').outerHeight();
+    <footer class="">
+      <div
+        class="d-flex justify-content-end mb-4 me-4 fixed-bottom"
+        style="z-index: 2"
+      >
+        <button onclick="topFunction()" class="topBtn" title="Go to top">
+          Top
+        </button>
+      </div>
+      <nav
+        class="navbar d-flex justify-content-center align-content-center opacity-75 fixed-bottom"
+        style="background-color: #c17f34; height: 3rem; z-index: 1"
+      >
+        <a class="text-decoration-none text-white" href="#">
+          🐕🐶 Supported by HyperGrowth 🐶🐕
+        </a>
+      </nav>
+    </footer>
+    <script type="text/javascript" src="/static/js/footer.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+      // https://webdir.tistory.com/481
+      // Hide .lower-navbar on on scroll down
+      var didScroll;
+      var lastScrollTop = 0;
+      var delta = 5;
+      var navbarHeight = $(".lower-navbar").outerHeight();
 
-$(window).scroll(function (event) {
-didScroll = true;
-});
+      $(window).scroll(function (event) {
+        didScroll = true;
+      });
 
-setInterval(function () {
-if (didScroll) {
-  hasScrolled();
-  didScroll = false;
-}
-}, 250);
+      setInterval(function () {
+        if (didScroll) {
+          hasScrolled();
+          didScroll = false;
+        }
+      }, 250);
 
-function hasScrolled() {
-var st = $(this).scrollTop();
+      function hasScrolled() {
+        var st = $(this).scrollTop();
 
-// Make sure they scroll more than delta
-if (Math.abs(lastScrollTop - st) <= delta) 
-  return;
+        // Make sure they scroll more than delta
+        if (Math.abs(lastScrollTop - st) <= delta) return;
 
-// If they scrolled down and are past the navbar, add class .nav-up.
-// This is necessary so you never see what is "behind" the navbar.
-if (st > lastScrollTop && st > navbarHeight) {
-  // Scroll Down
-  $('.lower-navbar')
-    .removeClass('nav-down')
-    .addClass('nav-up');
-} else {
-  // Scroll Up
-  if (st + $(window).height() < $(document).height()) {
-    $('.lower-navbar')
-      .removeClass('nav-up')
-      .addClass('nav-down');
-  }
-}
+        // If they scrolled down and are past the navbar, add class .nav-up.
+        // This is necessary so you never see what is "behind" the navbar.
+        if (st > lastScrollTop && st > navbarHeight) {
+          // Scroll Down
+          $(".lower-navbar").removeClass("nav-down").addClass("nav-up");
+        } else {
+          // Scroll Up
+          if (st + $(window).height() < $(document).height()) {
+            $(".lower-navbar").removeClass("nav-up").addClass("nav-down");
+          }
+        }
 
-lastScrollTop = st;
-}
-</script>
+        lastScrollTop = st;
+      }
+    </script>
 
-
-
-
-
-
-<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-<script src="{% static 'js/popper.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/main.js' %}"></script>
-<!-- The javascript plugin to display page loading on top-->
-<script src="{% static 'js/plugins/pace.min.js'%}"></script>
-  <!-- 달력 구현 스크립트 -->
-  <script src="{% static 'js/calendarsMain.js' %}"></script>
-  <script>
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="{% static 'js/plugins/pace.min.js'%}"></script>
+    <!-- 달력 구현 스크립트 -->
+    <script src="{% static 'js/calendarsMain.js' %}"></script>
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var today = new Date();
@@ -304,7 +391,6 @@ lastScrollTop = st;
         const eventModal = document.getElementById('eventModal')
         eventModal.style.display = 'none';
       });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>

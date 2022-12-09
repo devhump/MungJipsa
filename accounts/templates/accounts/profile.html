@@ -2,116 +2,116 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+<script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 {% endblock css %}
 {% block content %}
-    <script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
     <!-- MY PAGE -->
     <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
-    <div class="d-flex mt-3 background container">
+<div class="top text-center d-flex ">
+    <div class="d-flex background container card top-card">
         <div>
+            <p class="mt-3">{{ user.username }}</p>
             {% if user.profile %}
                 <img class="d-flex profileimage m-3" src="{{ user.profile.url }}" alt="직접 설정해둔 프로필 사진"/>
             {% else %}
                 <img class="d-flex profileimage m-3" src="https://dummyimage.com/50x50" alt="기본 프로필 사진"/>
             {% endif %}
         </div>
-        <p class="d-flex username">{{ user.username }}</p>
+        <p class="d-flex username">
+            <span class="mx-2">팔로잉</span>
+            <span style="color: #E3B57E; font-weight:700;" id="followings-count">
+                {{ user.followings.all|length }}</span>
+            <span class="mx-1">명</span>
+            <span class="mx-2">팔로워</span>
+            <span style="color: #E3B57E; font-weight:700;" id="followers-count">
+                {{ user.followers.all|length }}</span>
+            <span class="mx-1">명</span>
+        </p>
         <!-- 팔로우 -->
-        {% if request.user.is_authenticated and user != request.user %}
-            <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex follow">
-                {% csrf_token %}
-                {% if request.user in user.followers.all %}
-                    <input type="submit" value='팔로우 취소' class="follow-button">
-                        <p class="text-muted m-0 ">
-                            <span class="mx-2" style="font-size: 16px;">팔로잉</span>
-                            <span style="color: #E3B57E; font-weight:700;" id="followings-count">
-                                {{ user.followings.all|length }}</span>
-                            <span class="mx-1">명</span>
-                            <span class="mx-2" style="font-size: 16px;">팔로워</span>
-                            <span style="color: #E3B57E; font-weight:700;" id="followers-count">
-                                {{ user.followers.all|length }}</span>
-                            <span class="mx-1">명</span>
-                        </p>
-                    </div>
-                {% else %}
-                    <input type="submit" value='팔로우' class="follow-button">
-                        <p class="text-muted m-0 ">
-                            <span class="mx-2" style="font-size: 16px;">팔로잉</span>
-                            <span style="color: #E3B57E; font-weight:700;" id="followings-count">
-                                {{ user.followings.all|length }}</span>
-                            <span class="mx-1">명</span>
-                            <span class="mx-2" style="font-size: 16px;">팔로워</span>
-                            <span style="color: #E3B57E; font-weight:700;" id="followers-count">
-                                {{ user.followers.all|length }}</span>
-                            <span class="mx-1">명</span>
-                        </p>
-                    </div>
-                {% endif %}
-            </form>
-        {% endif %}
-    </div>
-    <!-- 기타 버튼 -->
-    <div class="text-end mb-5">
+        <form action="{% url 'accounts:follow' user.username %}" method='POST' class="d-flex follow">
+            <p>
+
+        <!-- 기타 버튼 -->
+    <div class="mb-5 ">
         {% if request.user == user %}
-            <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:update' user.pk %}">회원 정보 수정</a>
-            <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:dogsignup' %}">강아지 등록</a>
+        <button type="button" class="btn button btnPush btnOrange me-3 mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:update' user.pk %}'"><i class="fa-solid fa-user-pen"></i> 회원 정보 수정</button>
+        <button type="button" class="btn button btnPush btnOrange me-3 mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:dogsignup' %}'"><i class="fa-solid fa-shield-dog"></i>  강아지 등록</button>
+        <button type="button" class="btn button btnPush btnOrange me-3 mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:delete' %}'"><i class="fa-solid fa-user-minus"></i> 회원 탈퇴</button>
         {% endif %}
-        <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:logout' %}">로그아웃</a>
-        <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:index' %}">뒤로가기</a>
-        <a class="btn button btnPush btnOrange me-3" title="Button push orange" href="{% url 'accounts:delete' %}">회원탈퇴</a>
-    </div>
-    <!--메뉴 -->
+                {% if request.user.is_authenticated and user != request.user %}
+        <form action="{% url 'accounts:follow' user.username %}" method='POST'>
+            {% csrf_token %}
+            {% if request.user in user.followers.all %}
+                <input type="submit" value='팔로우 취소' class="btn button btnPush btnOrange me-3 mt-5 " title="Button push orange"> 
+            {% else %}
+                <input type="submit" value='팔로우' class="btn button btnPush btnOrange me-3 mt-5 " title="Button push orange">
+            {% endif %}
+        </form>
+    {% endif %}
+    <button type="button" class="btn button btnPush btnOrange me-3 mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:logout' %}'"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃 </button>
+    <button type="button" class="btn button btnPush btnOrange  mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:profile' user.username %}'"><i class="fa-solid fa-rotate-left"></i> 뒤로 가기</button>
+    </div> 
+</div> 
+            </p>
+        </div>
+</div>
+  
+    <!--메뉴 tab -->
     {% if request.user.is_authenticated and user != request.user %}
-        <ul class="nav nav-tabs profilemenu">
-            <li class="nav-item">
+        <ul class="nav nav-tabs profilemenu mt-3">
+            <li class="nav-item tab-font">
                 <a class="nav-link active" data-toggle="tab" href="#qwe">
                     <i class="fa-solid fa-dog fa-bounce"></i>
                     {{ user }}
                     님의 강아지</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#asd">
-                    <i class="fa-regular fa-keyboard fa-fade " style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"></i>
+                <a class="nav-link d-flex asd-tab tab-font" data-toggle="tab" href="#asd">
+                    <i class="fa-regular fa-keyboard fa-fade mt-2 me-2 " style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"> </i>
                     {{ user }}
-                    님의 작성글</a>
+                     님의 작성글</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#zxc">
-                    <i class="fa-regular fa-comment fa-fade" style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6;"></i>
+                <a class="nav-link tab-font" data-toggle="tab" href="#zxc">
+                    <i class="fa-regular fa-calendar-days fa-fade" style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"></i>
                     {{ user }}
                     님의 일정</a>
             </li>
         </ul>
+        
     {% else %}
-        <ul class="nav nav-tabs profilemenu">
+    
+        <ul class="nav nav-tabs profilemenu mt-3 ">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#qwe">
+                <a class="nav-link active tab-font" data-toggle="tab" href="#qwe">
                     <i class="fa-solid fa-dog fa-bounce"></i>
                     MY 강아지</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#asd">
+            <li class="nav-item profilemenu">
+                <a class="nav-link tab-font" data-toggle="tab" href="#asd">
                     <i class="fa-regular fa-keyboard fa-fade " style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"></i>
                     MY 작성글</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#zxc">
-                    <i class="fa-regular fa-comment fa-fade" style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6;"></i>
+                <a class="nav-link tab-font" data-toggle="tab" href="#zxc">
+                    <i class="fa-regular fa-calendar-days fa-fade" style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6;"></i>
                     MY 일정</a>
             </li>
         </ul>
+    </div>
     {% endif %}
-    <!-- 메뉴 내용 -->
+    <!-- tab 내용 -->
     <div class="tab-content container">
         <div class="tab-pane fade show active" id="qwe">
             <p>
                 <div class=" d-flex mt-3">
                     <div>
-                        <ul class="d-flex row row-cols-auto mydog-tab">
+                        <ul class="d-flex row row-cols-auto mydog-tab ">
                             {% if user.dog_set.all %}
                                 {% for dog in user.dog_set.all %}
-                                    <p class="m-3 card dogmenu dog">
+                                    <p class="m-3 card cardcss dogmenu dog">
                                         {{ dog.name }}
                                         <img class="d-flex row dogprofile" src="{{ dog.dogphoto.url }}" alt=""/>
                                         {% if request.user == user %}
@@ -129,14 +129,16 @@
             </div>
         </p>
     </div>
-    <div class="tab-pane fade" id="asd">
+    <div class="tab-pane fade " id="asd">
+        <ul class=" d-flex row row-cols-auto mydog-tab ">
         {% if user.review_set.all %}
             {% for review in user.review_set.all %}
-                <p class="m-3 card dogmenu dog">
-                    {{ review.content }}
-                    {% if review.image %}
+                <p class="m-3 card cardcss container text-center">
+                    {{ review.title }}
+                    <a href="{% url 'reviews:index' %}">
+                        {% if review.image %}
                         {% for i in review.image.all %}
-                            <img src="{{ i.image.url }}"/><br/>
+                            <img src="{{ i.image.url }}" class="d-flex row dogprofile"/><br/></a>
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
@@ -144,12 +146,59 @@
         {% else %}
             <p>작성한 글이 없어요ㅠㅠ</p>
         {% endif %}
+
     </div>
     <div class="tab-pane fade" id="zxc">
         <p>
-            댓글x</p>
+            <div class="col-md-3">
+                <div id="external-events">
+                  <h4 class="mb-4">진행 예정 일정</h4>
+                  {% if user.event_set.all %}
+                  {% for event in events_month %}
+                  <div class="fc-event">
+                    <span
+                      ><span style="font-size: 1.5rem"
+                        >"{{ event.title }}" </span
+                      ><span style="font-size: 1rem">일정은</span></span
+                    >
+                    <p>{{ event.start_time }}부터</p>
+                    <p>{{ event.end_time }}까지<br />입니다.</p>
+                  </div>
+                  {% empty %}
+                  <p>일정이 없어요 ㅠㅠ</p>
+                  {% endfor %}
+                  {% endif %}
+                </div>
+        </p>
     </div>
-</div>{% endblock content %}<!--비동기-->{% comment %}
+</div>
+<!-- carousel -->
+<div>
+    <div id="carouselExampleControls" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <a href="{% url 'info:deserted' %}"> <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F27594F445897C4DF06" class="d-block w-100 height=400 d-flex"  alt="..."></a>
+          </div>
+          <div class="carousel-item">
+            <a href="{% url 'info:deserted' %}"> <img src="https://wemakenews.co.kr/data/tmp/2211/20221113213253_kkhphmgr.jpg" class="d-block w-100 height=400" alt="..."></a>
+          </div>
+          <div class="carousel-item">
+            <a href="{% url 'info:deserted' %}"> <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F251E7C445897C4E102" class="d-block w-100 height=400" alt="..."></a>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+</div>
+{% endblock content %}
+
+<!--비동기-->{% comment %}
 {% block js %}
             <script src="http://code.jquery.com/jquery-latest.js"></script>
             <script src="{% static 'accounts/js/profile.js' %}"></script>

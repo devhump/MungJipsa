@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
-
 {% load django_bootstrap5 %}
 {% load static %}
-
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/update.css' %}">
+<link rel="stylesheet" href="{% static 'css/update.css' %}" />
+<script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 {% endblock css %}
-
 {% block content %}
-<div class = "container">
+<div class = "container d-flex justify-content-center align-items-center card mt-5 mb-5 w-50">
 <div class="personal-info mb-5">
   {% if request.user.profile %}
   <img src="{{ request.user.profile.url }}" alt="직접 설정해둔 프로필 사진" class="mt-5">
@@ -18,18 +17,18 @@
     alt="기본 프로필 사진">
   {% endif %}
 </div>
-<div class="update">
-  <form action="" method="POST" enctype="multipart/form-data" class="update-form">
+<div class="update w-50">
+  <form action="" method="POST" enctype="multipart/form-data" class="update-form mb-5" >
     {% csrf_token %}
     {% bootstrap_form form %}
     <form> 
-    <a href="{% url 'accounts:delete' %}" class="delete">회원 탈퇴</a>
     <div class="buttons">
-      <button type="submit" class="update-button">수정</button>
-      <button type="button" class="back-button"
-        onclick="location.href='{% url 'accounts:profile' user.username %}'">취소</button>
+      <button type="submit" class="btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange"><i class="fa-solid fa-check"></i> 수정</button>
+      <button type="button" class="btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange" onclick="location.href='{% url 'accounts:profile' user.username %}'"><i class="fa-solid fa-rotate-left"></i> 뒤로가기</button>
+      <a href="{% url 'accounts:delete' %}" class="delete btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange"><i class="fa-solid fa-user-minus"></i> 회원 탈퇴</a>
   </form>
 </div>
 </div>
 </div>
+
 {% endblock content %}

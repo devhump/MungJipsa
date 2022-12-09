@@ -3,12 +3,20 @@
 {% block content %}
 {% load static %}
 {% block css %}
-<link rel="stylesheet" href="static/accounts/css/dogsignup.css" />
+<link rel="stylesheet" href="{% static 'css/dogsignup.css' %}" />
+<script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script><link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 {% endblock css %}
-<div class="row mt-5">
-  <h1 class="text-center">강아지 등록</h1>
+<div class=" container d-flex justify-content-center align-items-center card mt-5 mb-5 w-50 card-css">
+  <h1 class="text-center m-3 ">강아지 등록</h1>
   <form action="{% url 'accounts:dogsignup' %}" method="POST" class="my-3" enctype="multipart/form-data">
-    {% csrf_token %} {% bootstrap_form forms %} {% bootstrap_button button_type="submit" button_class="btn-primary" content="강아지 등록" %}
+    {% csrf_token %} 
+    {% bootstrap_form forms %}
+    <div class="buttons">
+    <button type="submit" class="btn button btnPush btnOrange m-3" title="Button push orange"><i class="fa-solid fa-check"></i> 등록 </button>
+    <a class="btn button btnPush btnOrange me-3" title="Button push orange" onclick="location.href='{% url 'accounts:profile' user.username %}'"><i class="fa-solid fa-rotate-left"></i> 뒤로가기</a>
   </form>
 </div>
+</div>
+
+
 {% endblock content %}
