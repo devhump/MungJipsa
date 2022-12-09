@@ -1,4 +1,6 @@
-
+// 현재 시간 받아 오기 & 오늘 이후 날짜로 설정 new Date().toISOString()
+document.getElementById('walk_date').value = new Date().toISOString().slice(0, -8);
+document.getElementById('walk_date').min = new Date().toISOString().slice(0, -8);
 
 //-------------------------------디테일 맵 설정-------------------------------------------------------
 function detailMap(e) {
@@ -68,10 +70,7 @@ const options = {
 var imageSrc = "/static/images/dog2.png";
 var imageSize = new kakao.maps.Size(30, 30);
 
-function success(pos) {
-  const latitude = pos.coords.latitude
-  const longitude = pos.coords.longitude
-
+function mapSearch(latitude, longitude) {
 
   var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
@@ -83,7 +82,7 @@ function success(pos) {
   var map = new kakao.maps.Map(mapContainer, mapOption);
 
   // 지도를 현재 위치 중심으로 이동
-  var currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
+  var currentPos = new kakao.maps.LatLng(latitude, longitude)
   map.panTo(currentPos);
 
   // 내 위치 마커 생성
@@ -124,8 +123,6 @@ function success(pos) {
           position: marker.getPosition(),
         })
         // 커스텀 오버레이에 표시할 컨텐츠 입니다
-        // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-        // 별도의 이벤트 메소드를 제공하지 않습니다 
 
         var overlayContent = document.createElement('div')
         overlayContent.classList.add('wrap');
@@ -147,9 +144,13 @@ function success(pos) {
         var overlayBody = document.createElement('div')
         overlayBody.classList.add('body')
 
-        var overlayBodyContent = document.createElement('p')
-        overlayBodyContent.classList.add('overlay-text')
-        overlayBodyContent.innerHTML = '<i class="bi bi-map"></i> ' + data.address
+        var overlayBodyContent1 = document.createElement('p')
+        overlayBodyContent1.classList.add('overlay-text')
+        overlayBodyContent1.innerHTML = '<i class="bi bi-map"></i> ' + data.address
+
+        var overlayBodyContent2 = document.createElement('p')
+        overlayBodyContent2.classList.add('overlay-text')
+        overlayBodyContent2.innerHTML = '<i class="bi bi-geo-alt-fill"></i> 나와의 거리 ' + data.distance
 
         var choiceBtn = document.createElement('button')
         choiceBtn.classList.add('btn')
@@ -159,7 +160,7 @@ function success(pos) {
         choiceBtn.setAttribute('onclick', 'pick_park(this)')
 
         overlayTitle.append(closeBtn)
-        overlayBody.append(overlayBodyContent, choiceBtn)
+        overlayBody.append(overlayBodyContent1, overlayBodyContent2, choiceBtn)
         overlayInfo.append(overlayTitle, overlayBody)
         overlayContent.append(overlayInfo)
 
@@ -169,8 +170,9 @@ function success(pos) {
           overlay.setMap(map)
         })
 
+        // select-option에 추가할 내용
         var option = document.createElement('option')
-        option.innerText = data.parkName;
+        option.innerText = data.parkName + `  (약 ${data.distance})`;
         option.classList.add('parkSelect-options')
         option.value = data.park_pk
         parkSelect.append(option)
@@ -181,6 +183,14 @@ function success(pos) {
 
 }
 
+function success(pos) {
+  const latitude = pos.coords.latitude
+  const longitude = pos.coords.longitude
+
+  mapSearch(latitude, longitude)
+
+}
+
 
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -188,7 +198,6 @@ function error(err) {
 
 function pick_park(e) {
   const parkSelectOptions = document.querySelectorAll('.parkSelect-options')
-  console.log(parkSelectOptions)
 
   for (let i = 0; i < parkSelectOptions.length; i++) {
     if (parkSelectOptions[i].value === event.target.dataset.parkId) {
@@ -258,5 +267,28 @@ walkCnt.addEventListener('change', function (event) {
 
   counterCheck(number)
 })
+
+locationSearchForm = document.querySelector('#location-search-form')
+locationSearchForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  const address = document.querySelector('#address').value
+
+
+  // 주소-좌표 변환 객체를 생성합니다
+  var geocoder = new kakao.maps.services.Geocoder();
+
+  // 주소로 좌표를 검색합니다
+  geocoder.addressSearch(address, function (result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+    if (status === kakao.maps.services.Status.OK) {
+
+      var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+      mapSearch(result[0].y, result[0].x)
+    }
+  });
+});
+
 
 navigator.geolocation.getCurrentPosition(success, error, options);

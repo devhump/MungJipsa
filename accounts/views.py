@@ -29,7 +29,8 @@ def signup(request):
             request.FILES,
         )
         if form.is_valid():
-            form.save()
+            user = form.save()
+            auth_login(request, user)  # 회원가입 후 자동 로그인 되게 수정
             return redirect("accounts:index")
 
     else:
@@ -155,7 +156,7 @@ def dogsignup(request):
             forms = forms.save(commit=False)
             forms.user = request.user
             forms.save()
-            return redirect("accounts:profile")
+            return redirect("accounts:profile", request.user.username)
     else:
         forms = DogForm()
     context = {"forms": forms}
@@ -163,7 +164,7 @@ def dogsignup(request):
 
 
 @login_required
-def dogdelete(request,dog_pk):
+def dogdelete(request, dog_pk):
     dog = Dog.objects.get(pk=dog_pk)
     dog.delete()
     messages.success(request, "등록 취소 완료")
@@ -182,7 +183,7 @@ def dogupdate(request, dog_pk):
         form = DogChangeForm(instance=dog)
     context = {
         "form": form,
-        "dog" : dog,
+        "dog": dog,
     }
     return render(request, "accounts/dogupdate.html", context)
 
@@ -192,4 +193,3 @@ def dogprofile(request, dog_pk):
     dog = Dog.objects.get(pk=dog_pk)
     context = {"dog": dog}
     return render(request, "accounts/dogprofile.html", context)
-
