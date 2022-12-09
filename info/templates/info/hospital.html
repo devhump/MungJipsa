@@ -40,7 +40,7 @@
     <option value="제주" {% if areaval == "제주" %}selected{% endif %}>제주</option>
   </select>
   <form action="{% url 'info:hospital'%}" role='search' id='searchfunc1'>
-    <input type="text" id="search-type-01" name='search'>
+    <input type="text" id="search-type-01" name='search' placeholder='이름, 주소로 검색이 가능합니다.'>
     <button type="submit"><i class="fas fa-search"></i></button>
   </form>
 </div>

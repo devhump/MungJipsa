@@ -22,7 +22,7 @@ API_SECRET_KEY = os.getenv("API_SECRET_KEY")
 # 축종 (개)
 upkind = "&upkind=" + "417000"
 # 현재페이지
-cpage = "&pageNo=" + "1"
+cpage = "&pageNo=" + "7"
 # 페이지당 목록 수
 numrows = 1000
 rows = "&numOfRows=" + str(numrows)
