@@ -37,6 +37,10 @@ def index(request):
     ]
     hospital = lst[num - 1]
     sub = "../../static/images/" + hospital
+    num2 = random.randrange(1, 6)
+    lst2 = ["D1.png", "D2.png", "D3.png", "D4.png", "D5.png"]
+    photo = lst2[num2 - 1]
+    address = "../../static/images/" + photo
 
     context = {
         "posts": posts,
@@ -44,6 +48,7 @@ def index(request):
         "comment_form": comment_form,
         "search": search,
         "aside": sub,
+        "aside2": address,
     }
     return render(request, "reviews/index.html", context)
 
