@@ -149,14 +149,12 @@ def create2(request):
 
     park = Park.objects.get(pk=park_pk)
     user = request.user
-    dog = Dog.objects.get(pk=1)
 
     if request.method == "POST":
         dogroup_form = DogroupForm(request.POST)
         if dogroup_form.is_valid():
             dogroup = dogroup_form.save(commit=False)
             dogroup.user = user
-            dogroup.dog = dog
             dogroup.park = park
             dogroup.save()
             dogroup.join.add(request.user)
