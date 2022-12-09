@@ -80,10 +80,10 @@
         {% comment %} 작성자 프로필 사진 및 이름 {% endcomment %}
         <div style="display: flex;flex-direction: row; align-items: center; margin: 30px">
           <div class="box" style="width: 90px; height: 90px">
-                <a href="{% url 'accounts:profile' user %}" style='color :black;' ><img class="profile" src="{% if review.user.profile %}{{ review.user.profile.url }}{% else %}https://dummyimage.com/90x90{% endif %}" style='border-radius: 100%; '></a>
+                <a href="{% url 'accounts:profile' review.user %}" style='color :black;' ><img class="profile" src="{% if review.user.profile %}{{ review.user.profile.url }}{% else %}https://dummyimage.com/90x90{% endif %}" style='border-radius: 100%; '></a>
                 
               </div>
-              <div class='d-flex justify-content: space-around'><a href="{% url 'accounts:profile' user %}" style='color :black;' class='text-decoration-none ' >&nbsp; <b>{{ user.username }}</b></a></div>
+              <div class='d-flex justify-content: space-around'><a href="{% url 'accounts:profile' review.user %}" style='color :black;' class='text-decoration-none ' >&nbsp; <b>{{ review.user.username }}</b></a></div>
                 <p class='ms-auto'>{{ review.created_at| naturaltime  }}</p>
             </div>
             <div>
@@ -140,7 +140,7 @@
       {% comment %} 제목 및 글 내용 {% endcomment %}
       <div id='review-content' style="margin: 0 20px;text-align: left;  font-family: 'Dongle';" class='mb-2'>
         <b> <span><h5 id='review-title 'style="font-family: 'Nanum Gothic';">{{ review.title|truncatechars:10 }} </h5></span></b>
-        <span style="font-weight:bold; font-size:18px">{{ user.username }}</span> {{ review.content|truncatechars:15 }}
+        <span style="font-weight:bold; font-size:18px">{{ review.user.username }}</span> {{ review.content|truncatechars:15 }}
       </div>
       
       {% comment %} 댓글 {% endcomment %}
@@ -180,9 +180,12 @@
         
           
     </div>
-    <aside class="floating  " >
+    
+    <aside class="floating " >
       <a href="{% url 'info:hospital' %}">
-          <img src="{{ aside }}" alt="DogAdopt"  style='position:fixed' class="mt-4 banner2 " width="200px" height="auto"></a>
+        <img src="{{ aside }}" alt="DogAdopt"  style='position:fixed' class="mb-4 banner1 " width="200px" height="auto"></a>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <img src="{{ aside2 }}" alt="DogAdopt" style='position:fixed'  class="mt-4 banner2 " width="200px" height="auto"></a>
     </aside>  
       
 </div>

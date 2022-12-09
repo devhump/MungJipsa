@@ -131,7 +131,7 @@
         <b> <span><h5 id='review-title' style='font-family: "Nanum Gothic"; text-align:center;'>{{ review.title}} </h5></span></b>
         <a href="{% url 'accounts:profile' review.user %}" style='color :black;' class='text-decoration-none ' ><img class="profile" src="{% if review.user.profile %}{{ review.user.profile.url }}{% else %}https://dummyimage.com/40x40{% endif %}" style='border-radius: 100%; height: 40px; width:40px;'>
           
-          <span style="font-weight:bold; font-size:18px">{{ user.username }}</span></a> {{ review.content}}
+          <span style="font-weight:bold; font-size:18px">{{ review.user.username }}</span></a> {{ review.content}}
       </div>
       <hr>
       {% comment %} 댓글 {% endcomment %}
