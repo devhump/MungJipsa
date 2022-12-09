@@ -60,7 +60,7 @@ function detailMap(e) {
 const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 const options = {
   enableHighAccuracy: true,
-  timeout: 5000,
+  timeout: Infinity,
   maximumAge: 0
 };
 

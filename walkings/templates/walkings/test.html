@@ -6,10 +6,10 @@
     <div id="map" style="width:60%;height:350px;"></div>
     <div class="form-area d-flex" style="width:40%;">
       <div class="row">
-        {% comment %} <form id="location-form" action="">
+        <form id="location-form" action="">
           <input id="address" type="text">
           <input type="submit">
-        </form>  {% endcomment %}
+        </form>
         <P>주최자 : {{ request.user.username }}</P>
         <P>멍멍이 이름 : 
           <span>
@@ -230,5 +230,7 @@ location_form.addEventListener('submit', function (event) {
     }
   });
 });
+
+console.warn("???")
 </script>
 {% endblock script %}
