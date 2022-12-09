@@ -13,12 +13,12 @@
       <div id="map" style="height:350px;"></div>
     </div>
     
-    <div class="walking-form-area d-flex col-3" style="">
+    <div class="walking-form-area row d-flex col-3" style="">
+      <form id="location-search-form" action="" style="">
+          <input id="address" class="form-control" type="text" style="">
+          <input class="" type="submit" value="찾기" style="">
+      </form>
       <div class="">
-        {% comment %} <form id="location-form" action="" style="width:60%;">
-            <input id="address" class="form-control" type="text" style="">
-            <input class="" type="submit" value="찾기" style="">
-        </form>  {% endcomment %}
         <form action="{% url 'walkings:create2' %}" id="walking_form" class="walking-form" method="post" style="" >
           {% csrf_token %}
           <div>
@@ -63,16 +63,17 @@
             {% if request.user.is_authenticated %}
               {% if dogr.user != request.user %}
                 {% if request.user in dogr.join.all  %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소</a>
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-warning card-link"><i class="bi bi-check-square-fill"></i> 취소</a>
                 {% else %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석</a>
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
+                    참석</a>
                 {% endif %}
               {% else %}
                 <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-outline-danger card-link"><i class="bi bi-trash"></i>삭제</a>
               {% endif %}
             {% endif %}
             <!-- Button trigger modal -->
-            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#Modal-{{dogr.pk}}">
+            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Modal-{{dogr.pk}}">
               <i class="bi bi-search"></i> 자세히
             </button>
 
