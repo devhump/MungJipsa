@@ -1,4 +1,5 @@
-{% load django_bootstrap5 %} {% load static %}
+{% load django_bootstrap5 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -83,177 +84,94 @@
             <p class="">강아지 이름</p>
         </span>
       </div>
-    </nav>
-    <div>
-      <div class="nav">
-        <!-- sub navbar-->
-        <header class="nav2">
-          <div class="nav_div">
-            <!-- 프로필 이미지 -->
-            <a href="{% url 'accounts:profile' user.username %}"
-              ><img
-                class="nav2 navimg"
-                src="../media/{{ user.profile }}"
-                alt="{{ user.username }}"
-            /></a>
-            <span>
-              <a
-                style="text-decoration: none; color: #544b44"
-                href="{% url 'accounts:profile' user.username %}"
-                ><p class="">{{ user.username }}</p></a
-              >
-              <p class="">강아지 이름</p>
-            </span>
-          </div>
-          <div class="nav2_link">
-            <span>
-              <a
-                style="text-decoration: none; color: #544b44"
-                class="mx-1"
-                href="{% url 'schedules:calendar' %}"
-                >달력</a
-              >
-              <a
-                style="text-decoration: none; color: #544b44"
-                class="mx-1"
-                href="{% url 'schedules:running_events' %}"
-                ><i class="icon fa fa-circle-o"></i>다가오는 일정</a
-              >
-              <a
-                style="text-decoration: none; color: #544b44"
-                class="mx-1"
-                href="{% url 'schedules:all_events' %}"
-                >모든 일정</a
-              >
-            </span>
-          </div>
-        </header>
+      <div class="nav2_link">
+        <span>
+            <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:calendar' %}">달력</a>
+            <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:running_events' %}"><i class="icon fa fa-circle-o"></i>다가오는 일정</a>
+            <a style="text-decoration: none; color: #544B44;" class="mx-1" href="{% url 'schedules:all_events' %}">모든 일정</a>
+        </span>
       </div>
-      <div class="app-content container">
+    </header>
+  </div>
+  <div class="app-content container">
         <h1><i class="fa fa-calendar"></i> Calendar</h1>
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="tile row">
+  
+  <div class="row">
+      <div class="col-md-12">
+          <div class="tile row">
               <div class="col-md-9">
                 <div id="calendar"></div>
               </div>
-
-              <!-- 이벤트 생성 모달 -->
-              <div
-                class="modal fade show"
-                id="eventModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalCenterTitle"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header" style="background-color: #544b44">
-                      <h5
-                        class="modal-title text-white"
-                        id="exampleModalLongTitle"
-                      >
-                        일정 추가하기
-                      </h5>
-                      <button
-                        id="modalClose1"
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <form method="post">
-                      {% csrf_token %}
-                      <div class="modal-body">
-                        <div class="form-group">
-                          <label for="recipient-name" class="col-form-label"
-                            >일정 이름:</label
-                          >
-                          {{ form.title }}
-                        </div>
-                        <div class="form-group">
-                          <label for="message-text" class="col-form-label"
-                            >일정 내용:</label
-                          >
-                          {{ form.description }}
-                        </div>
-                        <div class="form-group">
-                          <label for="message-text" class="col-form-label"
-                            >시작 날짜/시간:</label
-                          >
-                          {{ form.start_time }}
-                        </div>
-                        <div class="form-group">
-                          <label for="message-text" class="col-form-label"
-                            >종료 날짜/시간:</label
-                          >
-                          {{ form.end_time }}
-                        </div>
+  
+            <!-- 이벤트 생성 모달 -->
+              <div class="modal fade show" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                          <div class="modal-header" style="background-color:#544B44;">
+                              <h5 class="modal-title text-white" id="exampleModalLongTitle">일정 추가하기</h5>
+                              <button id="modalClose1" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <form method="post">
+                              {% csrf_token %}
+                              <div class="modal-body">
+                                  <div class="form-group">
+                                      <label for="recipient-name" class="col-form-label">일정 이름:</label>
+                                      {{ form.title }}
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="message-text" class="col-form-label">일정 내용:</label>
+                                      {{ form.description }}
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="message-text" class="col-form-label">시작 날짜/시간:</label>
+                                      {{ form.start_time }}
+                                  </div>
+                                  <div class="form-group">
+                                      <label for="message-text" class="col-form-label">종료 날짜/시간:</label>
+                                      {{ form.end_time }}
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button id="modalClose2" type="button" class="btn btn-danger">닫기</button>
+                                  <button type="submit" class="btn btn-primary">저장</button>
+                              </div>
+                          </form>
                       </div>
-                      <div class="modal-footer">
-                        <button
-                          id="modalClose2"
-                          type="button"
-                          class="btn btn-danger"
-                        >
-                          닫기
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                          저장
-                        </button>
-                      </div>
-                    </form>
                   </div>
-                </div>
               </div>
               <!-- 진행중 이벤트 모음 -->
               <div class="col-md-3">
                 <div id="external-events">
-                  <h4 class="mb-4">진행 예정 일정</h4>
-                  {% for event in events_month %}
-                  <div class="fc-event">
-                    <span
-                      ><span style="font-size: 1.5rem"
-                        >"{{ event.title }}" </span
-                      ><span style="font-size: 1rem">일정은</span></span
-                    >
-                    <p>{{ event.start_time }}부터</p>
-                    <p>{{ event.end_time }}까지<br />입니다.</p>
-                  </div>
-                  {% empty %}
-                  <p>일정이 없어요 ㅠㅠ</p>
-                  {% endfor %}
+                    <h4 class="mb-4">진행 예정 일정</h4>
+                    {% for event in events_month %}
+                      <div class="fc-event">
+                          <span><span style="font-size: 1.5rem;">"{{ event.title }}" </span><span style="font-size: 1rem;">일정은</span></span>
+                          <p>{{ event.start_time }}부터</p>
+                          <p>{{ event.end_time }}까지<br>입니다.</p>
+                          
+                      </div>
+                    {% empty %}
+                      <p>일정이 없어요 ㅠㅠ</p>
+                    {% endfor %}
                 </div>
-              </div>
             </div>
           </div>
-        </div>
       </div>
-    </div>
-
-    <footer class="">
-      <div
-        class="d-flex justify-content-end mb-4 me-4 fixed-bottom"
-        style="z-index: 2"
-      >
-        <button onclick="topFunction()" class="topBtn" title="Go to top">
-          Top
-        </button>
-      </div>
-      <nav
-        class="navbar d-flex justify-content-center align-content-center opacity-75 fixed-bottom"
-        style="background-color: #c17f34; height: 3rem; z-index: 1"
-      >
-        <a class="text-decoration-none text-white" href="#">
-          🐕🐶 Supported by HyperGrowth 🐶🐕
-        </a>
-      </nav>
-    </footer>
+  </div>
+  </div>
+</div>
+<footer class="">
+  <div class="d-flex justify-content-end mb-4 me-4 fixed-bottom" style="z-index: 2;">
+    <button onclick="topFunction()" class="topBtn" title="Go to top">Top</button>
+  </div>
+  <nav class="navbar d-flex justify-content-center align-content-center opacity-75 fixed-bottom" style="background-color: #C17F34; height: 3rem; z-index: 1;">
+      <a class="text-decoration-none text-white" href="#">
+        🐕🐶 Supported by HyperGrowth 🐶🐕
+      </a>
+  </nav>
+</footer>
     <script type="text/javascript" src="/static/js/footer.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>
