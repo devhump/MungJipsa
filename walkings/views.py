@@ -79,7 +79,6 @@ def test(request):
     parks = Park.objects.filter(address__icontains="동작구")
 
     dogroups = Dogroup.objects.all()
-    user_dogs = Dog.objects.filter(user=request.user)
 
     park_info = []
     for park in parks:
@@ -97,7 +96,6 @@ def test(request):
     context = {
         "parkJson": parkJson,
         "dogroups": dogroups,
-        "user_dogs": user_dogs,
     }
 
     return render(request, "walkings/test.html", context)
