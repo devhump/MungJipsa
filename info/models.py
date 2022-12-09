@@ -4,8 +4,8 @@ from django.db import models
 # Create your models here.
 class Hospital(models.Model):
     name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=50)
-    address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=200)
+    address = models.CharField(max_length=500)
 
 
 class Deserted(models.Model):
@@ -28,22 +28,22 @@ class Deserted(models.Model):
 
 
 class PetPlace(models.Model):
-    name = models.CharField(max_length=200)
-    address = models.CharField(max_length=200)
-    tel = models.CharField(max_length=30)
-    url = models.CharField(max_length=200)
-    imageURL = models.CharField(max_length=200)
+    name = models.CharField(max_length=300)
+    address = models.CharField(max_length=500)
+    tel = models.CharField(max_length=200)
+    url = models.CharField(max_length=500)
+    imageURL = models.CharField(max_length=500)
 
 
 class PetPlaceSlideImage(models.Model):
     petplace = models.ForeignKey(
         PetPlace, on_delete=models.CASCADE, related_name="slideimage"
     )
-    slideimage = models.CharField(max_length=200)
+    slideimage = models.CharField(max_length=500)
 
 
 class PetPlaceBodyImage(models.Model):
     petplace = models.ForeignKey(
         PetPlace, on_delete=models.CASCADE, related_name="bodyimage"
     )
-    bodyimage = models.CharField(max_length=200)
+    bodyimage = models.CharField(max_length=500)
