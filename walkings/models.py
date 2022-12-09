@@ -16,7 +16,7 @@ class Park(models.Model):
 
 # Create your models here.
 class Dogroup(models.Model):
-    dog = models.ForeignKey(Dog, on_delete=models.CASCADE)
+    dogs = models.ManyToManyField(Dog, related_name="joindogs")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     park = models.ForeignKey(Park, on_delete=models.CASCADE)
     datetime = models.DateTimeField(default=datetime.datetime.now)

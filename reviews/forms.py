@@ -5,16 +5,6 @@ from django.utils.translation import gettext as _
 
 
 class ReviewForm(forms.ModelForm):
-
-    # title => 제목
-    title = forms.CharField(
-        label="제목", widget=forms.TextInput(attrs={"placeholder": "제목"})
-    )
-    # content => 내용
-    content = forms.CharField(
-        label="내용", widget=forms.TextInput(attrs={"placeholder": "내용"})
-    )
-
     class Meta:
         model = Review
         fields = [

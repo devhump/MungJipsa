@@ -18,7 +18,25 @@
       </div>
       <!-- 토글러 -->
       <div class="d-flex">
-        {% if request.user.is_authenticated %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'reviews:index' %}">멍스타그램</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'schedules:calendar' %}">일정관리</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'walkings:index' %}">산책나가기</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'info:place' %}">애견동반장소</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'info:hospital' %}">병원찾기</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'info:deserted' %}">유기견보호소</a>
+          </li>
+          {% if request.user.is_authenticated %}
           <li class="nav-item me-4 nav1-text">
             <a class="nav-link" href="{% url 'accounts:index' %}">{{ request.user }}</a>
           </li>
@@ -33,21 +51,6 @@
             <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
           </li>
         {% endif %}
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'reviews:index' %}">멍스타그램</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'schedules:calendar' %}">일정관리</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'walkings:index' %}">산책나가기</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'info:hospital' %}">병원찾기</a>
-          </li>
-          <li class="nav-item me-4 nav1-text">
-            <a class="nav-link" href="{% url 'info:deserted' %}">유기견보호소</a>
-          </li>
       </div>
     </ul>
   </div>

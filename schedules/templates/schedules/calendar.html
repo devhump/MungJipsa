@@ -1,102 +1,87 @@
 {% load django_bootstrap5 %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>네이멍</title>
-    <link rel="icon" href="{% static '/images/namung_logo.png' %}" />
-    <!-- CSS only -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous"
-    />
-    <!-- 외부 CSS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.0.10/css/all.css"
-    />
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
-    <style>
-      .navback {
-        background-color: #544b44;
-        color: #c17f34;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar 1 -->
-    <nav class="navbar-stretch navbar-expand-lg p-0 sticky-top navback">
-      <div class="d-flex flex-column px-5 py-2">
-        <ul
-          class="navbar-nav me-0 mb-2 mb-lg-0 d-flex justify-content-between align-items-center"
-        >
-          <!-- 로고 -->
-          <div>
-            <a class="navbar-brand" href="{% url 'reviews:index' %}">
-              <img
-                src="{% static 'images/namung_horizontalLogo.png' %}"
-                alt="Logo"
-                style="width: 11rem; height: 4rem"
-              />
-            </a>
-          </div>
-          <!-- 토글러 -->
-          <div class="d-flex">
-            {% if request.user.is_authenticated %}
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'accounts:index' %}"
-                >{{ request.user }}</a
-              >
-            </li>
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'accounts:logout' %}"
-                >로그아웃</a
-              >
-            </li>
-            {% else %}
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
-            </li>
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'accounts:signup' %}"
-                >회원가입</a
-              >
-            </li>
-            {% endif %}
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'reviews:index' %}"
-                >멍스타그램</a
-              >
-            </li>
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'schedules:calendar' %}"
-                >일정관리</a
-              >
-            </li>
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'walkings:index' %}"
-                >산책나가기</a
-              >
-            </li>
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'info:hospital' %}">병원찾기</a>
-            </li>
-            <li class="nav-item me-4 nav1-text">
-              <a class="nav-link" href="{% url 'info:deserted' %}"
-                >유기견보호소</a
-              >
-            </li>
-          </div>
-        </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네이멍</title>
+  <link rel="icon" href="{% static '/images/namung_logo.png' %}">
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <!-- 외부 CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <style>
+    .navback {
+      background-color: #544B44;
+      color: #C17F34;
+  }
+  </style>
+</head>
+<body>
+<!-- Navbar 1 -->
+<nav class="navbar-stretch navbar-expand-lg p-0 sticky-top navback">
+  <div class="d-flex flex-column px-5 py-2">
+    <ul class="navbar-nav me-0 mb-2 mb-lg-0 d-flex justify-content-between align-items-center">
+      <!-- 로고 -->
+      <div>
+        <a class="navbar-brand" href="{% url 'reviews:index' %}">
+          <img src="{% static 'images/namung_horizontalLogo.png' %}" alt="Logo" style="width: 11rem; height: 4rem;">
+        </a>
+      </div>
+      <!-- 토글러 -->
+      <div class="d-flex">
+        {% if request.user.is_authenticated %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'accounts:index' %}">{{ request.user }}</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+          </li>
+        {% else %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'accounts:login' %}">로그인</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'accounts:signup' %}">회원가입</a>
+          </li>
+        {% endif %}
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'reviews:index' %}">멍스타그램</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'schedules:calendar' %}">일정관리</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'walkings:index' %}">산책나가기</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'info:place' %}">애견동반장소</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'info:hospital' %}">병원찾기</a>
+          </li>
+          <li class="nav-item me-4 nav1-text">
+            <a class="nav-link" href="{% url 'info:deserted' %}">유기견보호소</a>
+          </li>
+      </div>
+    </ul>
+  </div>
+</nav>
+<div>
+  <div class="nav">
+    <!-- sub navbar-->
+    <header class="nav2">
+      <div class="nav_div">
+        <!-- 프로필 이미지 -->
+        <a href="{% url 'accounts:profile' user.username %}"><img class="nav2 navimg" src="../media/{{ user.profile }}" alt="{{ user.username }}"></a>
+        <span>
+          <a style="text-decoration: none; color: #544B44;" href="{% url 'accounts:profile' user.username %}"><p class="">{{ user.username }}</p></a>
+            <p class="">강아지 이름</p>
+        </span>
       </div>
     </nav>
     <div>
@@ -348,11 +333,13 @@
 
           // bangladesh Holidays
           // events: 'bn.bd#holiday@group.v.calendar.google.com',
-          eventClick: function(arg) {
+
+          // 이벤트 클릭시 삭제 여부 팝업창
+          /*eventClick: function(arg) {
             if (confirm('Are you sure you want to delete this event?')) {
               arg.event.remove()
             }
-          },
+          },*/
           editable: true,
           dayMaxEvents: true, // allow "more" link when too many events
           events: {{ events|safe }},

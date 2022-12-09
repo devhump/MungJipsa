@@ -40,7 +40,6 @@ def signup(request):
 
 
 
-
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -166,7 +165,7 @@ def dogsignup(request):
 
 
 @login_required
-def dogdelete(request,dog_pk):
+def dogdelete(request, dog_pk):
     dog = Dog.objects.get(pk=dog_pk)
     dog.delete()
     messages.success(request, "등록 취소 완료")
@@ -185,7 +184,7 @@ def dogupdate(request, dog_pk):
         form = DogChangeForm(instance=dog)
     context = {
         "form": form,
-        "dog" : dog,
+        "dog": dog,
     }
     return render(request, "accounts/dogupdate.html", context)
 

@@ -8,23 +8,24 @@
 
 {% block content %}
 <div class="container mt-3">
-  <section class="d-flex justify-content-center align-items-center">
-    <div class="map-area col-8">
+  <section class="d-flex row justify-content-center align-items-center">
+    <div class="map-area col-7">
       <div id="map" style="height:350px;"></div>
     </div>
     
-    <div class="walking-form-area d-flex col-2" style="">
-      <div class="row">
-        {% comment %} <form id="location-form" action="" style="width:60%;">
-            <input id="address" class="form-control" type="text" style="">
-            <input class="" type="submit" value="찾기" style="">
-        </form>  {% endcomment %}
+    <div class="walking-form-area row d-flex col-3" style="">
+      <form id="location-search-form" action="" style="">
+          <input id="address" class="form-control" type="text" style="">
+          <input class="" type="submit" value="찾기" style="">
+      </form>
+      <div class="">
         <form action="{% url 'walkings:create2' %}" id="walking_form" class="walking-form" method="post" style="" >
           {% csrf_token %}
           <div>
-            <label for="walk_location2" class="walking-form-item-label">공원명</label>
-            <input id="walk_location2" class="form-control" type='text' name='parkname' style="">
-            <input id="walk_location" class="form-control" type='text' name='park_pk' style="display : none;">
+            <label for="parkSelect" class="walking-form-item-label">공원명</label>
+            <select id="parkSelect" name='park_pk' class="form-select">
+              <option selected>공원을 선택하세요</option>
+            </select>
           </div>
           <div>
             <label for="walk_title" class="walking-form-item-label">모임명</label>
@@ -34,9 +35,11 @@
             <label for="walk_date" class="walking-form-item-label">모임날짜</label>
             <input id="walk_date" class="form-control walking-form-item" type='datetime-local' name="datetime" >
           </div>
-          <div>
             <label for="walk_cnt" class="walking-form-item-label">인원수</label>
-            <input id="walk_cnt" class="form-control walking-form-item" type="number" name="membercnt" min="2" max="5">
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" onclick='counter("minus")' id="minus-button">-</button>
+            <input id="walk_cnt" class="form-control walking-form-item text-center" type="text" name="membercnt" aria-describedby="button-addon1" value="3" min="2" max="5">
+            <button class="btn btn-outline-secondary" type="button" onclick='counter("plus")' id="plus-button">+</button>
           </div>
           <div>
             <input id="walk_form_btn" class="btn walking-form-btn" type="submit" value="같이 산책하기" onclick="">
@@ -46,30 +49,31 @@
     </div>
   </section>
 
-  <section class="dogroups-list-area row justify-content-center">
+  <section class="dogroups-list-area row justify-content-center mt-3">
     {% for dogr in dogroups %}
       <div class="card dogroup-card col-5" style="width:%">
         <div class="card-body">
           <h5 class="card-title fw-bold"><img src="{{ dogr.user.profile.url }}" alt="" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
             <i class="bi bi-megaphone-fill" style="color: #dc3545;"></i> {{dogr.title}}</h5>
           <hr>
-          <p><strong>공원이름:</strong> {{ dogr.park.parkName }}</p>
-          <p><strong>공원주소:</strong> {{ dogr.park.address }}</p>
+          <p class="card-text">공원이름: {{ dogr.park.parkName }}</p>
+          <p class="card-text">공원주소: {{ dogr.park.address }}</p>
           <h6 class="card-subtitle mb-2 text-muted text-end">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
           <div class="float-end">
             {% if request.user.is_authenticated %}
               {% if dogr.user != request.user %}
                 {% if request.user in dogr.join.all  %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소</a>
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-warning card-link"><i class="bi bi-check-square-fill"></i> 취소</a>
                 {% else %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석</a>
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
+                    참석</a>
                 {% endif %}
               {% else %}
                 <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-outline-danger card-link"><i class="bi bi-trash"></i>삭제</a>
               {% endif %}
             {% endif %}
             <!-- Button trigger modal -->
-            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#Modal-{{dogr.pk}}">
+            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Modal-{{dogr.pk}}">
               <i class="bi bi-search"></i> 자세히
             </button>
 
@@ -78,25 +82,40 @@
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-megaphone-fill"></i>{{dogr.title}}</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-megaphone-fill" style="color: #dc3545;"></i> {{dogr.title}}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <div id="detail-map-{{dogr.pk}}" style="width:450px;height:350px;"></div>
-                    <p>공원이름: {{ dogr.park.parkName }}</p>
-                    <p>공원주소: {{ dogr.park.address }}</p>
-                    <p>공원주최자: {{ dogr.user.username }}</p>
-                
-                    {% for joiner in dogr.join.all %}
-                    <img src="{{ joiner.profile.url }}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
-                    
-                      {% for dog in joiner.dog_set.all %}
-                        <img src="{{ dog.dogphoto.url }}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                    <div class="text-muted float-end">{{dogr.create_at|date:'Y-m-d H:i'}} 작성</div>
+                    <div id="detail-map-{{dogr.pk}}" style="width:100%;height:350px;"></div>
+                    <hr>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">장소 & 일시</div>
+                      <div class="">{{ dogr.datetime }}</div>
+                      <div>{{ dogr.park.parkName }} <span class="text-muted">({{ dogr.park.address }})</span></div>
+                    </div>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">참가자 <span class="text-muted">(정원 {{dogr.join.count}}/{{dogr.membercnt}})</span></div>
+                      <div>
+                        {% for joiner in dogr.join.all %}
+                        <img src="{{ joiner.profile.url }}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">멍멍이</div>
+                      <div>
+                      {% for joiner in dogr.join.all %}
+                        {% for dog in joiner.dog_set.all %}
+                          <img src="{{ dog.dogphoto.url }}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        {% endfor %}
                       {% endfor %}
-                
-                    {% endfor %}
-                    <p id="park_lat-{{dogr.pk}}">{{dogr.park.latitude}}</p>
-                    <p id="park_lon-{{dogr.pk}}">{{dogr.park.longitude}}</p>
+                      </div>
+                    </div>
+                    
+                    <p id="park_lat-{{dogr.pk}}" style="display:none;">{{dogr.park.latitude}}</p>
+                    <p id="park_lon-{{dogr.pk}}" style="display:none;">{{dogr.park.longitude}}</p>
+                    <p id="parkname-{{dogr.pk}}" style="display:none;">{{dogr.park.parkName}}</p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
