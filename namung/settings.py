@@ -31,6 +31,7 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = [
     "Kdtmungjipsabean-env.eba-en3p3vmb.ap-northeast-2.elasticbeanstalk.com",
+    "namung.shop",
     "127.0.0.1",
     "localhost",
 ]
