@@ -18,13 +18,10 @@
   <div class="nav">
     <!-- sub navbar-->
     <header class="nav2">
-      <div class="nav_div">
+      <div class="nav_div my-1">
         <!-- 프로필 이미지 -->
-        <a href="{% url 'accounts:profile' user.username %}"><img class="nav2 navimg" src="../media/{{ user.profile }}" alt="{{ user.username }}"></a>
-        <span>
-          <a style="text-decoration: none; color: #544B44;" href="{% url 'accounts:profile' user.username %}"><p class="">{{ user.username }}</p></a>
-            <p class="">강아지 이름</p>
-        </span>
+        <a href="{% url 'accounts:profile' user.username %}" style="text-decoration: none; color: #544B44;"><img class="nav2 navimg" src="/media/{{ user.profile }}" alt="{{ user.username }}"></a>
+        <a href="{% url 'accounts:profile' user.username %}" style="text-decoration: none; color: #544B44;"><p class="px-2 pt-3">{{ user.username }}</p></a>
       </div>
       <div class="nav2_link">
         <span>
