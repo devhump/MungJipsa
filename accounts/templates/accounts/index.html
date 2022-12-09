@@ -1,8 +1,5 @@
 {% extends 'base.html' %} {% load django_bootstrap5 %} {% block content %} {% load static %} 
 <div class="row text-center m-5">
-
-
-
   <!-- 회원인 경우 보이는 화면 -->
   <!-- 회원인 경우에만 강아지 등록 할 수 있게-->
   {% if user.is_authenticated %}

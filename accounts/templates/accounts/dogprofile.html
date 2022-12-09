@@ -1,28 +1,49 @@
 {% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/dogprofile.css' %}" />
+<script
+  src="https://kit.fontawesome.com/dcba51bc42.js"
+  crossorigin="anonymous"
+></script>
+<link
+  href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+  rel="stylesheet"
+/>
 {% endblock css %} {% block content %}
-
 <!-- MY PAGE -->
 <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
-주인 : {{ dog.user }}
-<br />
-이름 :{{ dog.name }}
-<br />
 
-사진 : {% if dog.dogphoto %}
-<img src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진" />
-{% else %}
-<img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진" />
-{% endif %}
+<div
+  class="text-center d-flex justify-content-center align-items-center card mt-5 card-css"
+>
+  {% if dog.dogphoto %}
+  <img src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진" />
+  {% else %}
+  <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진" />
+  {% endif %}
+  <p class="row">
+    주인 : {{ dog.user }}
+    <br />
+    이름 :{{ dog.name }}
+    <br />
+    중성화 여부 : {{ dog.neutered }}
+    <br />
+    성별 : {{ dog.gender }}
+    <br />
+    나이 : {{ dog.age }}
+    <br />
+    성격 : {{ dog.personality }}
+    <br />
+    크기 : {{ dog.dogtype }}
+  </p>
+  <button
+    type="button"
+    class="btn button btnPush btnOrange m-3"
+    title="Button push orange"
+    onclick="location.href='{% url 'accounts:profile' user.username %}'"
+  >
+    <i class="fa-solid fa-rotate-left"></i> 뒤로가기
+  </button>
+</div>
 
-<br />
-중성화 여부 : {{ dog.neutered }}
-<br />
-성별 : {{ dog.gender }}
-<br />
-나이 : {{ dog.age }}
-<br />
-성격 : {{ dog.personality }}
-<br />
-크기 : {{ dog.dogtype }} {% endblock content %}
+{% endblock content %}

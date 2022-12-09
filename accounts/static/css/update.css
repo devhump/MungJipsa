@@ -1,42 +1,45 @@
 * {
-  font-family: 'Mochiy Pop P One', sans-serif;
+  font-family: 'Jua', sans-serif;
 }
-
 
 /*Keyframes*/
 @keyframes rain_effect {
   0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
+  50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
+  100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
   }
   
   @-moz-keyframes rain_effect {
   0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
+  50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
+  100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
   }
   
   @-webkit-keyframes rain_effect {
   0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
+  50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
+  100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
   }
   
   @-ms-keyframes rain_effect {
   0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
+  50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
+  100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
   }
   
 
 body {
-  background-image: url('../images/배경2.jpg');
+  background-image: url('../images/배경.jpg'), url('../images/배경.jpg'), url('../images/배경.jpg');
 	animation: rain_effect 40s linear infinite;
 	-webkit-animation: rain_effect 40s linear infinite;
 	-moz-animation: rain_effect 40s linear infinite;
 	-ms-animation: rain_effect 40s linear infinite; 
 }
-/* 버튼 css*/
+
+.card {
+  background-color:#e6e0db;
+}
+
 .btnOrange {
   background: #E3B57E;
 }
@@ -55,18 +58,4 @@ body {
 
 .btnOrange.btnPush:hover {
   box-shadow: 0px 0px 0px 0px #A66615;
-}
-
-/*카드 css*/
-.card-css{
-  display: flex;
-  justify-content: center;
-  height: 800px;
-  width: 60%;
-  margin: auto;
-  display: block;
-  max-width: 100%;
-  height: auto;
-  padding-bottom: 5%;
-  padding-top: 5%;
 }

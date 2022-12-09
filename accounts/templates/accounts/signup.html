@@ -1,15 +1,20 @@
 {% extends 'base.html' %}
 {% load django_bootstrap5 %}
-{% block content %}
 {% load static %}
-  <div class="row mt-5">
-    <h1 class="text-center">회원가입</h1>
-    <form action="" method="POST" enctype="multipart/form-data" class="my-3">
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}" />
+<script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
+{% endblock css %}
+
+{% block content %}
+  <div class = "container d-flex justify-content-center align-items-center card mt-5 w-50">
+    <h1 class="text-center mt-5">회원가입</h1>
+    <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
       {% csrf_token %}
       {% bootstrap_form form %}
       {% bootstrap_button button_type="submit" button_class="btn-primary" content="가입하기" %}
     </form>
     
   </div>
-
 {% endblock content %}
