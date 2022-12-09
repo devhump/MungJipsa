@@ -31,13 +31,12 @@ def signup(request):
         if form.is_valid():
             form.user = request.user
             form.save()
-            return redirect("accounts:profile", request.user.username)
+            return redirect("accounts:login")
 
     else:
         form = CustomUserCreationForm()
     context = {"form": form}
     return render(request, "accounts/signup.html", context)
-
 
 
 def login(request):
