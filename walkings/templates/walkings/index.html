@@ -13,12 +13,12 @@
       <div id="map" style="height:350px;"></div>
     </div>
     
-    <div class="walking-form-area d-flex col-3" style="">
+    <div class="walking-form-area row d-flex col-3" style="">
+      <form id="location-search-form" action="" style="">
+          <input id="address" class="form-control" type="text" style="">
+          <input class="" type="submit" value="찾기" style="">
+      </form>
       <div class="">
-        {% comment %} <form id="location-form" action="" style="width:60%;">
-            <input id="address" class="form-control" type="text" style="">
-            <input class="" type="submit" value="찾기" style="">
-        </form>  {% endcomment %}
         <form action="{% url 'walkings:create2' %}" id="walking_form" class="walking-form" method="post" style="" >
           {% csrf_token %}
           <div>

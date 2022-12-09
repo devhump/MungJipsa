@@ -70,10 +70,7 @@ const options = {
 var imageSrc = "/static/images/dog2.png";
 var imageSize = new kakao.maps.Size(30, 30);
 
-function success(pos) {
-  const latitude = pos.coords.latitude
-  const longitude = pos.coords.longitude
-
+function mapSearch(latitude, longitude) {
 
   var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
@@ -85,7 +82,7 @@ function success(pos) {
   var map = new kakao.maps.Map(mapContainer, mapOption);
 
   // 지도를 현재 위치 중심으로 이동
-  var currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
+  var currentPos = new kakao.maps.LatLng(latitude, longitude)
   map.panTo(currentPos);
 
   // 내 위치 마커 생성
@@ -186,6 +183,14 @@ function success(pos) {
 
 }
 
+function success(pos) {
+  const latitude = pos.coords.latitude
+  const longitude = pos.coords.longitude
+
+  mapSearch(latitude, longitude)
+
+}
+
 
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -262,5 +267,28 @@ walkCnt.addEventListener('change', function (event) {
 
   counterCheck(number)
 })
+
+locationSearchForm = document.querySelector('#location-search-form')
+locationSearchForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+  const address = document.querySelector('#address').value
+
+
+  // 주소-좌표 변환 객체를 생성합니다
+  var geocoder = new kakao.maps.services.Geocoder();
+
+  // 주소로 좌표를 검색합니다
+  geocoder.addressSearch(address, function (result, status) {
+
+    // 정상적으로 검색이 완료됐으면 
+    if (status === kakao.maps.services.Status.OK) {
+
+      var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+      mapSearch(result[0].y, result[0].x)
+    }
+  });
+});
+
 
 navigator.geolocation.getCurrentPosition(success, error, options);
