@@ -187,12 +187,16 @@ function success(pos) {
   const latitude = pos.coords.latitude
   const longitude = pos.coords.longitude
 
+  console.log(latitude)
+  console.log(longitude)
+  console.log("성공")
   mapSearch(latitude, longitude)
 
 }
 
 
 function error(err) {
+  console.log("실패")
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
