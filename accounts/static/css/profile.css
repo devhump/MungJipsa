@@ -98,4 +98,22 @@ body{
   box-shadow: 0px 0px 0px 0px #A66615;
 }
 
-/* 프로필 메뉴 탭 */
+.card {
+  /* if not hovered : dark */
+  filter: brightness(90%);
+  transition: 
+    transform .4s,
+    filter .4s,
+    z-index .2s;
+    
+}
+
+.card:hover{ 
+  filter: brightness(100%);
+  box-shadow: 0 15px 20px 10px rgba(217, 215, 215, 0.974);
+  z-index: 1;
+}
+
+
+
+=======

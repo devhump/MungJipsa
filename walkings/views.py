@@ -6,6 +6,8 @@ from pprint import pprint
 from django.http import JsonResponse
 from django.contrib import messages
 from django.db.models import Q
+from haversine import haversine
+from operator import itemgetter
 
 # Create your views here.
 def index(request):
@@ -25,7 +27,7 @@ def search(request, x, y):
     longitude = float(y)
 
     # 위도는 0.01이, 경도는 0.015가  약 1km에 해당
-    # 반경 2km 이내 공원 검색
+    # 반경 1km 이내 공원 검색
     condition = Q(latitude__range=(latitude - 0.01, latitude + 0.01)) & Q(
         longitude__range=(longitude - 0.015, longitude + 0.015)
     )
@@ -37,6 +39,15 @@ def search(request, x, y):
 
         if not park.parkName.endswith("공원"):
             park.parkName += park.parkType
+            park.save()
+
+        distance = round(
+            haversine(
+                (latitude, longitude),
+                (float(park.latitude), float(park.longitude)),
+                unit="m",
+            )
+        )
 
         temp = {
             "parkName": park.parkName,
@@ -44,9 +55,18 @@ def search(request, x, y):
             "longitude": park.longitude,
             "park_pk": park.pk,
             "address": park.address,
+            "distance": distance,
         }
 
         parksJson.append(temp)
+
+    parksJson = sorted(parksJson, key=itemgetter("distance"))
+
+    for p in parksJson:
+        if p["distance"] >= 1000:
+            p["distance"] = str(round((p["distance"] / 1000), 1)) + "Km"
+        else:
+            p["distance"] = str(p["distance"]) + "m"
 
     data = {
         "parksJson": parksJson,
@@ -82,8 +102,7 @@ def test(request):
 
     return render(request, "walkings/test.html", context)
 
-
-def create(request, park_pk):
+    # def create(request, park_pk):
 
     park = Park.objects.get(pk=park_pk)
     user = request.user
@@ -125,10 +144,8 @@ def create(request, park_pk):
 
 
 def create2(request):
-    print("create2 실행")
+    print(request.POST)
     park_pk = request.POST["park_pk"]
-    print(park_pk)
-    # park_pk = request.POST["park_location"].parkId
 
     park = Park.objects.get(pk=park_pk)
     user = request.user

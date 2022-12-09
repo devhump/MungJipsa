@@ -2,112 +2,120 @@
 {% load static %}
 
 {% block css %}
-<style>
-  .wrap {position: absolute;left: 0;bottom: 40px;width: 288px;height: 132px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
-  .wrap * {padding: 0;margin: 0;}
-  .wrap .info {width: 286px;height: 120px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
-  .wrap .info:nth-child(1) {border: 0;box-shadow: 0px 1px 2px #888;}
-  .info .title {padding: 5px 0 0 10px;height: 30px;background: #eee;border-bottom: 1px solid #ddd;font-size: 18px;font-weight: bold;}
-  .info .close {position: absolute;top: 10px;right: 10px;color: #888;width: 17px;height: 17px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');}
-  .info .close:hover {cursor: pointer;}
-  .info .body {position: relative;overflow: hidden;}
-  .info .desc {position: relative;margin: 13px 0 0 90px;height: 75px;}
-  .desc .ellipsis {overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-  .desc .jibun {font-size: 11px;color: #888;margin-top: -2px;}
-  .info .img {position: absolute;top: 6px;left: 5px;width: 73px;height: 71px;border: 1px solid #ddd;color: #888;overflow: hidden;}
-  .info:after {content: '';position: absolute;margin-left: -12px;left: 50%;bottom: 0;width: 22px;height: 12px;background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-  .info .link {color: #5085BB;}
-</style>
+<link rel="stylesheet" href="{% static 'css/walkings.css' %}">
 {% endblock css %}
 
 
 {% block content %}
 <div class="container mt-3">
-  <section class="map_form-area d-flex">
-    <div id="map" style="width:60%;height:350px;"></div>
+  <section class="d-flex row justify-content-center align-items-center">
+    <div class="map-area col-7">
+      <div id="map" style="height:350px;"></div>
+    </div>
     
-    <div class="form-area d-flex" style="margin: 2rem; width:40%;">
-      <div class="row">
-        {% comment %} <form id="location-form" action="" style="width:60%;">
-            <input id="address" class="form-control" type="text" style="">
-            <input class="" type="submit" value="찾기" style="">
-        </form>  {% endcomment %}
-        <P>주최자 : {{ request.user.username }}</P>
-        <form action="{% url 'walkings:create2' %}" id="walking_form" class="" method="post" style="width:60%;" >
+    <div class="walking-form-area row d-flex col-3" style="">
+      <form id="location-search-form" action="" style="">
+          <input id="address" class="form-control" type="text" style="">
+          <input class="" type="submit" value="찾기" style="">
+      </form>
+      <div class="">
+        <form action="{% url 'walkings:create2' %}" id="walking_form" class="walking-form" method="post" style="" >
           {% csrf_token %}
           <div>
-            <p id="park_location">공원명</p>
-            <input id="walk_location" type='text' name='park_pk' style="display: none;">
-            <label for="walk_title">모임명</label>
-            <input id="walk_title" class="form-control" type='text' name='title'>
+            <label for="parkSelect" class="walking-form-item-label">공원명</label>
+            <select id="parkSelect" name='park_pk' class="form-select">
+              <option selected>공원을 선택하세요</option>
+            </select>
           </div>
           <div>
-            <label for="walk_date">모임날짜</label>
-            <input id="walk_date" class="form-control" type='datetime-local' name="datetime" >
+            <label for="walk_title" class="walking-form-item-label">모임명</label>
+            <input id="walk_title" class="form-control walking-form-item" type='text' name='title'>
           </div>
           <div>
-            <label for="walk_cnt">인원수</label>
-            <input id="walk_cnt" class="form-control" type="number" name="membercnt" min="2" max="5">
+            <label for="walk_date" class="walking-form-item-label">모임날짜</label>
+            <input id="walk_date" class="form-control walking-form-item" type='datetime-local' name="datetime" >
+          </div>
+            <label for="walk_cnt" class="walking-form-item-label">인원수</label>
+          <div class="input-group">
+            <button class="btn btn-outline-secondary" type="button" onclick='counter("minus")' id="minus-button">-</button>
+            <input id="walk_cnt" class="form-control walking-form-item text-center" type="text" name="membercnt" aria-describedby="button-addon1" value="3" min="2" max="5">
+            <button class="btn btn-outline-secondary" type="button" onclick='counter("plus")' id="plus-button">+</button>
           </div>
           <div>
-            <input id="walk_form_btn" class="btn btn-outline-primary" type="submit" onclick="">
+            <input id="walk_form_btn" class="btn walking-form-btn" type="submit" value="같이 산책하기" onclick="">
           </div>
         </form>
       </div>
     </div>
   </section>
 
-  <section class="dogroups-list-area row">
+  <section class="dogroups-list-area row justify-content-center mt-3">
     {% for dogr in dogroups %}
-      <div class="card col-5 mx-2 mt-2" style="">
+      <div class="card dogroup-card col-5" style="width:%">
         <div class="card-body">
-          <h5 class="card-title"><img src="{{ dogr.user.profile.url }}" alt="" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
-            {{dogr.title}}</h5>
+          <h5 class="card-title fw-bold"><img src="{{ dogr.user.profile.url }}" alt="" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+            <i class="bi bi-megaphone-fill" style="color: #dc3545;"></i> {{dogr.title}}</h5>
           <hr>
-          <p class="card-text"> 위치: {{ dogr.park.address}}</p>
+          <p class="card-text">공원이름: {{ dogr.park.parkName }}</p>
+          <p class="card-text">공원주소: {{ dogr.park.address }}</p>
           <h6 class="card-subtitle mb-2 text-muted text-end">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
           <div class="float-end">
             {% if request.user.is_authenticated %}
               {% if dogr.user != request.user %}
                 {% if request.user in dogr.join.all  %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-warning card-link">취소하기</a>
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-warning card-link"><i class="bi bi-check-square-fill"></i> 취소</a>
                 {% else %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-success card-link">참석하기</a>
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
+                    참석</a>
                 {% endif %}
               {% else %}
-                <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-danger card-link">삭제하기</a>
+                <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-outline-danger card-link"><i class="bi bi-trash"></i>삭제</a>
               {% endif %}
             {% endif %}
-            <a href="{% url 'walkings:detail' dogr.pk %}" class="btn btn-primary card-link">자세히보기</a>
             <!-- Button trigger modal -->
-            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{dogr.pk}}">
-              modal
+            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Modal-{{dogr.pk}}">
+              <i class="bi bi-search"></i> 자세히
             </button>
 
             <!-- Modal -->
-            <div class="modal fade" id="exampleModal-{{dogr.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="Modal-{{dogr.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">{{dogr.title}}</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-megaphone-fill" style="color: #dc3545;"></i> {{dogr.title}}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <div id="detail-map-{{dogr.pk}}" style="width:450px;height:350px;"></div>
-                    <p>공원이름: {{ dogr.park.parkName }}</p>
-                    <p>공원주소: {{ dogr.park.address }}</p>
-                    <p>공원주최자: {{ dogr.user.username }}</p>
-                
-                    {% for joiner in dogr.join.all %}
-                    <img src="{{ joiner.profile.url }}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
-                    
-                      {% for dog in joiner.dog_set.all %}
-                        <img src="{{ dog.dogphoto.url }}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                    <div class="text-muted float-end">{{dogr.create_at|date:'Y-m-d H:i'}} 작성</div>
+                    <div id="detail-map-{{dogr.pk}}" style="width:100%;height:350px;"></div>
+                    <hr>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">장소 & 일시</div>
+                      <div class="">{{ dogr.datetime }}</div>
+                      <div>{{ dogr.park.parkName }} <span class="text-muted">({{ dogr.park.address }})</span></div>
+                    </div>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">참가자 <span class="text-muted">(정원 {{dogr.join.count}}/{{dogr.membercnt}})</span></div>
+                      <div>
+                        {% for joiner in dogr.join.all %}
+                        <img src="{{ joiner.profile.url }}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">멍멍이</div>
+                      <div>
+                      {% for joiner in dogr.join.all %}
+                        {% for dog in joiner.dog_set.all %}
+                          <img src="{{ dog.dogphoto.url }}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        {% endfor %}
                       {% endfor %}
-                
-                    {% endfor %}
-                    <p id="park_lat-{{dogr.pk}}">{{dogr.park.latitude}}</p>
-                    <p id="park_lon-{{dogr.pk}}">{{dogr.park.longitude}}</p>
+                      </div>
+                    </div>
+                    
+                    <p id="park_lat-{{dogr.pk}}" style="display:none;">{{dogr.park.latitude}}</p>
+                    <p id="park_lon-{{dogr.pk}}" style="display:none;">{{dogr.park.longitude}}</p>
+                    <p id="parkname-{{dogr.pk}}" style="display:none;">{{dogr.park.parkName}}</p>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -130,207 +138,6 @@
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5002adb5652b8017c76603959cbbf663&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script>
+<script src="{% static 'JS/walkings.js' %}"></script>
 
-
-//-------------------------------디테일 맵 설정-------------------------------------------------------
-function detailMap(e){
-
-  const latitude = document.querySelector(`#park_lat-${e}`).innerText
-  const longtitude = document.querySelector(`#park_lon-${e}`).innerText
-  //------------------------------------지도 기본 설정--------------------------------------------
-  var mapContainer = document.getElementById(`detail-map-${e}`), // 지도를 표시할 div
-    mapOption = {
-      center: new kakao.maps.LatLng(latitude, longtitude), // 지도의 중심좌표
-      level: 5 // 지도의 확대 레벨
-    };
-  
-    
-  // 지도를 생성합니다    
-  var map = new kakao.maps.Map(mapContainer, mapOption);
-
-  // 지도를 현재 위치 중심으로 이동
-  var currentPos = new kakao.maps.LatLng(latitude, longtitude)
-  map.setCenter(currentPos)
-  map.panTo(currentPos);
-
-  // 마커 이미지의 이미지 크기 입니다
-  var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-  var imageSize = new kakao.maps.Size(24, 35);
-  
-  
-  var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-  
-  // 마커를 생성합니다
-  var marker = new kakao.maps.Marker({
-    map: map, // 마커를 표시할 지도
-    position: new kakao.maps.LatLng(latitude, longtitude), // 마커를 표시할 위치
-    //  title: , // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-    image: markerImage, // 마커 이미지
-    clickable: true,
-  });
-
-  setTimeout(function(){ map.relayout(); map.setCenter(currentPos); }, 500);
-}
-
-  //-----------------------------------------메인 지도------------------------------------------------------
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
-  
-  
-
-  // 마커 이미지의 이미지 크기 입니다
-  var imageSrc = "/static/images/442dog_100700.png";
-  var imageSize = new kakao.maps.Size(24, 35);
-
-  function success(pos) {
-    const latitude = pos.coords.latitude
-    const longitude = pos.coords.longitude
-
-
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-    mapOption = {
-    center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표
-    level: 6 // 지도의 확대 레벨
-    };
-
-    // 지도를 생성합니다    
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    // 지도를 현재 위치 중심으로 이동
-    var currentPos = new kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude)
-    map.panTo(currentPos);
-
-    // 내 위치 마커 생성
-    var marker = new kakao.maps.Marker({
-      position: currentPos,
-      image: new kakao.maps.MarkerImage("/static/images/5894087.png", new kakao.maps.Size(50, 50))
-    })
-
-    // 기존에 마커가 있다면 제거
-    marker.setMap(null)
-    marker.setMap(map)
-
-    axios({ method: 'get', url: `/walkings/search/${latitude}/${longitude}` })
-      .then(response => {
-
-        var parksJson = response.data.parksJson
-        
-
-        for (let i = 0; i < parksJson.length; i++) {
-          var data = parksJson[i]
-          displayMarker(data)
-        }
-
-        function displayMarker(data) {
-          // 마커 이미지를 생성합니다    
-          var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-        
-          // 마커를 생성합니다
-          var marker = new kakao.maps.Marker({
-            map: map, // 마커를 표시할 지도
-            position: new kakao.maps.LatLng(data.latitude, data.longitude), // 마커를 표시할 위치
-            image: markerImage, // 마커 이미지
-            clickable: true,
-          });
-        
-          var overlay = new kakao.maps.CustomOverlay({
-            yAnchor: 1.3,
-            position: marker.getPosition(),
-          })
-          // 커스텀 오버레이에 표시할 컨텐츠 입니다
-          // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-          // 별도의 이벤트 메소드를 제공하지 않습니다 
-
-          var overlayContent = document.createElement('div')
-          overlayContent.classList.add('wrap');
-
-          var overlayInfo = document.createElement('div')
-          overlayInfo.classList.add('info');
-
-          var overlayTitle = document.createElement('div')
-          overlayTitle.classList.add('title')
-          overlayTitle.innerText = data.parkName
-
-          var closeBtn = document.createElement('div')
-          closeBtn.classList.add('close')
-          closeBtn.onclick = function(){
-            overlay.setMap(null)
-          }
-
-
-          var overlayBody = document.createElement('div')
-          overlayBody.classList.add('body')
-
-          var overlayBodyContent = document.createElement('p')
-          overlayBodyContent.innerText = data.address
-
-          var choiceBtn = document.createElement('button')
-          choiceBtn.classList.add('btn')
-          choiceBtn.innerHTML = '<i class="bi bi-pin-map-fill"></i>같이 산책하기'
-          choiceBtn.setAttribute('data-parkname', `${data.parkName}`)
-          choiceBtn.setAttribute('data-park-id', `${data.park_pk}`)
-          choiceBtn.setAttribute('onclick', 'pick_park(this)')
-
-          overlayTitle.append(closeBtn)
-          overlayBody.append(overlayBodyContent, choiceBtn)
-          overlayInfo.append(overlayTitle, overlayBody)
-          overlayContent.append(overlayInfo)
-
-          overlay.setContent(overlayContent)            
-
-            kakao.maps.event.addListener(marker, 'click', function () {
-              overlay.setMap(map)
-            })
-
-        }// 마커 반복문 종료
-      
-      })
-
-  }
-
-
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
-  
-  function pick_park(e) {
-    console.log("공원이름 바꾸기 실행")
-    const park_location = document.querySelector('#park_location')
-    park_location.innerText = '공원이름:' + event.target.dataset.parkname
-    park_location.setAttribute('park-id', `${event.target.dataset.parkId} `)
-    const walk_location = document.querySelector('#walk_location')
-    walk_location.setAttribute('value', `${event.target.dataset.parkId}`)
-    const walking_form = document.querySelector('#walking_form')
-    walking_form.setAttribute('park-id', `${event.target.dataset.parkId} `)
-    const walk_form_btn = document.querySelector('#walk_form_btn')
-    walk_form_btn.setAttribute('data-park-id', `${event.target.dataset.parkId} `)
-  }
-
-  function w_create(e) {
-    console.log("산책 약속 잡기 실행")
-    const walking_form = document.querySelector('#walking_form')
-    event.preventDefault();
-    axios({
-      method: 'post',
-      url: `/walkings/create/${event.target.dataset.parkId}`,
-      headers: { 'X-CSRFToken': csrftoken },
-      data: new FormData(walking_form)
-    })
-    .then(response => {
-      console.log(response.data)
-      const dogroup_data = (response.data.dogroup_data)
-      console.log(dogroup_data)
-    })
-  }
-
-  navigator.geolocation.getCurrentPosition(success, error, options);
-  
-
-
-</script>
 {% endblock script %}

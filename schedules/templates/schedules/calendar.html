@@ -261,11 +261,13 @@ lastScrollTop = st;
 
           // bangladesh Holidays
           // events: 'bn.bd#holiday@group.v.calendar.google.com',
-          eventClick: function(arg) {
+
+          // 이벤트 클릭시 삭제 여부 팝업창
+          /*eventClick: function(arg) {
             if (confirm('Are you sure you want to delete this event?')) {
               arg.event.remove()
             }
-          },
+          },*/
           editable: true,
           dayMaxEvents: true, // allow "more" link when too many events
           events: {{ events|safe }},

@@ -71,6 +71,7 @@ class Dog(models.Model):
         format="JPEG",
         options={"quality": 50},
         upload_to="images/dogphoto/",
+        default="static/images/입양.png/"
     )
     gender = models.CharField(max_length=255, choices=GENDER_CHOICES)
     neutered = models.CharField(max_length=255, choices=NEUTERED_CHOICES)
