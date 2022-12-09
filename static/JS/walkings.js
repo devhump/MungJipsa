@@ -1,4 +1,6 @@
-
+// 현재 시간 받아 오기 & 오늘 이후 날짜로 설정 new Date().toISOString()
+document.getElementById('walk_date').value = new Date().toISOString().slice(0, -8);
+document.getElementById('walk_date').min = new Date().toISOString().slice(0, -8);
 
 //-------------------------------디테일 맵 설정-------------------------------------------------------
 function detailMap(e) {
@@ -124,8 +126,6 @@ function success(pos) {
           position: marker.getPosition(),
         })
         // 커스텀 오버레이에 표시할 컨텐츠 입니다
-        // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-        // 별도의 이벤트 메소드를 제공하지 않습니다 
 
         var overlayContent = document.createElement('div')
         overlayContent.classList.add('wrap');
@@ -147,9 +147,13 @@ function success(pos) {
         var overlayBody = document.createElement('div')
         overlayBody.classList.add('body')
 
-        var overlayBodyContent = document.createElement('p')
-        overlayBodyContent.classList.add('overlay-text')
-        overlayBodyContent.innerHTML = '<i class="bi bi-map"></i> ' + data.address
+        var overlayBodyContent1 = document.createElement('p')
+        overlayBodyContent1.classList.add('overlay-text')
+        overlayBodyContent1.innerHTML = '<i class="bi bi-map"></i> ' + data.address
+
+        var overlayBodyContent2 = document.createElement('p')
+        overlayBodyContent2.classList.add('overlay-text')
+        overlayBodyContent2.innerHTML = '<i class="bi bi-geo-alt-fill"></i> 나와의 거리 ' + data.distance
 
         var choiceBtn = document.createElement('button')
         choiceBtn.classList.add('btn')
@@ -159,7 +163,7 @@ function success(pos) {
         choiceBtn.setAttribute('onclick', 'pick_park(this)')
 
         overlayTitle.append(closeBtn)
-        overlayBody.append(overlayBodyContent, choiceBtn)
+        overlayBody.append(overlayBodyContent1, overlayBodyContent2, choiceBtn)
         overlayInfo.append(overlayTitle, overlayBody)
         overlayContent.append(overlayInfo)
 
@@ -169,8 +173,9 @@ function success(pos) {
           overlay.setMap(map)
         })
 
+        // select-option에 추가할 내용
         var option = document.createElement('option')
-        option.innerText = data.parkName;
+        option.innerText = data.parkName + `  (약 ${data.distance})`;
         option.classList.add('parkSelect-options')
         option.value = data.park_pk
         parkSelect.append(option)
@@ -188,7 +193,6 @@ function error(err) {
 
 function pick_park(e) {
   const parkSelectOptions = document.querySelectorAll('.parkSelect-options')
-  console.log(parkSelectOptions)
 
   for (let i = 0; i < parkSelectOptions.length; i++) {
     if (parkSelectOptions[i].value === event.target.dataset.parkId) {
