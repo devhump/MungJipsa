@@ -10,8 +10,8 @@
 ## 👥 팀원 구성
 
 - 조수람[Github](https://github.com/devhump)
-- 강동현[Github]([https://github.com/riumr](https://github.com/kangdh208))
-- 손세철[Github]([https://github.com/ericaforcoding](https://github.com/chul1631))
+- 강동현[Github](https://github.com/kangdh208)
+- 손세철[Github]((https://github.com/chul1631)
 - 조본희[Github](https://github.com/SHIN-sped) 
 - 조승윤[Github](https://github.com/mgpo-98)
 
