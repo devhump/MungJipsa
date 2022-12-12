@@ -6,7 +6,7 @@ from .serializer import PlaceSerializer
 
 # Create your views here.
 def hospital(request):
-    hospitals = Hospital.objects.all()
+    hospitals = Hospital.objects.order_by("-id")
     search = request.GET.get("search")
     areaSearch = request.GET.get("areaSearch")
     if not areaSearch:
@@ -61,7 +61,7 @@ from datetime import date
 
 
 def deserted(request):
-    animals = Deserted.objects.all()
+    animals = Deserted.objects.order_by("-id")
     today = date.today()
     animals = animals.filter(noticeEdt__gte=today)
     search = request.GET.get("search")
@@ -129,7 +129,7 @@ class PlaceViewSet(ModelViewSet):
 
 
 def place(request):
-    places = PetPlace.objects.all()
+    places = PetPlace.objects.order_by("-id")
 
     search = request.GET.get("search")
     areaSearch = request.GET.get("areaSearch")
