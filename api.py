@@ -10,7 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "namung.settings")
 django.setup()
 from info.models import Deserted
 
-
+# 유기견 db
 #################################################
 # 필수 값
 #################################################
@@ -19,10 +19,15 @@ from info.models import Deserted
 load_dotenv()
 API_SECRET_KEY = os.getenv("API_SECRET_KEY")
 
+
 # 축종 (개)
 upkind = "&upkind=" + "417000"
+# 검색 시작일
+today = date.today()
+bgnde = "&bgnde=" + str(today.strftime("%Y%m%d"))
 # 현재페이지
-cpage = "&pageNo=" + "7"
+numpage = 1
+cpage = "&pageNo=" + str(numpage)
 # 페이지당 목록 수
 numrows = 1000
 rows = "&numOfRows=" + str(numrows)
@@ -38,6 +43,7 @@ def get_list():
     URL = (
         "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic?serviceKey="
         + API_SECRET_KEY
+        + bgnde
         + upkind
         + cpage
         + rows
@@ -47,8 +53,8 @@ def get_list():
     print(URL)
 
     response = requests.get(URL, verify=False)
-    # print(URL)
-    # print(response.status_code)
+    print(URL)
+    print(response.status_code)
     jsonresponse = response.json()
     for i in range(numrows):
         _kindCd = jsonresponse["response"]["body"]["items"]["item"][i]["kindCd"]

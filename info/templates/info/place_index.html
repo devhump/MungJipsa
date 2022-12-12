@@ -13,9 +13,9 @@
   <div class="h21_top_cbox pr area">
     <h3 class="">반려동물 동반가능 여행지</h3>
     <p class="h21_h3_line_c"></p>
-    <p class="h21_h3_text_c">반려동물과 함께할 수 있는 여행지입니다</p>
-    <p class="h21_com_t_left pa slide-in-blurred-left"><img src="http://appdata.hungryapp.co.kr/images/hatdog/img/pc_img/hospital/hos_left4.png" alt="강아지"></p>
-    <p class="h21_com_t_right pa slide-in-blurred-right"><img src="http://appdata.hungryapp.co.kr/images/hatdog/img/pc_img/hospital/hos_left4.png" alt="청진기"></p>
+    <p class="h21_h3_text_c">범위 내에 <span style="color:orange;">{{places.count}}</span>개 장소가 등록되어있습니다</p>
+    <p class="h21_com_t_left pa slide-in-blurred-left"><img src="https://appdata.hungryapp.co.kr/images/hatdog/img/pc_img/hospital/hos_left4.png" alt="강아지"></p>
+    <p class="h21_com_t_right pa slide-in-blurred-right"><img src="https://appdata.hungryapp.co.kr/images/hatdog/img/pc_img/hospital/hos_left4.png" alt="청진기"></p>
   </div>
 </div>
 <div class="hospital_search area">
@@ -48,7 +48,7 @@
 <div class="s21_album_list area">
   {% for place in posts %}
   <div class="s21_animal_conts pr">
-    <a class="s21_hospital_conts_photo" href="{% url 'info:place_detail' place.pk %}" style="background: url('{{place.imageURL}}') center center no-repeat ;"></a>
+    <a class="s21_hospital_conts_photo" href="{% url 'info:place_detail' place.pk %}" style="background: url('{{place.slideimage.first.slideimage}}') center center no-repeat ;"></a>
     <div class="s21_animal_conts_tbox">
       <h4>{{place.name}}</h4>
       <p>{{place.tel}}</p>
