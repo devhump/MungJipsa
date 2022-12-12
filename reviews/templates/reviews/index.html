@@ -119,15 +119,15 @@
         <div style="margin: 0 20px;display: flex; flex-direction: row; justify-content: space-between">
           <div>
             {% if request.user.is_authenticated %}
-            <form class="like-form"  data-review-id="{{ review.pk }}">
+            <form class="like-form" data-review-id="{{ review.pk }}">
               {% csrf_token %}
               {% if request.user in review.like_users.all %}
-                <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-review-{{ review.pk }}">
-                  <i style='color:red' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart-fill"></i>
+                <button class="btn border-0 ms-0" style="background-color: transparent; font-size:20px;" type="submit" id="like-review-{{ review.pk }}">
+                  <i style='color:red;' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart-fill"></i>
                   <span id="like-count-{{ review.pk }}">{{ review.like_users.count }}</span>
                 </button>
               {% else %}
-                <button class="btn border-0 ms-3" style="background-color: transparent;" type="submit" id="like-review-{{ review.pk }}">
+                <button class="btn border-0 ms-0" style="background-color: transparent; font-size:20px;" type="submit" id="like-review-{{ review.pk }}">
                   <i style='color:red' id="like-i-{{ review.pk }}" class="like-fficial bi bi-suit-heart"></i>
                   <span id="like-count-{{ review.pk }}">{{ review.like_users.count }}</span>
                 </button>
