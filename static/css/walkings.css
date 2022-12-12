@@ -125,6 +125,27 @@
 }
 
 
+/* location-search-form */
+#location-search-form {
+  margin-bottom: 1rem;
+}
+
+.search-box {
+  font-size: 16px;
+  padding: 12px 20px;
+  border: 3px solid #C17F34;
+  width: 80%;
+}
+
+.search-button,
+.search-button:hover {
+  width: 20%;
+  background-color: #C17F34;
+  border-color: #C17F34;
+  color: white;
+}
+
+
 /* walking-form-area */
 .walking-form-area {}
 

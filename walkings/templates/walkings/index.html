@@ -10,13 +10,13 @@
 <div class="container mt-3">
   <section class="d-flex row justify-content-center align-items-center">
     <div class="map-area col-7">
-      <div id="map" style="height:350px;"></div>
+      <div id="map" style="height:420px;"></div>
     </div>
     
     <div class="walking-form-area row d-flex col-3" style="">
-      <form id="location-search-form" action="" style="">
-          <input id="address" class="form-control" type="text" style="">
-          <input class="" type="submit" value="찾기" style="">
+      <form id="location-search-form" class="d-flex" action="" style="">
+          <input id="address" class="search-box" type="text" placeholder="주소로 검색하세요!">
+          <input class="search-button" type="submit" style="" value="검색">
       </form>
       <div class="">
         <form action="{% url 'walkings:create2' %}" id="walking_form" class="walking-form" method="post" style="" >
