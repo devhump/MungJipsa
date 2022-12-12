@@ -10,7 +10,7 @@
 
 ### [프로젝트 기획서](https://www.notion.so/hg-edu/5f6d392f69ee46e9b261897d63c4efc6)
 <hr>
-## 👥 팀원 구성
+##  👥 팀원 구성
 
 - 조수람[Github](https://github.com/devhump)
 - 강동현[Github](https://github.com/kangdh208)
@@ -27,5 +27,17 @@
 **Backend** <img src="https://img.shields.io/badge/Django-092E20?style=flat-square&logo=Django&logoColor=ffffff"/><img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=ffffff"/><img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=ffffff"/>
 
 **Distribution** <img src="https://img.shields.io/badge/Amazon AWS-FF9900?style=flat-square&logo=SQLite&logoColor=ffffff"/><img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=flat-square&logo=SQLite&logoColor=ffffff"/>
+
+---
+
+
+##  📋 기능소개
+
+ -  견주 등록
+ -  산책할 수 있는 공원 
+ -  동행 정보
+ -  동물병원정보 
+ -  입양
+ -  
 
 ---
