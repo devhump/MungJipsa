@@ -1,19 +1,18 @@
-{% extends 'base.html' %}
-{% load django_bootstrap5 %}
-{% load static %}
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/signup.css' %}" />
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/signup.css' %}"/>
 <script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
-<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
-{% endblock css %}
-
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+ {% endblock css %} 
 {% block content %}
-  <div class = "container d-flex justify-content-center align-items-center card mt-5 w-50">
-    <h1 class="text-center mt-5">회원가입</h1>
-    <form action="" method="POST" enctype="multipart/form-data" class="mb-5">
+  <div class = "container justify-content-center card-css card mt-5 mb-5 w-50">
+    <h1 class="text-center mt-5 ">회원가입</h1>
       {% csrf_token %}
       {% bootstrap_form form %}
-      {% bootstrap_button button_type="submit" button_class="btn-primary" content="가입하기" %}
+      <form action="{% url 'accounts:signup' %}" method="POST" class="my-3 text-center" enctype="multipart/form-data">
+        <div class="buttons">
+        <button type="submit" class="btn button btnPush btnOrange m-3" title="Button push orange"><i class="fa-solid fa-check"></i> 가입하기 </button>
+        <a class="btn button btnPush btnOrange me-3" title="Button push orange" onclick="history.go(-1)"><i class="fa-solid fa-rotate-left"></i> 뒤로가기</a>
+      </form>
     </form>
     
   </div>
