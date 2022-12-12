@@ -20,7 +20,7 @@
   - Back-end (schedules 앱 개발)
   - 캘린더 개발 
   - 네브바 
-  - 
+ 
 - [손세철](https://github.com/chul1631)
   - Back-end (accounts 앱 개발)
   - 견주 등록 및 애완견 등록 기능
