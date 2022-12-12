@@ -1,49 +1,76 @@
-{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} 
-{% block css %}
-<link rel="stylesheet" href="{% static 'css/dogprofile.css' %}" />
-<script
-  src="https://kit.fontawesome.com/dcba51bc42.js"
-  crossorigin="anonymous"
-></script>
-<link
-  href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
-  rel="stylesheet"
-/>
-{% endblock css %} {% block content %}
-<!-- MY PAGE -->
-<!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
+{% extends 'base.html' %} {% load django_bootstrap5 %} {% load static %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/dogprofile.css' %}"/>
+<script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet"/>
+ {% endblock css %} {% block content %}
+<div class="card mt-5 mb-5 card-css text-center">
+	<h1>{{ dog.name }} </h1>
+	 {% if dog.dogphoto %} <img src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진"/>
+	{% else %} <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진"/>
+	{% endif %}
 
-<div
-  class="text-center d-flex justify-content-center align-items-center card mt-5 card-css"
->
-  {% if dog.dogphoto %}
-  <img src="{{ dog.dogphoto.url }}" alt="직접 설정해둔 강아지 사진" />
-  {% else %}
-  <img src="https://dummyimage.com/50x50" alt="기본 강아지 프로필 사진" />
-  {% endif %}
-  <p class="row">
-    주인 : {{ dog.user }}
-    <br />
-    이름 :{{ dog.name }}
-    <br />
-    중성화 여부 : {{ dog.neutered }}
-    <br />
-    성별 : {{ dog.gender }}
-    <br />
-    나이 : {{ dog.age }}
-    <br />
-    성격 : {{ dog.personality }}
-    <br />
-    크기 : {{ dog.dogtype }}
-  </p>
-  <button
-    type="button"
-    class="btn button btnPush btnOrange m-3"
-    title="Button push orange"
-    onclick="location.href='{% url 'accounts:profile' user.username %}'"
-  >
-    <i class="fa-solid fa-rotate-left"></i> 뒤로가기
-  </button>
+  <table class="table mt-5 mb-5 w-75 table-css table table-bordered ">
+    <thead>
+    <tr class="underline table-warning fs-5">
+      <th scope="col">
+        주인
+      </th>
+      <th scope="col">
+        중성화
+      </th>
+      <th scope="col">
+        성별
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr >
+        <td>
+          {{ dog.user }}
+        </td>
+        <td>
+          {{ dog.neutered }}
+        </td>
+        <td>
+          {{ dog.gender }}
+        </td>
+	</tr>
+	</tbody>
+	</table>
+
+
+
+  <table class="table mt-5 mb-5 w-75 table-css table table-bordered ">
+    <thead>
+    <tr class="underline table-warning fs-5">
+      <th scope="col">
+        나이
+      </th>
+      <th scope="col">
+        성격
+      </th>
+      <th scope="col">
+        크기
+      </th>
+    </tr>
+	</thead>
+	<tbody>
+    <tr>
+		<td>
+			{{ dog.age }}
+		</td>
+		<td>
+			{{ dog.personality }}
+		</td>
+		<td>
+			{{ dog.dogtype }}
+		</td>
+	</tr>
+	</tbody>
+	</table>
+
+
+	</section>
+	<button type="button" class="btn button btnPush btnOrange btn-css" title="Button push orange" onclick="history.go(-1)"><i class="fa-solid fa-rotate-left"></i> 뒤로가기 </button>
 </div>
-
 {% endblock content %}

@@ -72,9 +72,9 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
-LOGIN_REDIRECT_URL = "accounts:index"  # 로그인 후 리디렉션할 페이지
-ACCOUNT_LOGOUT_REDIRECT_URL = "accounts:index"  # 로그아웃 후 리디렉션 할 페이지
-SITE_ID = 1
+LOGIN_REDIRECT_URL = "reviews:index"  # 로그인 후 리디렉션할 페이지
+ACCOUNT_LOGOUT_REDIRECT_URL = "accounts:login"  # 로그아웃 후 리디렉션 할 페이지
+SITE_ID = 2
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

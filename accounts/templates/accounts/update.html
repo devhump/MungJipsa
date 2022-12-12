@@ -8,13 +8,12 @@
 {% endblock css %}
 {% block content %}
 <div class = "container d-flex justify-content-center align-items-center card mt-5 mb-5 w-50">
+  <h1 class="mt-5">회원 정보 수정</h1>
 <div class="personal-info mb-5">
   {% if request.user.profile %}
   <img src="{{ request.user.profile.url }}" alt="직접 설정해둔 프로필 사진" class="mt-5">
   {% else %}
-  <img
-    src=""
-    alt="기본 프로필 사진">
+  <img src="https://dummyimage.com/100x100" alt="기본 프로필 사진">
   {% endif %}
 </div>
 <div class="update w-50">
@@ -23,7 +22,7 @@
     {% bootstrap_form form %}
     <form> 
     <div class="buttons">
-      <button type="submit" class="btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange"><i class="fa-solid fa-check"></i> 수정</button>
+      <button type="submit" class="btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange" onclick="location.href='{% url 'accounts:profile' user.username %}'"><i class="fa-solid fa-check"></i> 수정</button>
       <button type="button" class="btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange" onclick="location.href='{% url 'accounts:profile' user.username %}'"><i class="fa-solid fa-rotate-left"></i> 뒤로가기</button>
       <a href="{% url 'accounts:delete' %}" class="delete btn button btnPush btnOrange m-3 mb-3 w-25" title="Button push orange"><i class="fa-solid fa-user-minus"></i> 회원 탈퇴</a>
   </form>

@@ -9,26 +9,6 @@
 100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
 }
 
-@-moz-keyframes rain_effect {
-0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
-100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
-}
-
-@-webkit-keyframes rain_effect {
-0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
-100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
-}
-
-@-ms-keyframes rain_effect {
-0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-50% {background-position: 400px 800px, 300px 300px, 200px 200px; background-color: #FF69B4}
-100% {background-position: 0px 0px, 0px 0px, 0px 0px; background-color: #F8C8DC}
-}
-
-
-
 .my_text {
     display: flex;
     flex-direction: column;
@@ -49,6 +29,7 @@
 
 body {
 	background-color: #d9bd9b; 
+  
 }
 
 .top{
@@ -63,13 +44,15 @@ body {
 	-webkit-animation: rain_effect 40s linear infinite;
 	-moz-animation: rain_effect 40s linear infinite;
 	-ms-animation: rain_effect 40s linear infinite; 
-
 }
 .top-card {
   align-items: center;
   margin-top:30px;
   margin-bottom: 30px;
-  width:90%;
+  width:60%;
+  background: #4a8e41;
+  border-color:#5c291a;
+  border-width:0.4rem;
 }
 
 .username{
@@ -115,10 +98,11 @@ body {
   height: 100px;
   margin: 2px;
   overflow: hidden;
+  
 }
 /*tab 글씨 색깔*/
 .tab-font{
-  color :rgb(38, 26, 12);
+  color :#700202;
 
 }
 
@@ -172,8 +156,6 @@ body {
     transform .4s,
     filter .4s,
     z-index .2s;
-    
-    
 }
 
 .cardcss:hover{ 
@@ -192,6 +174,9 @@ body {
 /* my 작성글 탭 css*/
 .asd-tab{
     display: flex!important;
-    /* align-content: center; */
     flex-wrap: nowrap;
+}
+
+.nav-link.active {
+  color: #000000;
 }
