@@ -37,7 +37,7 @@
                                     <div class="w-100">
                                         <p class="mt-4">일정관리<br><a href="{% url 'schedules:calendar' %} " class="enter">CALENDAR</a></p>
                                     </div>
-                                        {{ request.user.username }}님, 환영합니다!!
+                                    <a href="{% url 'accounts:profile' user.username %} " class="enter">{{ request.user.username }}</a>님, 환영합니다!!
                                     {% else %}
                                     <div class="w-100">
                                         <p class="mt-4">계정이 있어요! <a href="{% url 'accounts:login' %}" class="enter">LOG IN</a></p>
