@@ -11,7 +11,13 @@
     <header class="nav2">
         <div class="nav_div my-1">
             <!-- 프로필 이미지 -->
-            <a href="{% url 'accounts:profile' user.username %}" style="text-decoration: none; color: #544B44;"><img class="nav2 navimg" src="/media/{{ user.profile }}" alt="{{ user.username }}"></a>
+            <a href="{% url 'accounts:profile' user.username %}" style="text-decoration: none; color: #544B44;">
+                {% if user.profile %}
+                <img class="nav2 navimg" src="{{ user.profile.url }}" alt="">
+                {% else %}
+                <img class="nav2 navimg" src="https://dummyimage.com/50x50" alt="">
+                {% endif %}
+            </a>
             <a href="{% url 'accounts:profile' user.username %}" style="text-decoration: none; color: #544B44;"><p class="px-2 pt-3">{{ user.username }}</p></a>
           </div>
       <div class="nav2_link">
