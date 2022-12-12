@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.db.models import Q
 from haversine import haversine
 from operator import itemgetter
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def index(request):
@@ -141,23 +143,26 @@ def test(request):
     return render(request, "walkings/index.html")
 
 
+@login_required
 def create2(request):
-    print(request.POST)
-    park_pk = request.POST["park_pk"]
+    if request.user.is_authenticated:
+        park_pk = request.POST["park_pk"]
 
-    park = Park.objects.get(pk=park_pk)
-    user = request.user
+        park = Park.objects.get(pk=park_pk)
+        user = request.user
 
-    if request.method == "POST":
-        dogroup_form = DogroupForm(request.POST)
-        if dogroup_form.is_valid():
-            dogroup = dogroup_form.save(commit=False)
-            dogroup.user = user
-            dogroup.park = park
-            dogroup.save()
-            dogroup.join.add(request.user)
+        if request.method == "POST":
+            dogroup_form = DogroupForm(request.POST)
+            if dogroup_form.is_valid():
+                dogroup = dogroup_form.save(commit=False)
+                dogroup.user = user
+                dogroup.park = park
+                dogroup.save()
+                dogroup.join.add(request.user)
 
-    dogroup = Dogroup.objects.all()
+        dogroup = Dogroup.objects.all()
+    else:
+        messages.warning(request, "로그인한 유저만 모임을 개설할 수 있습니다.")
 
     return redirect("walkings:index")
 
@@ -172,6 +177,7 @@ def detail(request, dogroup_pk):
     return render(request, "walkings/detail.html", context)
 
 
+@login_required
 def join(request, dogroup_pk):
 
     dogroup = Dogroup.objects.get(pk=dogroup_pk)
@@ -184,6 +190,7 @@ def join(request, dogroup_pk):
     return redirect("walkings:index")
 
 
+@login_required
 def delete(request, dogroup_pk):
 
     dogroup = Dogroup.objects.get(pk=dogroup_pk)
