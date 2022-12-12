@@ -48,7 +48,7 @@
 <div class="s21_album_list area">
   {% for place in posts %}
   <div class="s21_animal_conts pr">
-    <a class="s21_hospital_conts_photo" href="{% url 'info:place_detail' place.pk %}" style="background: url('{{place.imageURL}}') center center no-repeat ;"></a>
+    <a class="s21_hospital_conts_photo" href="{% url 'info:place_detail' place.pk %}" style="background: url('{{place.slideimage.first.slideimage}}') center center no-repeat ;"></a>
     <div class="s21_animal_conts_tbox">
       <h4>{{place.name}}</h4>
       <p>{{place.tel}}</p>
