@@ -57,8 +57,13 @@ def hospital(request):
     return render(request, "info/hospital.html", context)
 
 
+from datetime import date
+
+
 def deserted(request):
     animals = Deserted.objects.all()
+    today = date.today()
+    animals = animals.filter(noticeEdt__gte=today)
     search = request.GET.get("search")
     areaSearch = request.GET.get("areaSearch")
     if not areaSearch:
