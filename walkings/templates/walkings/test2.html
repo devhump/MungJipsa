@@ -7,6 +7,7 @@
 
 
 {% block content %}
+<p>12/13 13:12</p>
 <div class="container mt-3">
   <section class="d-flex row justify-content-center align-items-center">
     <div class="map-area col-7">
@@ -66,14 +67,67 @@
                 {% if request.user in dogr.join.all  %}
                   <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-warning card-link"><i class="bi bi-check-square-fill"></i> 취소</a>
                 {% else %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
-                    참석</a>
+                  {% if dogr.join.count == dogr.membercnt %}
+                    <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-secondary card-link disabled"><i class="bi bi-check-square"></i>
+                      정원 초과</a>
+                  {% else %}
+                    <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
+                      참석</a>
+                  {% endif %}
                 {% endif %}
               {% else %}
                 <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-outline-danger card-link"><i class="bi bi-trash"></i>삭제</a>
               {% endif %}
             {% endif %}
+            <!-- Button trigger modal -->
+            <button type="button" onclick="detailMap({{dogr.pk}})" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Modal-{{dogr.pk}}">
+              <i class="bi bi-search"></i> 자세히
+            </button>
 
+            <!-- Modal -->
+            <div class="modal fade" id="Modal-{{dogr.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> <i class="bi bi-megaphone-fill" style="color: #dc3545;"></i> {{dogr.title}}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="text-muted float-end">{{dogr.create_at|date:'Y-m-d H:i'}} 작성</div>
+                    <div id="detail-map-{{dogr.pk}}" style="width:100%;height:350px;"></div>
+                    <hr>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">장소 & 일시</div>
+                      <div class="">{{ dogr.datetime }}</div>
+                      <div>{{ dogr.park.parkName }} <span class="text-muted">({{ dogr.park.address }})</span></div>
+                    </div>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">참가자 <span class="text-muted">(정원 {{dogr.join.count}}/{{dogr.membercnt}})</span></div>
+                      <div>
+                      </div>
+                    </div>
+                    <div class="modal-item-list">
+                      <div class="modal-item-title">멍멍이</div>
+                      <div>
+                      {% for joiner in dogr.join.all %}
+                        {% for dog in joiner.dog_set.all %}
+                          <img src="{% if dog.dogphoto %}{{ dog.dogphoto.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        {% endfor %}
+                      {% endfor %}
+                      </div>
+                    </div>
+                    
+                    <p id="park_lat-{{dogr.pk}}" style="display:none;">{{dogr.park.latitude}}</p>
+                    <p id="park_lon-{{dogr.pk}}" style="display:none;">{{dogr.park.longitude}}</p>
+                    <p id="parkname-{{dogr.pk}}" style="display:none;">{{dogr.park.parkName}}</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- modal end -->
           </div>
         </div>
       </div>

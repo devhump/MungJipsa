@@ -104,7 +104,7 @@
                       <div class="modal-item-title">참가자 <span class="text-muted">(정원 {{dogr.join.count}}/{{dogr.membercnt}})</span></div>
                       <div>
                         {% for joiner in dogr.join.all %}
-                        <img src="{% if joiner.profile.url %}{{ joiner.profile.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        <img src="{% if joiner.profile %}{{ joiner.profile.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
                         {% endfor %}
                       </div>
                     </div>
@@ -113,7 +113,7 @@
                       <div>
                       {% for joiner in dogr.join.all %}
                         {% for dog in joiner.dog_set.all %}
-                          <img src="{% if dog.dogphoto.url %}{{ dog.dogphoto.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                          <img src="{% if dog.dogphoto %}{{ dog.dogphoto.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
                         {% endfor %}
                       {% endfor %}
                       </div>
