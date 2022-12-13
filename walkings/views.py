@@ -205,9 +205,25 @@ def delete(request, dogroup_pk):
 
 def test2(request):
 
-    dogroups = Dogroup.objects.order_by("-pk")
+    parks = Park.objects.filter(address__icontains="동작구")
 
+    dogroups = Dogroup.objects.all()
+
+    park_info = []
+    for park in parks:
+
+        temp = {
+            "parkName": park.parkName,
+            "latitude": park.latitude,
+            "longitude": park.longitude,
+            "park_pk": park.pk,
+        }
+
+        park_info.append(temp)
+
+    parkJson = json.dumps(park_info)
     context = {
+        "parkJson": parkJson,
         "dogroups": dogroups,
     }
 
