@@ -1,29 +1,23 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% load django_bootstrap5 %} 
-{% load static %}
+{% load static %} 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 <script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&display=swap" rel="stylesheet">
-{% endblock css %}
-{% load socialaccount %}
- {% providers_media_js %} 
+ {% endblock css %}
+ {% load socialaccount %} 
+ {% providers_media_js %}
  {% block content %}
-
- <div class="container d-flex justify-content-center align-items-center card mt-5 w-50">
-  <h2>NAMUNG</h2>
-  <form action="{% url 'accounts:login' %}" method="POST" enctype="multipart/form-data" class="login-form mt-5">
-   
-  {% bootstrap_form form %}
-    {% csrf_token %} 
-    <p class="text-center">
-      <a href="{% url 'accounts:signup' %}" class ="text-center" style="color: #ad998e; font-weight:700;" >회원이 아니신가요?</a>
-    </p>
-<button type="submit" class=" login-button btn button btnPush btnOrange " title="Button push orange">로그인</button>
-<!-- <a href="{% provider_login_url 'google' %}"> 구글 로그인</a> 
-<a href="{% provider_login_url 'naver' %}"> 네이버 로그인</a> -->
-</form>
+<div class="container d-flex justify-content-center align-items-center card card-css mt-5 w-50">
+	<h2>NAMUNG</h2>
+	<form action="{% url 'accounts:login' %}" method="POST" enctype="multipart/form-data" class="login-form mt-5">
+		 {% bootstrap_form form %} {% csrf_token %}
+		<p class="text-center">
+			<a href="{% url 'accounts:signup' %}" class="text-center" style="color: #ad998e; font-weight:700;">회원이 아니신가요?</a>
+		</p>
+		<button type="submit" class=" login-button btn button btnPush btnOrange " title="Button push orange">로그인</button>
+		<a href="{% provider_login_url 'google' %}"><img src="/accounts/static/images/구글 로그인.png">구글 로그인</a>  
+    <a href="{% provider_login_url 'google' %}"><img src="/accounts/static/images/네이버 로그인.png">네이버 로그인</a>  
 </div>
-
 {% endblock content %}
-

@@ -29,7 +29,6 @@ def signup(request):
             request.FILES,
         )
         if form.is_valid():
-            form.user = request.user
             form.save()
             return redirect("accounts:login")
 
@@ -44,7 +43,9 @@ def login(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect("accounts:profile", request.user.username)
+            return redirect(
+                request.GET.get("next") or "accounts:profile", request.user.username
+            )
     else:
         form = AuthenticationForm()
     context = {"form": form}
@@ -55,22 +56,7 @@ def login(request):
 def logout(request):
     auth_logout(request)
     messages.success(request, "로그아웃 완료")
-    return redirect("accounts:index")
-
-
-@login_required
-def update(request):
-    if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect("accounts:profile", request.user.pk)
-    else:
-        form = CustomUserChangeForm(instance=request.user)
-    context = {
-        "form": form,
-    }
-    return render(request, "accounts/update.html", context)
+    return redirect("accounts:login")
 
 
 @login_required
@@ -110,13 +96,13 @@ def profile(request, username):
 def update(request, pk):
     user = get_object_or_404(get_user_model(), pk=pk)
     if user != request.user:
-        return redirect("accounts:index")
+        return redirect("accounts:profile")
     if request.method == "POST" and user == request.user:
         form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, "프로필 정보가 성공적으로 변경되었습니다.")
-            return redirect("accounts:index")
+            return redirect("accounts:profile", request.user)
     else:
         form = CustomUserChangeForm(instance=request.user)
     context = {

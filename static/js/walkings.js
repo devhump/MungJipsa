@@ -187,9 +187,6 @@ function success(pos) {
   const latitude = pos.coords.latitude
   const longitude = pos.coords.longitude
 
-  console.log(latitude)
-  console.log(longitude)
-  console.log("성공")
   mapSearch(latitude, longitude)
 
 }

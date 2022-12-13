@@ -1,5 +1,6 @@
+
 * {
-  font-family: 'Mochiy Pop P One', sans-serif;
+  font-family: 'Jua', sans-serif;
 }
 
 
@@ -9,33 +10,25 @@
   50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
   100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
   }
-  
-  @-moz-keyframes rain_effect {
-  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
-  }
-  
-  @-webkit-keyframes rain_effect {
-  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
-  }
-  
-  @-ms-keyframes rain_effect {
-  0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-  50% {background-position: 400px 800px, 300px 300px, 200px 200px; }
-  100% {background-position: 0px 0px, 0px 0px, 0px 0px; }
-  }
-  
 
 body {
-  background-image: url('../images/배경2.jpg');
+  background-image: url('../images/배경.jpg');
 	animation: rain_effect 40s linear infinite;
 	-webkit-animation: rain_effect 40s linear infinite;
 	-moz-animation: rain_effect 40s linear infinite;
 	-ms-animation: rain_effect 40s linear infinite; 
 }
+
+.card {
+  background-color:#e6e0db;
+  border-radius: 5rem;  
+}
+
+.d-flex {
+  display: flex!important;
+  flex-direction: row;
+}
+
 /* 버튼 css*/
 .btnOrange {
   background: #E3B57E;
@@ -69,4 +62,24 @@ body {
   height: auto;
   padding-bottom: 5%;
   padding-top: 5%;
+  border-radius: 8rem;
+  
+}
+
+/* 글자 밑줄 */
+.underline{
+  text-decoration: underline;
+  
+}
+
+
+.d-flex {
+  display: flex;
+  justify-content: center;
+}
+
+.table-css{ 
+  margin-left:auto;
+  margin-right:auto;
+  
 }
