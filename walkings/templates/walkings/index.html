@@ -66,8 +66,13 @@
                 {% if request.user in dogr.join.all  %}
                   <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-warning card-link"><i class="bi bi-check-square-fill"></i> 취소</a>
                 {% else %}
-                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
-                    참석</a>
+                  {% if dogr.join.count == dogr.membercnt %}
+                    <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-secondary card-link disabled"><i class="bi bi-check-square"></i>
+                      정원 초과</a>
+                  {% else %}
+                    <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
+                      참석</a>
+                  {% endif %}
                 {% endif %}
               {% else %}
                 <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-outline-danger card-link"><i class="bi bi-trash"></i>삭제</a>
@@ -99,7 +104,7 @@
                       <div class="modal-item-title">참가자 <span class="text-muted">(정원 {{dogr.join.count}}/{{dogr.membercnt}})</span></div>
                       <div>
                         {% for joiner in dogr.join.all %}
-                        <img src="{{ joiner.profile.url }}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                        <img src="{% if joiner.profile %}{{ joiner.profile.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dogr.user.username }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
                         {% endfor %}
                       </div>
                     </div>
@@ -108,7 +113,7 @@
                       <div>
                       {% for joiner in dogr.join.all %}
                         {% for dog in joiner.dog_set.all %}
-                          <img src="{{ dog.dogphoto.url }}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+                          <img src="{% if dog.dogphoto %}{{ dog.dogphoto.url }}{% else %}https://dummyimage.com/90x90{% endif %}" alt="{{ dog.name }}의 사진" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
                         {% endfor %}
                       {% endfor %}
                       </div>
