@@ -50,7 +50,35 @@
     </div>
   </section>
 
+  <section class="dogroups-list-area row justify-content-center mt-3">
+    {% for dogr in dogroups %}
+      <div class="card dogroup-card col-5" style="width:%">
+        <div class="card-body">
+          <h5 class="card-title fw-bold"><img src="{{ dogr.user.profile.url }}" alt="" style="height: 3rem; width: 3rem; border-radius:50%; border: 1px solid black;">
+            <i class="bi bi-megaphone-fill" style="color: #dc3545;"></i> {{dogr.title}}</h5>
+          <hr>
+          <p class="card-text">공원이름: {{ dogr.park.parkName }}</p>
+          <p class="card-text">공원주소: {{ dogr.park.address }}</p>
+          <h6 class="card-subtitle mb-2 text-muted text-end">인원수: {{ dogr.join.count }}/{{dogr.membercnt}}</h6>
+          <div class="float-end">
+            {% if request.user.is_authenticated %}
+              {% if dogr.user != request.user %}
+                {% if request.user in dogr.join.all  %}
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-warning card-link"><i class="bi bi-check-square-fill"></i> 취소</a>
+                {% else %}
+                  <a href="{% url 'walkings:join' dogr.pk %}" class="btn btn-outline-success card-link"><i class="bi bi-check-square"></i>
+                    참석</a>
+                {% endif %}
+              {% else %}
+                <a href="{% url 'walkings:delete' dogr.pk %}" class="btn btn-outline-danger card-link"><i class="bi bi-trash"></i>삭제</a>
+              {% endif %}
+            {% endif %}
 
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </section>
 
 </div>
 
