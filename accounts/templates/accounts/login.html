@@ -16,8 +16,9 @@
 		<p class="text-center">
 			<a href="{% url 'accounts:signup' %}" class="text-center" style="color: #ad998e; font-weight:700;">회원이 아니신가요?</a>
 		</p>
-		<button type="submit" class=" login-button btn button btnPush btnOrange " title="Button push orange">로그인</button>
-		<a href="{% provider_login_url 'google' %}"><img src="/accounts/static/images/구글 로그인.png">구글 로그인</a>  
-    <a href="{% provider_login_url 'google' %}"><img src="/accounts/static/images/네이버 로그인.png">네이버 로그인</a>  
+		<button type="submit" class=" login-button btn button btnPush btnOrange mb-3" title="Button push orange">로그인</button>
+		<div id="naver_id_login">
+    <a href="{% provider_login_url 'naver' %}"><img width="146px;" height="50px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99580C465C3D7D130C"></a></div>
+		
 </div>
 {% endblock content %}
