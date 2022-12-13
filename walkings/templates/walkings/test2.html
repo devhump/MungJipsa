@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<h1>위치 받아 오기 기능 확인</h1>
 <div class="container mt-3">
   <section class="map_form-area d-flex">
     <div id="map" style="width:60%;height:350px;"></div>
@@ -74,6 +75,26 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5002adb5652b8017c76603959cbbf663&libraries=services"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
+
+  const options = {
+    enableHighAccuracy: true,
+    timeout: Infinity,
+    maximumAge: 0
+  };
+
+  function success(pos) {
+    const latitude = pos.coords.latitude
+    const longitude = pos.coords.longitude
+    console.log("위치 받아오기 성공")
+    console.log(latitude, longitude)
+  
+  }
+  
+  
+  function error(err) {
+    console.log("위치 받아오기 실패")
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
 
   var pos_latitude = 0
   var pos_longtitude = 0
@@ -232,5 +253,8 @@ location_form.addEventListener('submit', function (event) {
 });
 
 console.warn("???")
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
 </script>
 {% endblock script %}
