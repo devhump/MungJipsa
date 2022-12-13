@@ -7,9 +7,13 @@ from .models import Review, Comment, Images
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
 from django.views.generic.edit import FormView
 from django.db.models import Q
 import random
+from django.views.decorators.http import (
+    require_POST,
+)
 
 # 멍스타그렘
 def index(request):
@@ -17,7 +21,9 @@ def index(request):
     search = request.GET.get("search")
     if search:
         reviews = reviews.filter(
-            Q(title__icontains=search) | Q(content__icontains=search)
+            Q(title__icontains=search)
+            | Q(content__icontains=search)
+            | Q(user_id__icontains=search)
         )
 
     comment_form = CommentForm()
@@ -226,6 +232,29 @@ def likes(request, pk, comment_pk):
             "likeCount": comment.like_users.count(),
         }
         return JsonResponse(context)
+
+
+@login_required
+def follow(request, pk):
+    if request.user.is_authenticated:
+        User = get_user_model()
+        me = request.user
+        you = User.objects.get(pk=pk)
+        if me != you:
+            if you.followers.filter(pk=me.pk).exists():
+                you.followers.remove(me)
+                is_followed = False
+            else:
+                you.followers.add(me)
+                is_followed = True
+            context = {
+                "is_followed": is_followed,
+                "followers_count": you.followers.count(),
+                "followings_count": you.followings.count(),
+            }
+            return JsonResponse(context)
+        return redirect("accounts:profile", you.username)
+    return redirect("accounts:login")
 
 
 #
