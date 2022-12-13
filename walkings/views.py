@@ -201,3 +201,14 @@ def delete(request, dogroup_pk):
         messages.warning(request, "본인이 개설한 모임만 삭제 할 수 있습니다.")
 
     return redirect("walkings:index")
+
+
+def test2(request):
+
+    dogroups = Dogroup.objects.order_by("-pk")
+
+    context = {
+        "dogroups": dogroups,
+    }
+
+    return render(request, "walkings/test2.html", context)
