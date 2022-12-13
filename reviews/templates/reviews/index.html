@@ -87,17 +87,18 @@
               <div class='d-flex justify-content: space-around'><a href="{% url 'accounts:profile' review.user %}" style='color :black;' class='text-decoration-none ' >&nbsp; <b>{{ review.user.username }}</b></a></div>
                 <p class='ms-auto'>
                   {% comment %} 팔로우 {% endcomment %}
-                  {% if request.user != review.user %}
-                    <form id='follow-form-{{ review.pk }}' data-review-id='{{review.pk}}' class='follow-form' data-review-user-id='{{ review.user.pk }}'>
-                      {% csrf_token %}
-                        {% if request.user in review.user.followers.all %}
-                        <input type='submit' class="followBtn btn me-3 mt-5" value="언팔로우">
-                        {% else %}
-                        <input type='submit' class="followBtn btn me-3 mt-5 " value='팔로우'>
-                        {% endif %}
-                    </form>
-                  {% endif %}
-                  
+                  <small>
+                    {% if request.user != review.user %}
+                      <form id='follow-form-{{ review.pk }}' data-review-id='{{review.pk}}' class='follow-form' data-review-user-id='{{ review.user.pk }}'>
+                        {% csrf_token %}
+                          {% if request.user in review.user.followers.all %}
+                          <input type='submit' class="followBtn btn me-3"  style='color:#0095F6;'  value="언팔로우">
+                          {% else %}
+                          <input type='submit' class="followBtn btn me-3  " style='color:#0095F6;' value='팔로우'>
+                          {% endif %}
+                      </form>
+                    {% endif %}
+                  </small>
                  
                   {{ review.created_at| naturaltime  }}</p>
             </div>
@@ -154,8 +155,8 @@
         </div>
       {% comment %} 제목 및 글 내용 {% endcomment %}
       <div id='review-content' style="margin: 0 20px;text-align: left;  font-family: 'Dongle';" class='mb-2'>
-        <b> <span><h5 id='review-title 'style="font-family: 'Nanum Gothic';">{{ review.title|truncatechars:10 }} </h5></span></b>
-        <span style="font-weight:bold; font-size:18px">{{ review.user.username }}</span> {{ review.content|truncatechars:15 }}
+        <b> <span><h5 id='review-title 'style="font-family: 'Nanum Gothic';">{{ review.title|truncatechars:25 }} </h5></span></b>
+        <span style="font-weight:bold; font-size:18px">{{ review.user.username }}</span> {{ review.content|truncatechars:23 }}
       </div>
       
       {% comment %} 댓글 {% endcomment %}
@@ -331,7 +332,7 @@
       method: "POST",
       success: function (data) {
           console.log("성공");
-          alert("댓글 성공");
+          
           $("#reply_list_" +review_id).append( "<div style='margin: 0 20px;text-align: left;font-size: 14px'><b>{{ user.username }}</b>" + comment_content + "</div>")
           {location.replace('');}
           
