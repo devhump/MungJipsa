@@ -76,12 +76,21 @@ def password(request):
     return render(request, "accounts/password.html", context)
 
 
+from walkings.models import Dogroup
+
+
 @login_required
 def delete(request):
+    dogroups = Dogroup.objects.filter(join=request.user)
+
+    # 산책 참석자 중에 탈퇴한 유저 있으면 삭제
+    for dogr in dogroups:
+        dogr.join.remove(request.user)
+
     request.user.delete()
     auth_logout(request)
     messages.success(request, "탈퇴 완료")
-    return redirect("accounts:index")
+    return redirect("reviews:index")
 
 
 @login_required
