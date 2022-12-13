@@ -94,6 +94,8 @@ function mapSearch(latitude, longitude) {
   // 기존에 마커가 있다면 제거
   marker.setMap(null)
   marker.setMap(map)
+  const parkselect = document.querySelector('#parkSelect')
+  parkselect.innerHTML = '<option selected>공원을 선택하세요</option>'
 
   axios({ method: 'get', url: `/walkings/search/${latitude}/${longitude}` })
     .then(response => {
