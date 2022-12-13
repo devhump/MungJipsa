@@ -183,11 +183,15 @@ def join(request, dogroup_pk):
 
     dogroup = Dogroup.objects.get(pk=dogroup_pk)
 
-    if dogroup.user != request.user:
-        if dogroup.join.filter(pk=request.user.pk).exists():
-            dogroup.join.remove(request.user)
-        else:
-            dogroup.join.add(request.user)
+    if dogroup.join.count() < dogroup.membercnt:
+        if dogroup.user != request.user:
+            if dogroup.join.filter(pk=request.user.pk).exists():
+                dogroup.join.remove(request.user)
+            else:
+                dogroup.join.add(request.user)
+    else:
+        messages.warning(request, "참가 가능한 인원이 초과하였습니다.")
+
     return redirect("walkings:index")
 
 
