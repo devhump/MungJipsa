@@ -1,4 +1,5 @@
-# namung
+# ![image](https://user-images.githubusercontent.com/60389344/207192262-4395bce6-a141-4e62-96f1-156c0ec01f45.png)
+namung
 
 #### 서비스 이름 : namung
 
