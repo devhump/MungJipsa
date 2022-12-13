@@ -14,26 +14,26 @@ namung
   ##  👥 팀원 구성
 
 - [조수람](https://github.com/devhump)
-  -  Back-end (walkings 앱 개발)
+  -  Back/Front-end (walkings 앱 개발)
   -  지도 및 산책 정보 개발
   -  KAKAO Map API
 - [강동현](https://github.com/kangdh208)
-  - Back-end (schedules 앱 개발)
+  - Back/Front-end (schedules 앱 개발)
   - 캘린더 개발 
   - 네브바 
  
 - [손세철](https://github.com/chul1631)
-  - Back-end (accounts 앱 개발)
+  - Back/Front-end (accounts 앱 개발)
   - 견주 등록 및 애완견 등록 기능
   - 
 - [조본희](https://github.com/SHIN-sped) 
-  - Back-end  (info 앱 개발)
+  - Back/Front-end  (info 앱 개발)
   - 하드독 정보 크롤링
   - 동물병원 및 유기견 보호소 정보를 가져오고 애견과 동행이 가능한 카페 식당등의 정보를 가져왔다.
   - 각 페이지 검색기능 구현
   - 
  -  [조승윤](https://github.com/mgpo-98)
-    - Back-end (reviews 앱개발)
+    - Back/Front-end (reviews 앱개발)
     - sns(인스타그램)와 유사한 기능 구현
  
 ---
