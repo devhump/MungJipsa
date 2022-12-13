@@ -32,4 +32,5 @@ urlpatterns = [
     path("search/", views.SearchFormView.as_view(), name="search"),
     # 댓글 좋아요
     path("<int:pk>/<int:comment_pk>/likes/", views.likes, name="likes"),
+    path("follow/<int:pk>/", views.follow, name="follow"),
 ]
