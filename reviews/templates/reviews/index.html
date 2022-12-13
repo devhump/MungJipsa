@@ -107,7 +107,7 @@
             {% comment %} 사진 {% endcomment %}
             {% if review.image.first %}
             <div id="carouselExampleControls-{{ review.pk }}" class="carousel slide " data-ride="carousel" style="width: 100%">
-              <div class="carousel-inner bg-dark"  style='width : 100%; height : 300px;'>
+              <div class="carousel-inner bg-dark"  style='width : 100%;'>
                 {% for photo in review.image.all %}
           
                   <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}" style='width : 100%; height : 50%;'>
