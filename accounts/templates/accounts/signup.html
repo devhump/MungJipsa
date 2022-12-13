@@ -6,7 +6,7 @@
 {% block content %}
   <div class = "container justify-content-center card-css card mt-5 mb-5 w-50">
     <h1 class="text-center mt-5 ">회원가입</h1>
-    <form action="{% url 'accounts:signup' %}" method="POST" class="my-3 text-center" enctype="multipart/form-data">
+    <form action="{% url 'accounts:signup' %}" method="POST" class="my-3 " enctype="multipart/form-data">
       {% csrf_token %}
       {% bootstrap_form form %}
       <div class="buttons">
