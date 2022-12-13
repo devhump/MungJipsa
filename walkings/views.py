@@ -76,71 +76,72 @@ def search(request, x, y):
     return JsonResponse(data)
 
 
-def test(request):
+# def test(request):
 
-    parks = Park.objects.filter(address__icontains="동작구")
+#     parks = Park.objects.filter(address__icontains="동작구")
 
-    dogroups = Dogroup.objects.all()
+#     dogroups = Dogroup.objects.all()
 
-    park_info = []
-    for park in parks:
+#     park_info = []
+#     for park in parks:
 
-        temp = {
-            "parkName": park.parkName,
-            "latitude": park.latitude,
-            "longitude": park.longitude,
-            "park_pk": park.pk,
-        }
+#         temp = {
+#             "parkName": park.parkName,
+#             "latitude": park.latitude,
+#             "longitude": park.longitude,
+#             "park_pk": park.pk,
+#         }
 
-        park_info.append(temp)
+#         park_info.append(temp)
 
-    parkJson = json.dumps(park_info)
-    context = {
-        "parkJson": parkJson,
-        "dogroups": dogroups,
-    }
+#     parkJson = json.dumps(park_info)
+#     context = {
+#         "parkJson": parkJson,
+#         "dogroups": dogroups,
+#     }
 
-    return render(request, "walkings/test.html", context)
+#     return render(request, "walkings/test.html", context)
 
-    # def create(request, park_pk):
 
-    park = Park.objects.get(pk=park_pk)
-    user = request.user
-    dog = Dog.objects.get(pk=1)
+# def create(request, park_pk):
 
-    if request.method == "POST":
-        dogroup_form = DogroupForm(request.POST)
-        if dogroup_form.is_valid():
-            dogroup = dogroup_form.save(commit=False)
-            dogroup.user = user
-            dogroup.dog = dog
-            dogroup.park = park
-            dogroup.save()
-            dogroup.join.add(request.user)
+# park = Park.objects.get(pk=park_pk)
+# user = request.user
+# dog = Dog.objects.get(pk=1)
 
-    dogroup = Dogroup.objects.all()
+# if request.method == "POST":
+#     dogroup_form = DogroupForm(request.POST)
+#     if dogroup_form.is_valid():
+#         dogroup = dogroup_form.save(commit=False)
+#         dogroup.user = user
+#         dogroup.dog = dog
+#         dogroup.park = park
+#         dogroup.save()
+#         dogroup.join.add(request.user)
 
-    dogroup_data = []
+# dogroup = Dogroup.objects.all()
 
-    for dogr in dogroup:
+# dogroup_data = []
 
-        temp = {
-            "dogroup_pk": dogr.pk,
-            "dogroup_date": dogr.datetime,
-            "dogroup_title": dogr.membercnt,
-            "dogroup_dog_pk": dogr.dog.pk,
-            "dogroup_park_pk": dogr.park.pk,
-            "dogroup_park_pk": dogr.user.pk,
-        }
+# for dogr in dogroup:
 
-        dogroup_data.append(temp)
-    print(dogroup_data)
-    context = {
-        "dogroup_data": dogroup_data,
-    }
+#     temp = {
+#         "dogroup_pk": dogr.pk,
+#         "dogroup_date": dogr.datetime,
+#         "dogroup_title": dogr.membercnt,
+#         "dogroup_dog_pk": dogr.dog.pk,
+#         "dogroup_park_pk": dogr.park.pk,
+#         "dogroup_park_pk": dogr.user.pk,
+#     }
 
-    return JsonResponse(context)
-    return render(request, "walkings/index.html")
+#     dogroup_data.append(temp)
+# print(dogroup_data)
+# context = {
+#     "dogroup_data": dogroup_data,
+# }
+
+# return JsonResponse(context)
+# return render(request, "walkings/index.html")
 
 
 @login_required
@@ -205,26 +206,21 @@ def delete(request, dogroup_pk):
 
 def test2(request):
 
-    parks = Park.objects.filter(address__icontains="동작구")
+    dogroups = Dogroup.objects.order_by("-pk")
 
-    dogroups = Dogroup.objects.all()
-
-    park_info = []
-    for park in parks:
-
-        temp = {
-            "parkName": park.parkName,
-            "latitude": park.latitude,
-            "longitude": park.longitude,
-            "park_pk": park.pk,
-        }
-
-        park_info.append(temp)
-
-    parkJson = json.dumps(park_info)
     context = {
-        "parkJson": parkJson,
         "dogroups": dogroups,
     }
 
     return render(request, "walkings/test2.html", context)
+
+
+def test(request):
+
+    dogroups = Dogroup.objects.order_by("-pk")
+
+    context = {
+        "dogroups": dogroups,
+    }
+
+    return render(request, "walkings/test.html", context)
