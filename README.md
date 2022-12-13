@@ -52,11 +52,19 @@ namung
 ##  📋 기능소개
 
  -  견주 등록
- -  산책할 수 있는 공원 
+  -  ![profile.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cab223e2-a7b2-4583-a677-c1088fe821da/profile.gif)
+ -  산책할 수 있는 공원
+  - ![walking.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b538aa1d-912d-4e74-a37a-ac12205c5317/walking.gif)   
  -  동행 정보
+  -  ![place.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7601fb3f-8fe8-43dd-81e8-a8972d84a5c8/place.gif)
  -  동물병원정보 
+ -  캘린더
+  -  ![schedules.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8c0ecf7d-f16d-4caf-a2eb-f14b3beef22a/schedules.gif)
  -  입양
  -  
+  -  ![hospital.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/45bafbe4-99e2-4b97-b139-6ea19eab0c43/hospital.gif)
+ -  멍스타그램
+  -  ![mungstagram.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bf553267-12a8-4242-bf0c-f3ebbd42e2d9/mungstagram.gif)
 
 ---
 
