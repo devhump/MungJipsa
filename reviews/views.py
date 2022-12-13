@@ -240,7 +240,9 @@ def follow(request, pk):
         User = get_user_model()
         me = request.user
         you = User.objects.get(pk=pk)
+
         if me != you:
+
             if you.followers.filter(pk=me.pk).exists():
                 you.followers.remove(me)
                 is_followed = False
@@ -249,8 +251,6 @@ def follow(request, pk):
                 is_followed = True
             context = {
                 "is_followed": is_followed,
-                "followers_count": you.followers.count(),
-                "followings_count": you.followings.count(),
             }
             return JsonResponse(context)
         return redirect("accounts:profile", you.username)
