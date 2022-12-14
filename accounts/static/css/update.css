@@ -13,6 +13,13 @@
 .card {
   background-color:#e6e0db;
 }
+body {
+  background-image: url('../images/배경.jpg');
+	animation: rain_effect 40s linear infinite;
+	-webkit-animation: rain_effect 40s linear infinite;
+	-moz-animation: rain_effect 40s linear infinite;
+	-ms-animation: rain_effect 40s linear infinite; 
+}
 
 .btnOrange {
   background: #E3B57E;

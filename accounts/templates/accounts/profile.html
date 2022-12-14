@@ -3,6 +3,7 @@
 <script src="https://kit.fontawesome.com/dcba51bc42.js" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
  {% endblock css %} {% block content %} 
+
 <!-- MY PAGE -->
 <!-- 프로필 사진이 설정되어 있으면 프로필 사진을 띄움 -->
 <div class="top text-center d-flex ">
@@ -38,7 +39,7 @@
 						{% endif %}
 					</form>
 					 {% endif %} <button type="button" class="btn button btnPush btnOrange me-3 mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:logout' %}'"><i class="fa-solid fa-right-from-bracket"></i> 로그아웃 </button>
-					<button type="button" class="btn button btnPush btnOrange mt-5" title="Button push orange" onclick="location.href='{% url 'accounts:profile' user.username %}'"><i class="fa-solid fa-rotate-left"></i> 뒤로 가기</button>
+					
 				</div>
 			</div>
 		</p>
@@ -75,13 +76,13 @@
 	<i class="fa-regular fa-keyboard fa-fade " style="--fa-animation-duration: 1s; --fa-fade-opacity: 0.6;"></i>
 	MY 작성글</a>
 	</li>
-	<li class="nav-item">
-	<a class="nav-link tab-font" data-toggle="tab" href="#zxc">
-	<i class="fa-regular fa-calendar-days fa-fade" style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6;"></i>
-	MY 일정</a>
-	</li>
+	<li class="nav-item mt-2">
+	<a href="{% url 'schedules:all_events' %}" style="text-decoration:none; color:#700202 " > 
+	<i class="fa-regular fa-calendar-days fa-fade " style="--fa-animation-duration: 0.7s; --fa-fade-opacity: 0.6; color:#700202 "></i> MY 일정</a>
+	</li></a>
 </ul>
 </div>
+
  {% endif %} 
 <!-- tab 내용 -->
 <div class="tab-content container">
@@ -111,26 +112,38 @@
 </p>
 </div>
 <div class="tab-pane fade " id="asd">
-<ul class=" d-flex row row-cols-auto ">
-	 {% if user.review_set.all %} {% for review in user.review_set.all %}
-	<p class="m-3 card cardcss container text-start">
-		 {{ review.title }} <a href="{% url 'reviews:index' %}">
-		{% if review.image %} {% for i in review.image.all %} <img src="{{ i.image.url }}" class="d-flex row dogprofile"/><br/></a>
-		{% endfor %} {% endif %} {% endfor %}
+<ul class=" d-flex row row-cols-auto">
+	 {% if user.review_set.all %} 
+	 {% for review in user.review_set.all %}
+	<p class="m-3 card cardcss container text-center my-content">
+		 {{ review.title }} 
+		 <a href="{% url 'reviews:index' %}">
+		
+			
+		{% if review.image %} 
+		{% for i in review.image.all %} 
+		{% if forloop.first %}
+		<img src="{{ i.image.url }}" class="d-flex row dogprofile"/><br/></a>
+		{% endif %}
+		{% endfor %} 
+		{% endif %} 
+		
+		
+	{% endfor %}
 	</ul>
-	 {% else %}
+	{% else %}
 	<h4>
 	<p class="mt-3">
 		작성한 글이 없어요ㅠㅠ
 	</p>
 	</h4>
-	 {% endif %}
+	{% endif %}
 </div>
-<div class="tab-pane fade" id="zxc">
+<div class="tab-pane fade" id="zxc"> 
 	<p>
 		<div class="col-md-3">
 			<div id="external-events">
-				<h4 class="mb-4">진행 예정 일정</h4>
+				<h4 class="mb-4" >진행 예정 일정</h4> 
 				 {% if user.event_set.all %} {% for event in events_month %}
 				<div class="fc-event">
 					<span><span style="font-size: 1.5rem">"{{ event.title }}" </span><span style="font-size: 1rem">일정은</span></span>
@@ -174,6 +187,8 @@
 		</button>
 	</div>
 </div>
+
+
  {% endblock content %} 
 <!--비동기-->
 {% comment %} {% block js %}
