@@ -29,7 +29,6 @@
 
 body {
 	background-color: #d9bd9b; 
-  
 }
 
 .top{
@@ -179,4 +178,14 @@ body {
 
 .nav-link.active {
   color: #000000;
+}
+
+
+/* my 작성글 내용 css*/
+.my-content {
+  width:130px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  display:inline-block;
 }
