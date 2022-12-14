@@ -65,7 +65,9 @@
 
     <a href="{% url 'reviews:create' %}"style="color: black" class='text-decoration-none mx-3'><i class="bi bi-plus-square" ></i>글쓰기</a>
     
+    {% if request.user.is_authenticated %}
     <a href="{% url 'reviews:follows' %}"style="color: black" class='text-decoration-none mx-3'>팔로잉</a>
+    {% endif %}
    
     
     
@@ -89,6 +91,7 @@
               
               <div class='d-flex justify-content: space-around'><a href="{% url 'accounts:profile' review.user %}" style='color :black;' class='text-decoration-none ' >&nbsp; <b>{{ review.user.username }}</b></a></div>
                 <p class='ms-auto'>
+                  {% if request.user.is_authenticated %}
                   {% comment %} 팔로우 {% endcomment %}
                   <small>
                     {% if request.user != review.user %}
@@ -102,7 +105,7 @@
                       </form>
                     {% endif %}
                   </small>
-                 
+                 {% endif %}
                   {{ review.created_at| naturaltime  }}</p>
             </div>
             <div>
