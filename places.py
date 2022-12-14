@@ -8,10 +8,10 @@ django.setup()
 
 from info.models import PetPlace, PetPlaceSlideImage, PetPlaceBodyImage
 
-# idx range: 76 - 11626 까지 완
+# idx range: 76 - 11720 까지 완
 
-idx = 11627
-while idx < 11652:
+idx = 11652
+while idx < 11721:
     url = (
         "http://hatdog.co.kr/pc_hatdog/?m1Code=ar_info&m2Code=ar_info&mode=view&idx="
         + str(idx)
