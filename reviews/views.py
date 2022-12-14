@@ -11,6 +11,7 @@ from django.contrib.auth import get_user_model
 from django.views.generic.edit import FormView
 from django.db.models import Q
 import random
+from django.db.models import Prefetch
 from django.views.decorators.http import (
     require_POST,
 )
@@ -19,12 +20,14 @@ from django.views.decorators.http import (
 def index(request):
     reviews = Review.objects.all().order_by("-created_at")
     search = request.GET.get("search")
+    users = get_user_model().objects.all()
     if search:
         reviews = reviews.filter(
-            Q(title__icontains=search)
-            | Q(content__icontains=search)
-            | Q(user_id__icontains=search)
+            Q(title__icontains=search) | Q(content__icontains=search)
         )
+    else:
+        search = ""
+        users = users.filter(Q(username__icontains=search) | Q(id__icontains=search))
 
     comment_form = CommentForm()
     page = request.GET.get("page", "1")
@@ -55,6 +58,7 @@ def index(request):
         "search": search,
         "aside": sub,
         "aside2": address,
+        "users": users,
     }
     return render(request, "reviews/index.html", context)
 
@@ -200,7 +204,10 @@ class SearchFormView(FormView):
     def form_valid(self, form):
         searchWord = form.cleaned_data["search_word"]
         post_list = Review.objects.filter(
-            Q(title__icontains=searchWord) | Q(content__icontains=searchWord)
+            Q(title__icontains=searchWord)
+            | Q(content__icontains=searchWord)
+            | Q(user_id__icontains=searchWord)
+            | Q(user_username__icontains=searchWord)
         ).distinct()
 
         context = {}
@@ -255,6 +262,63 @@ def follow(request, pk):
             return JsonResponse(context)
         return redirect("accounts:profile", you.username)
     return redirect("accounts:login")
+
+
+def follows(request):
+    reviews = Review.objects.all().order_by("-created_at")
+    users = get_user_model().objects.prefetch_related(
+        Prefetch(
+            "followings",
+            queryset=get_user_model().objects.prefetch_related("review_set").all(),
+            to_attr="followings_users",
+        )
+    )
+    riv = list()
+    for followings_user in users.get(pk=request.user.pk).followings_users:
+        for i in followings_user.review_set.all():
+            riv.append(i)
+
+    search = request.GET.get("search")
+    if search:
+        reviews = reviews.filter(
+            Q(title__icontains=search) | Q(content__icontains=search)
+        )
+    else:
+        search = ""
+        users = users.filter(Q(username__icontains=search) | Q(id__icontains=search))
+
+    comment_form = CommentForm()
+    page = request.GET.get("page", "1")
+    paginator = Paginator(reviews, 6)
+    posts = paginator.get_page(page)
+    num = random.randrange(1, 9)
+    lst = [
+        "01.png",
+        "02.png",
+        "03.png",
+        "04.png",
+        "05.png",
+        "06.jpg",
+        "07.jpg",
+        "08.jpg",
+    ]
+    hospital = lst[num - 1]
+    sub = "../../static/images/" + hospital
+    num2 = random.randrange(1, 6)
+    lst2 = ["D1.png", "D2.png", "D3.png", "D4.png", "D5.png"]
+    photo = lst2[num2 - 1]
+    address = "../../static/images/" + photo
+
+    context = {
+        "posts": posts,
+        "reviews": reviews,
+        "comment_form": comment_form,
+        "search": search,
+        "aside": sub,
+        "aside2": address,
+        "riv": riv,
+    }
+    return render(request, "reviews/follows.html", context)
 
 
 #
