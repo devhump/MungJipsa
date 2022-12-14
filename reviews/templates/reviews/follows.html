@@ -62,12 +62,12 @@
       <button type="submit"><i class="fas fa-search" style="padding-right: 10px" ></i></button>
     </form>
     
-
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'reviews:index' %}"style="color: black" class='text-decoration-none mx-3'>멍스타그램</a>
+    {% endif %}
+   
     <a href="{% url 'reviews:create' %}"style="color: black" class='text-decoration-none mx-3'><i class="bi bi-plus-square" ></i>글쓰기</a>
     
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'reviews:follows' %}"style="color: black" class='text-decoration-none mx-3'>팔로잉</a>
-    {% endif %}
    
     
     
